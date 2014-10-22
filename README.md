@@ -11,5 +11,6 @@ This built is configured to include.
 * extensions: ContentMathML, webfonts matching
 * misc. MathJax internals
 
+See the Gruntfile for more information.
 
-For details, see https://github.com/mathjax/MathJax/wiki/Single-file-built
+For more background, see https://github.com/mathjax/MathJax/wiki/Single-file-built
