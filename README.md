@@ -5,10 +5,10 @@ An **experimental** MathJax built as a single file.
 
 This built is configured to include.
 
-* MML input
-* SVG output
+* MathML input
+* SVG output (with `blacker:1`)
 * Mathjax TeX "fonts"
-* extensions: ContentMathML, webfonts matching
+* extensions: mml3.js, webfonts matching
 * misc. MathJax internals
 
 See the Gruntfile for more information.

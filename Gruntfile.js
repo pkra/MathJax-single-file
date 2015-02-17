@@ -39,7 +39,7 @@ module.exports = function(grunt) {
             stderr: false
         },
         prepTempHelpers: {
-            command: 'head -n 3098 unpacked/MathJax.js > MathJax_part1 && tail -n 29 unpacked/MathJax.js > MathJax_part2' // TODO This is a hack until we can discuss modifying MathJax.js (e.g., https://www.npmjs.org/package/grunt-file-blocks)
+            command: 'head -n 3192 unpacked/MathJax.js > MathJax_part1 && tail -n 29 unpacked/MathJax.js > MathJax_part2' // TODO This is a hack until we can discuss modifying MathJax.js (e.g., https://www.npmjs.org/package/grunt-file-blocks)
         }
     },
     "file-creator": {
@@ -79,7 +79,7 @@ module.exports = function(grunt) {
             '"[MathJax]/jax/output/SVG/autoload/multiline.js",\n'+
             '"[MathJax]/jax/output/SVG/autoload/menclose.js",\n'+
             '"[MathJax]/jax/output/SVG/autoload/ms.js",\n'+
-            '"[MathJax]/extensions/MathML/content-mathml.js",\n'+
+            '"[MathJax]/extensions/MathML/mml3.js",\n'+
             '"[MathJax]/jax/input/MathML/entities/scr.js",\n'+
             '"[MathJax]/jax/input/MathML/entities/opf.js",\n'+
             '"[MathJax]/jax/input/MathML/entities/z.js",\n'+
@@ -222,7 +222,7 @@ module.exports = function(grunt) {
             '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Bold/CombDiacritMarks.js",\n'+
             '"[MathJax]/jax/output/SVG/fonts/TeX/Size4/Regular/Main.js"'+
             ');'+
-            'MathJax.Hub.Config({"v1.0-compatible":false});'
+            'MathJax.Hub.Config({"v1.0-compatible":false, SVG: {blacker: 1}});'
           );
           done();
         }
@@ -259,7 +259,7 @@ module.exports = function(grunt) {
         'unpacked/jax/output/SVG/autoload/multiline.js',
         'unpacked/jax/output/SVG/autoload/menclose.js',
         'unpacked/jax/output/SVG/autoload/ms.js',
-        'unpacked/extensions/MathML/content-mathml.js',
+        'unpacked/extensions/MathML/mml3.js',
         'unpacked/jax/input/MathML/entities/scr.js',
         'unpacked/jax/input/MathML/entities/opf.js',
         'unpacked/jax/input/MathML/entities/z.js',
@@ -410,7 +410,7 @@ module.exports = function(grunt) {
     },
     uglify: {
       options: {
-        banner: '\/* \n *  MathJax single file build "<%= grunt.cli.tasks %>" \n *\n *  created with MathJax-grunt-concatenator \n *\n *  Copyright (c) 2014 The MathJax Consortium\n *\n *  Licensed under the Apache License, Version 2.0 (the "License");\n *  you may not use this file except in compliance with the License.\n *  You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n *  Unless required by applicable law or agreed to in writing, software\n *  distributed under the License is distributed on an "AS IS" BASIS,\n *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n *  See the License for the specific language governing permissions and\n *  limitations under the License.\n *\/\n\n'
+        banner: '\/* \n *  MathJax single file build "<%= grunt.cli.tasks %>" \n *\n *  created with MathJax-grunt-concatenator \n *\n *  Copyright (c) 2015 The MathJax Consortium\n *\n *  Licensed under the Apache License, Version 2.0 (the "License");\n *  you may not use this file except in compliance with the License.\n *  You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n *  Unless required by applicable law or agreed to in writing, software\n *  distributed under the License is distributed on an "AS IS" BASIS,\n *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n *  See the License for the specific language governing permissions and\n *  limitations under the License.\n *\/\n\n'
       },
       MMLSVG: {
         files: {
