@@ -39,7 +39,7 @@ module.exports = function(grunt) {
             stderr: false
         },
         prepTempHelpers: {
-            command: 'head -n 3192 unpacked/MathJax.js > MathJax_part1 && tail -n 29 unpacked/MathJax.js > MathJax_part2' // TODO This is a hack until we can discuss modifying MathJax.js (e.g., https://www.npmjs.org/package/grunt-file-blocks)
+            command: 'head -n 3199 unpacked/MathJax.js > MathJax_part1 && tail -n 29 unpacked/MathJax.js > MathJax_part2' // TODO This is a hack until we can discuss modifying MathJax.js (e.g., https://www.npmjs.org/package/grunt-file-blocks)
         }
     },
     "file-creator": {
