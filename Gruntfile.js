@@ -5,13 +5,13 @@ MathJax-grunt-combiner
 A grunt file to build single-file versions of MathJax
 
 * Fetch a copy of MathJax and extract the unpacked folder
-    `$ wget https://github.com/mathjax/MathJax/archive/master.zip && unzip master.zip "MathJax-master/unpacked/*"  && mv MathJax-master/unpacked . && rm MathJax-master`
+    `$ wget https://github.com/mathjax/MathJax/archive/master.zip && unzip master.zip "MathJax-master/unpacked/*"  && mv MathJax-master/unpacked . && rmdir MathJax-master`
 * run `$ grunt MMLSVG`; output will be in `dist/MMLSVG/MathJax.js`
 
 
-Latest version at https://github.com/pkra/ [TBA]
+Latest version at https://github.com/pkra/MathJax-single-file
 
-Copyright (c) 2014 Mathjax Consortium
+Copyright (c) 2014-2015 Mathjax Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
