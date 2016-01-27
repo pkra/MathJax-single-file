@@ -1,6 +1,6 @@
 {
-  "name": "MathJax-grunt-concatenator",
-  "version": "0.1.0",
+  "name": "mathjax-single-file",
+  "version": "0.1.1",
   "author": "MathJax Consortium",
   "private": true,
   "devDependencies": {

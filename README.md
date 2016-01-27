@@ -1,14 +1,14 @@
 mathjax-single-file
 ===================
 
-An **experimental** MathJax built as a single file.
+An **experimental** MathJax build as a single file.
 
 This built is configured to include.
 
 * MathML input
-* SVG output (with `blacker:1`)
-* Mathjax TeX "fonts"
-* extensions: mml3.js, webfonts matching
+* SVG output
+* MathJax TeX "fonts"
+* extensions: mml3.js, webfonts matching, AssistiveMML
 * misc. MathJax internals
 
 See the Gruntfile for more information.

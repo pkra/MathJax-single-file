@@ -39,7 +39,7 @@ module.exports = function(grunt) {
             stderr: false
         },
         prepTempHelpers: {
-            command: 'head -n 3199 unpacked/MathJax.js > MathJax_part1 && tail -n 29 unpacked/MathJax.js > MathJax_part2' // TODO This is a hack until we can discuss modifying MathJax.js (e.g., https://www.npmjs.org/package/grunt-file-blocks)
+            command: 'head -n 3241 unpacked/MathJax.js > MathJax_part1 && tail -n 29 unpacked/MathJax.js > MathJax_part2' // TODO This is a hack until we can discuss modifying MathJax.js (e.g., https://www.npmjs.org/package/grunt-file-blocks)
         }
     },
     "file-creator": {
@@ -57,7 +57,7 @@ module.exports = function(grunt) {
           done();
         },
         "MMLSVG-preload.js": function(fs, fd, done) { //TODO There has to be a better way.
-          fs.writeSync(fd, 
+          fs.writeSync(fd,
             'MathJax.Ajax.Preloading('+
             '"[MathJax]/jax/input/MathML/config.js",\n'+
             '"[MathJax]/jax/output/SVG/config.js",\n'+
@@ -80,6 +80,7 @@ module.exports = function(grunt) {
             '"[MathJax]/jax/output/SVG/autoload/menclose.js",\n'+
             '"[MathJax]/jax/output/SVG/autoload/ms.js",\n'+
             '"[MathJax]/extensions/MathML/mml3.js",\n'+
+            '"[MathJax]/extensions/AssistiveMML.js",\n'+
             '"[MathJax]/jax/input/MathML/entities/scr.js",\n'+
             '"[MathJax]/jax/input/MathML/entities/opf.js",\n'+
             '"[MathJax]/jax/input/MathML/entities/z.js",\n'+
@@ -221,8 +222,7 @@ module.exports = function(grunt) {
             '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Bold/BasicLatin.js",\n'+
             '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Bold/CombDiacritMarks.js",\n'+
             '"[MathJax]/jax/output/SVG/fonts/TeX/Size4/Regular/Main.js"'+
-            ');'+
-            'MathJax.Hub.Config({"v1.0-compatible":false, SVG: {blacker: 1}});'
+            ');'
           );
           done();
         }
@@ -233,7 +233,7 @@ module.exports = function(grunt) {
       },
     concat: {
       options: {
-//         separator: ';\n\n' 
+//         separator: ';\n\n'
       },
       MMLSVG: {
         src: [
@@ -260,6 +260,7 @@ module.exports = function(grunt) {
         'unpacked/jax/output/SVG/autoload/menclose.js',
         'unpacked/jax/output/SVG/autoload/ms.js',
         'unpacked/extensions/MathML/mml3.js',
+        'unpacked/extensions/AssistiveMML.js',
         'unpacked/jax/input/MathML/entities/scr.js',
         'unpacked/jax/input/MathML/entities/opf.js',
         'unpacked/jax/input/MathML/entities/z.js',
