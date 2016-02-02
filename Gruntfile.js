@@ -65,6 +65,7 @@ module.exports = function(grunt) {
             '"[MathJax]/extensions/MathEvents.js",\n'+
             '"[MathJax]/extensions/MathZoom.js",\n'+
             '"[MathJax]/extensions/MathMenu.js",\n'+
+            '"[MathJax]/extensions/MathML/mml3.js",\n'+
             '"[MathJax]/jax/element/mml/jax.js",\n'+
             '"[MathJax]/extensions/toMathML.js",\n'+
             '"[MathJax]/jax/input/MathML/jax.js",\n'+
@@ -79,7 +80,6 @@ module.exports = function(grunt) {
             '"[MathJax]/jax/output/SVG/autoload/multiline.js",\n'+
             '"[MathJax]/jax/output/SVG/autoload/menclose.js",\n'+
             '"[MathJax]/jax/output/SVG/autoload/ms.js",\n'+
-            '"[MathJax]/extensions/MathML/mml3.js",\n'+
             '"[MathJax]/extensions/AssistiveMML.js",\n'+
             '"[MathJax]/jax/input/MathML/entities/scr.js",\n'+
             '"[MathJax]/jax/input/MathML/entities/opf.js",\n'+
@@ -222,7 +222,8 @@ module.exports = function(grunt) {
             '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Bold/BasicLatin.js",\n'+
             '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Bold/CombDiacritMarks.js",\n'+
             '"[MathJax]/jax/output/SVG/fonts/TeX/Size4/Regular/Main.js"'+
-            ');'
+            ');'+
+            'MathJax.Hub.Config({"v1.0-compatible":false});'
           );
           done();
         }
