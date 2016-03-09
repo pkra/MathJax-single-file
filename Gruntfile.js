@@ -572,7 +572,7 @@ module.exports = function(grunt) {
         'svg-helper2.js', // see svg-helper1.js
         'MathJax_part2' // see MathJax_part1
         ],
-        dest: 'dist/<%= pkg.name %>-MMLSVG.js'
+        dest: 'dist/MMLSVG/MathJax-MMLSVG.js'
       },
       TeXSVG: {
         src: [
@@ -737,7 +737,7 @@ module.exports = function(grunt) {
         'svg-helper2.js', // see svg-helper1.js
         'MathJax_part2' // see MathJax_part1
         ],
-        dest: 'dist/<%= pkg.name %>-TeXSVG.js'
+        dest: 'dist/TeXSVG/MathJax-TeXSVG.js'
       }
     },
     uglify: {

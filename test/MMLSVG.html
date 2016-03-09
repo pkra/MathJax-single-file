@@ -3,11 +3,11 @@
 <html>
 <head>
 <title>MathJax MathML Test Page</title>
-<!-- Copyright (c) 2010-2015 The MathJax Consortium -->
+<!-- Copyright (c) 2010-2016 The MathJax Consortium -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<script type="text/javascript" src="../dist/MathJax.js"></script>
+<script type="text/javascript" src="../dist/MMLSVG/MathJax.js"></script>
 
 </head>
 <body>
@@ -20,7 +20,7 @@
 
       <p class="desc">Tests whether MathML equation rendering is supported.</p>
 
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <math display="block">
         <msubsup>
           <mo>&#x222B;
             <!-- ∫ -->
@@ -61,7 +61,7 @@
           </mi>
         </msqrt>
       </math>
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <math display="block">
         <munderover>
           <mo>&#x2211;
             <!-- ∑ -->
@@ -95,7 +95,7 @@
           <mn>6</mn>
         </mfrac>
       </math>
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <math display="block">
         <mi>x</mi>
         <mo>=</mo>
         <mfrac>
@@ -137,7 +137,7 @@
 
       <p class="desc">Tests whether basic MathML styling is supported.</p>
 
-      <math xmlns="http://www.w3.org/1998/Math/MathML">
+      <math>
         <mtable mathbackground="#FFFFE0" frame="dashed" mathcolor="#be0000">
           <mtr>
             <mtd>
@@ -177,7 +177,7 @@
 
       <p class="desc">Tests whether basic CSS styling of MathML is supported on the <code>math</code> element.</p>
 
-      <math class="basic" xmlns="http://www.w3.org/1998/Math/MathML">
+        <math class="basic">
         <mrow>
           <mn>2</mn>
           <mo>&#x2061;
@@ -206,7 +206,7 @@
 
       <p class="desc">Tests basic layout of surds.</p>
 
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <math display="block">
         <mrow>
           <msqrt>
             <mn>1</mn>
@@ -253,7 +253,7 @@
 
       <p class="desc">Tests basic vertical stretch of parentheses.</p>
 
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <math display="block">
         <mrow>
           <mo>(</mo>
           <mtable>
@@ -354,7 +354,7 @@
 
       <p class="desc">Tests whether horizontal stretch, <code>mover</code>, <code>munder</code>, <code>mspace</code> elements are supported.</p>
 
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <math display="block">
         <mrow>
           <mi>c</mi>
           <mo>=</mo>
@@ -405,7 +405,7 @@
 
       <p class="desc">Tests whether <code>mtable</code> with borders and basic alignments attributes are supported.</p>
 
-      <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+      <math display="block">
         <mtable frame="solid" columnlines="dashed none none" rowlines="dashed" rowalign="top bottom center baseline" displaystyle="true">
           <mtr>
             <mtd>
@@ -512,7 +512,7 @@
 
       <p class="desc">Tests whether <code>mtable</code> with borders and basic alignments attributes are supported.</p>
 
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <math display="block">
         <mtable columnalign="center left center right" rowspacing="4pt" columnspacing="1em" rowlines="solid none" columnlines="solid none none">
           <mtr>
             <mtd>
@@ -583,7 +583,7 @@
 
       <p class="desc">Tests basic support for bi-directional layout and Arabic alphabets.</p>
 
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <math display="block">
         <mtable columnlines="solid" rowlines="solid" frame="solid" columnalign="center">
           <mtr>
             <mtd>
@@ -760,7 +760,7 @@
 
       <p class="desc">Tests whether <code>mlongdiv</code> elements are supported.</p>
 
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <math display="block">
         <mlongdiv longdivstyle="lefttop">
           <mn>3</mn>
           <mn>435.3</mn>
@@ -802,7 +802,7 @@
 
       <p class="desc">Tests whether <code>mstack</code> and <code>mscarries</code> elements are supported.</p>
 
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+      <math display="block">
 
         <mstack>
           <mscarries crossout="verticalstrike">
@@ -835,7 +835,7 @@
 
       <p class="desc">Tests whether <code>mmultiscript</code> and <code>munderover</code> elements as well as Greek and Gothic alphabets are supported.</p>
 
-      <math xmlns="http://www.w3.org/1998/Math/MathML" style="font-size: 24pt" display="block">
+      <math style="font-size: 24pt" display="block">
         <mrow>
           <munderover>
             <mmultiscripts>
