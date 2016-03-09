@@ -32,6 +32,8 @@ THE SOFTWARE.
 
 module.exports = function(grunt) {
 
+  var mathjaxRoot = require.resolve('mathjax').substring(0, require.resolve('mathjax').length-10);
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     shell: {
@@ -39,7 +41,7 @@ module.exports = function(grunt) {
             stderr: false
         },
         prepTempHelpers: {
-            command: 'head -n 3241 unpacked/MathJax.js > MathJax_part1 && tail -n 29 unpacked/MathJax.js > MathJax_part2' // TODO This is a hack until we can discuss modifying MathJax.js (e.g., https://www.npmjs.org/package/grunt-file-blocks)
+            command: 'head -n 3244 ' + mathjaxRoot + 'unpacked/MathJax.js > MathJax_part1 && tail -n 29 ' + mathjaxRoot + 'unpacked/MathJax.js > MathJax_part2' // TODO This is a hack until we can discuss modifying MathJax.js (e.g., https://www.npmjs.org/package/grunt-file-blocks)
         }
     },
     "file-creator": {
@@ -58,7 +60,7 @@ module.exports = function(grunt) {
         },
         "MMLSVG-preload.js": function(fs, fd, done) { //TODO There has to be a better way.
           fs.writeSync(fd,
-            'MathJax.Ajax.Preloading('+
+            'MathJax.Ajax.Preloading(\n'+
             '"[MathJax]/jax/input/MathML/config.js",\n'+
             '"[MathJax]/jax/output/SVG/config.js",\n'+
             '"[MathJax]/extensions/mml2jax.js",\n'+
@@ -222,16 +224,179 @@ module.exports = function(grunt) {
             '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Bold/BasicLatin.js",\n'+
             '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Bold/CombDiacritMarks.js",\n'+
             '"[MathJax]/jax/output/SVG/fonts/TeX/Size4/Regular/Main.js"'+
-            ');'+
-            'MathJax.Hub.Config({"v1.0-compatible":false});'
+            ');\n'+
+            'MathJax.Hub.Config({"v1.0-compatible":false});\n'
+          );
+          done();
+        },
+        "TeXSVG-preload.js": function(fs, fd, done) { //TODO There has to be a better way.
+          fs.writeSync(fd,
+            'MathJax.Ajax.Preloading( \n'+
+            '"[MathJax]/jax/input/TeX/config.js",\n'+
+            '"[MathJax]/jax/output/SVG/config.js",\n'+
+            '"[MathJax]/extensions/tex2jax.js",\n'+
+            '"[MathJax]/extensions/MathEvents.js",\n'+
+            '"[MathJax]/extensions/MathZoom.js",\n'+
+            '"[MathJax]/extensions/MathMenu.js",\n'+
+            '"[MathJax]/jax/element/mml/jax.js",\n'+
+            '"[MathJax]/extensions/toMathML.js",\n'+
+            '"[MathJax]/extensions/TeX/AMScd.js",\n'+
+            '"[MathJax]/extensions/TeX/AMSmath.js",\n'+
+            '"[MathJax]/extensions/TeX/AMSsymbols.js",\n'+
+            '"[MathJax]/extensions/TeX/HTML.js",\n'+
+            '"[MathJax]/extensions/TeX/action.js",\n'+
+            '"[MathJax]/extensions/TeX/autobold.js",\n'+
+            // '"[MathJax]/extensions/TeX/autoload-all.js",\n'+
+            '"[MathJax]/extensions/TeX/bbox.js",\n'+
+            // '"[MathJax]/extensions/TeX/begingroup.js",\n'+
+            '"[MathJax]/extensions/TeX/boldsymbol.js",\n'+
+            '"[MathJax]/extensions/TeX/cancel.js",\n'+
+            '"[MathJax]/extensions/TeX/color.js",\n'+
+            '"[MathJax]/extensions/TeX/enclose.js",\n'+
+            '"[MathJax]/extensions/TeX/extpfeil.js",\n'+
+            '"[MathJax]/extensions/TeX/mathchoice.js",\n'+
+            '"[MathJax]/extensions/TeX/mediwiki-texvc.js",\n'+
+            '"[MathJax]/extensions/TeX/mhchem.js",\n'+
+            '"[MathJax]/extensions/TeX/newcommand.js",\n'+
+            // '"[MathJax]/extensions/TeX/noErrors.js",\n'+
+            // '"[MathJax]/extensions/TeX/noUndefined.js",\n'+
+            '"[MathJax]/extensions/TeX/unicode.js",\n'+
+            '"[MathJax]/extensions/TeX/verb.js",\n'+
+            '"[MathJax]/jax/input/TeX/jax.js",\n'+
+            '"[MathJax]/jax/output/SVG/jax.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/fontdata.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/fontdata-extra.js",\n'+
+            '"[MathJax]/jax/output/SVG/autoload/mtable.js",\n'+
+            '"[MathJax]/jax/output/SVG/autoload/mglyph.js",\n'+
+            '"[MathJax]/jax/output/SVG/autoload/mmultiscripts.js",\n'+
+            '"[MathJax]/jax/output/SVG/autoload/annotation-xml.js",\n'+
+            '"[MathJax]/jax/output/SVG/autoload/maction.js",\n'+
+            '"[MathJax]/jax/output/SVG/autoload/multiline.js",\n'+
+            '"[MathJax]/jax/output/SVG/autoload/menclose.js",\n'+
+            '"[MathJax]/jax/output/SVG/autoload/ms.js",\n'+
+            '"[MathJax]/extensions/AssistiveMML.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/Arrows.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/MiscMathSymbolsA.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/Dingbats.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/GeneralPunctuation.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/SpacingModLetters.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/MiscTechnical.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/SupplementalArrowsA.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/GreekAndCoptic.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/LetterlikeSymbols.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/SupplementalArrowsB.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/BasicLatin.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/MiscSymbolsAndArrows.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/CombDiacritMarks.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/GeometricShapes.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/MathOperators.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/MiscMathSymbolsB.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/SuppMathOperators.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/CombDiactForSymbols.js",\n'+
+            '"[MathJax]/jax/element/mml/optable/Latin1Supplement.js",\n'+
+            '"[MathJax]/extensions/MatchWebFonts.js",\n'+
+            '"[MathJax]/extensions/HelpDialog.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/LatinExtendedA.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/MiscSymbols.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/SpacingModLetters.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/GreekAndCoptic.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/LetterlikeSymbols.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/LatinExtendedB.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/BasicLatin.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/CombDiacritMarks.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/GeometricShapes.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/MathOperators.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/SuppMathOperators.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/Arrows.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/PUA.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/Dingbats.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/LatinExtendedA.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/GeneralPunctuation.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/MiscSymbols.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/SpacingModLetters.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/MiscTechnical.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/GreekAndCoptic.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/LetterlikeSymbols.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/BoxDrawing.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/CombDiacritMarks.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/GeometricShapes.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/MathOperators.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/MiscMathSymbolsB.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/SuppMathOperators.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/Latin1Supplement.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/EnclosedAlphanum.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Typewriter/Regular/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Typewriter/Regular/Other.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Typewriter/Regular/BasicLatin.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Typewriter/Regular/CombDiacritMarks.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Fraktur/Regular/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Fraktur/Regular/PUA.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Fraktur/Regular/Other.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Fraktur/Regular/BasicLatin.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Fraktur/Bold/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Fraktur/Bold/PUA.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Fraktur/Bold/Other.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Fraktur/Bold/BasicLatin.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Math/BoldItalic/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Caligraphic/Regular/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Caligraphic/Bold/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/LatinExtendedA.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/GeneralPunctuation.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/GreekAndCoptic.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/LetterlikeSymbols.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/LatinExtendedB.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/BasicLatin.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/CombDiacritMarks.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/MathOperators.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/Arrows.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/MiscMathSymbolsA.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/LatinExtendedA.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/GeneralPunctuation.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/MiscSymbols.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/SpacingModLetters.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/MiscTechnical.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/SupplementalArrowsA.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/GreekAndCoptic.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/LetterlikeSymbols.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/LatinExtendedB.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/BasicLatin.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/CombDiacritMarks.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/GeometricShapes.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/MathOperators.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/SuppMathOperators.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/CombDiactForSymbols.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/Latin1Supplement.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Size3/Regular/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Size2/Regular/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Script/Regular/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Script/Regular/BasicLatin.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Size1/Regular/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Italic/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Italic/Other.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Italic/BasicLatin.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Italic/CombDiacritMarks.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Regular/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Regular/Other.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Regular/BasicLatin.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Regular/CombDiacritMarks.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Bold/Main.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Bold/Other.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Bold/BasicLatin.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/SansSerif/Bold/CombDiacritMarks.js",\n'+
+            '"[MathJax]/jax/output/SVG/fonts/TeX/Size4/Regular/Main.js"'+
+            ');\n'+
+            'MathJax.Hub.Config({"v1.0-compatible":false});\n'
           );
           done();
         }
       }
     },
     clean: {
-      prepTempHelpers: ['MathJax_part1','MathJax_part2','svg-helper1.js','svg-helper2.js', 'MMLSVG-preload.js'],
-      },
+      prepTempHelpers: ['MathJax_part1','MathJax_part2','svg-helper1.js','svg-helper2.js', 'MMLSVG-preload.js', 'TeXSVG-preload.js']
+    },
     concat: {
       options: {
 //         separator: ';\n\n'
@@ -407,8 +572,173 @@ module.exports = function(grunt) {
         'svg-helper2.js', // see svg-helper1.js
         'MathJax_part2' // see MathJax_part1
         ],
-        dest: 'dist/<%= pkg.name %>-MMLSVG.js'
+        dest: 'dist/MMLSVG/MathJax-MMLSVG.js'
       },
+      TeXSVG: {
+        src: [
+        'MathJax_part1', // TODO see above
+        'TeXSVG-preload.js',
+        'unpacked/jax/input/TeX/config.js',
+        'unpacked/jax/output/SVG/config.js',
+        'unpacked/extensions/tex2jax.js',
+        'unpacked/extensions/MathEvents.js',
+        'unpacked/extensions/MathZoom.js',
+        'unpacked/extensions/MathMenu.js',
+        'unpacked/jax/element/mml/jax.js',
+        'unpacked/extensions/toMathML.js',
+        'unpacked/jax/output/SVG/jax.js',
+        'unpacked/jax/output/SVG/fonts/TeX/fontdata.js',
+        'unpacked/jax/output/SVG/fonts/TeX/fontdata-extra.js',
+        'unpacked/jax/output/SVG/autoload/mtable.js',
+        'unpacked/jax/output/SVG/autoload/mglyph.js',
+        'unpacked/jax/output/SVG/autoload/mmultiscripts.js',
+        'unpacked/jax/output/SVG/autoload/annotation-xml.js',
+        'unpacked/jax/output/SVG/autoload/maction.js',
+        'unpacked/jax/output/SVG/autoload/multiline.js',
+        'unpacked/jax/output/SVG/autoload/menclose.js',
+        'unpacked/jax/output/SVG/autoload/ms.js',
+        'unpacked/extensions/TeX/AMScd.js',
+        'unpacked/extensions/TeX/AMSmath.js',
+        'unpacked/extensions/TeX/AMSsymbols.js',
+        'unpacked/extensions/TeX/HTML.js',
+        'unpacked/extensions/TeX/action.js',
+        'unpacked/extensions/TeX/autobold.js',
+        // 'unpacked/extensions/TeX/autoload-all.js',
+        'unpacked/extensions/TeX/bbox.js',
+        // 'unpacked/extensions/TeX/begingroup.js',
+        'unpacked/extensions/TeX/boldsymbol.js',
+        'unpacked/extensions/TeX/cancel.js',
+        'unpacked/extensions/TeX/color.js',
+        'unpacked/extensions/TeX/enclose.js',
+        'unpacked/extensions/TeX/extpfeil.js',
+        'unpacked/extensions/TeX/mathchoice.js',
+        'unpacked/extensions/TeX/mediwiki-texvc.js',
+        'unpacked/extensions/TeX/mhchem.js',
+        'unpacked/extensions/TeX/newcommand.js',
+        // 'unpacked/extensions/TeX/noErrors.js',
+        // 'unpacked/extensions/TeX/noUndefined.js',
+        'unpacked/extensions/TeX/unicode.js',
+        'unpacked/extensions/TeX/verb.js',
+        'unpacked/jax/input/TeX/jax.js',
+        'unpacked/extensions/AssistiveMML.js',
+        'unpacked/jax/element/mml/optable/Arrows.js',
+        'unpacked/jax/element/mml/optable/MiscMathSymbolsA.js',
+        'unpacked/jax/element/mml/optable/Dingbats.js',
+        'unpacked/jax/element/mml/optable/GeneralPunctuation.js',
+        'unpacked/jax/element/mml/optable/SpacingModLetters.js',
+        'unpacked/jax/element/mml/optable/MiscTechnical.js',
+        'unpacked/jax/element/mml/optable/SupplementalArrowsA.js',
+        'unpacked/jax/element/mml/optable/GreekAndCoptic.js',
+        'unpacked/jax/element/mml/optable/LetterlikeSymbols.js',
+        'unpacked/jax/element/mml/optable/SupplementalArrowsB.js',
+        'unpacked/jax/element/mml/optable/BasicLatin.js',
+        'unpacked/jax/element/mml/optable/MiscSymbolsAndArrows.js',
+        'unpacked/jax/element/mml/optable/CombDiacritMarks.js',
+        'unpacked/jax/element/mml/optable/GeometricShapes.js',
+        'unpacked/jax/element/mml/optable/MathOperators.js',
+        'unpacked/jax/element/mml/optable/MiscMathSymbolsB.js',
+        'unpacked/jax/element/mml/optable/SuppMathOperators.js',
+        'unpacked/jax/element/mml/optable/CombDiactForSymbols.js',
+        'unpacked/jax/element/mml/optable/Latin1Supplement.js',
+        'unpacked/extensions/MatchWebFonts.js',
+        'unpacked/extensions/HelpDialog.js',
+        'svg-helper1.js', // TODO yet another hack, but less problematic since it's always the same
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Regular/LatinExtendedA.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Regular/MiscSymbols.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Regular/SpacingModLetters.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Regular/GreekAndCoptic.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Regular/LetterlikeSymbols.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Regular/LatinExtendedB.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Regular/BasicLatin.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Regular/CombDiacritMarks.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Regular/GeometricShapes.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Regular/MathOperators.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Regular/SuppMathOperators.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/Arrows.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/PUA.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/Dingbats.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/LatinExtendedA.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/GeneralPunctuation.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/MiscSymbols.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/SpacingModLetters.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/MiscTechnical.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/GreekAndCoptic.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/LetterlikeSymbols.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/BoxDrawing.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/CombDiacritMarks.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/GeometricShapes.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/MathOperators.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/MiscMathSymbolsB.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/SuppMathOperators.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/Latin1Supplement.js',
+        'unpacked/jax/output/SVG/fonts/TeX/AMS/Regular/EnclosedAlphanum.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Typewriter/Regular/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Typewriter/Regular/Other.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Typewriter/Regular/BasicLatin.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Typewriter/Regular/CombDiacritMarks.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Fraktur/Regular/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Fraktur/Regular/PUA.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Fraktur/Regular/Other.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Fraktur/Regular/BasicLatin.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Fraktur/Bold/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Fraktur/Bold/PUA.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Fraktur/Bold/Other.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Fraktur/Bold/BasicLatin.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Math/BoldItalic/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Caligraphic/Regular/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Caligraphic/Bold/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Italic/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Italic/LatinExtendedA.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Italic/GeneralPunctuation.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Italic/GreekAndCoptic.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Italic/LetterlikeSymbols.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Italic/LatinExtendedB.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Italic/BasicLatin.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Italic/CombDiacritMarks.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Italic/MathOperators.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/Arrows.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/MiscMathSymbolsA.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/LatinExtendedA.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/GeneralPunctuation.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/MiscSymbols.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/SpacingModLetters.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/MiscTechnical.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/SupplementalArrowsA.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/GreekAndCoptic.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/LetterlikeSymbols.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/LatinExtendedB.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/BasicLatin.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/CombDiacritMarks.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/GeometricShapes.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/MathOperators.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/SuppMathOperators.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/CombDiactForSymbols.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Main/Bold/Latin1Supplement.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Size3/Regular/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Size2/Regular/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Script/Regular/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Script/Regular/BasicLatin.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Size1/Regular/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Italic/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Italic/Other.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Italic/BasicLatin.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Italic/CombDiacritMarks.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Regular/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Regular/Other.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Regular/BasicLatin.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Regular/CombDiacritMarks.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Bold/Main.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Bold/Other.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Bold/BasicLatin.js',
+        'unpacked/jax/output/SVG/fonts/TeX/SansSerif/Bold/CombDiacritMarks.js',
+        'unpacked/jax/output/SVG/fonts/TeX/Size4/Regular/Main.js',
+        'svg-helper2.js', // see svg-helper1.js
+        'MathJax_part2' // see MathJax_part1
+        ],
+        dest: 'dist/TeXSVG/MathJax-TeXSVG.js'
+      }
     },
     uglify: {
       options: {
@@ -417,6 +747,11 @@ module.exports = function(grunt) {
       MMLSVG: {
         files: {
           'dist/MMLSVG/MathJax.js': ['<%= concat.MMLSVG.dest %>'] //TODO Don't hardcode that...
+        }
+      },
+      TeXSVG: {
+        files: {
+          'dist/TeXSVG/MathJax.js': ['<%= concat.TeXSVG.dest %>'] //TODO Don't hardcode that...
         }
       }
     }
@@ -429,5 +764,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-file-creator'); // to replace grunt-shell hacks
 
   grunt.registerTask('MMLSVG', ['shell:prepTempHelpers','file-creator:prepTempHelpers', 'concat:MMLSVG', 'uglify:MMLSVG', 'clean:prepTempHelpers']);
-
+  grunt.registerTask('TeXSVG', ['shell:prepTempHelpers','file-creator:prepTempHelpers', 'concat:TeXSVG', 'uglify:TeXSVG', 'clean:prepTempHelpers']);
 };
