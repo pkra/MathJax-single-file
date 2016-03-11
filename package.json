@@ -1,6 +1,6 @@
 {
   "name": "mathjax-single-file",
-  "version": "0.2",
+  "version": "0.2.0",
   "author": "MathJax Consortium",
   "private": true,
   "devDependencies": {
