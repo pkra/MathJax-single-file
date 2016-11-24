@@ -11,7 +11,7 @@ A grunt file to build single-file versions of MathJax
 
 Latest version at https://github.com/pkra/MathJax-single-file
 
-Copyright (c) 2014-2015 Mathjax Consortium
+Copyright (c) 2014-2016 Mathjax Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,23 +29,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+var fs = require('fs');
 
 module.exports = function(grunt) {
 
-  var mathjaxRoot = require.resolve('mathjax').substring(0, require.resolve('mathjax').length-10);
-
+  // HACK MathJax.js into two
+  const splitter = 'HUB.Browser.Select(MathJax.Message.browsers);';
+  const array = fs.readFileSync(require.resolve('mathjax')).toString().split(splitter)
+  const mathjaxStart = array[0];
+  const mathjaxEnd = splitter + array[1];
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    shell: {
-        options: {
-            stderr: false
-        },
-        prepTempHelpers: {
-            command: 'head -n 3244 ' + mathjaxRoot + 'unpacked/MathJax.js > MathJax_part1 && tail -n 29 ' + mathjaxRoot + 'unpacked/MathJax.js > MathJax_part2' // TODO This is a hack until we can discuss modifying MathJax.js (e.g., https://www.npmjs.org/package/grunt-file-blocks)
-        }
-    },
     "file-creator": {
       prepTempHelpers: {
+        "MathJax_part1": function(fs, fd, done) {
+          fs.writeSync(fd, mathjaxStart);
+          done();
+        },
+        "MathJax_part2": function(fs, fd, done) {
+          fs.writeSync(fd, mathjaxEnd);
+          done();
+        },
         "svg-helper1.js": function(fs, fd, done) {
           fs.writeSync(fd, ' MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {');
           done();
@@ -742,7 +746,7 @@ module.exports = function(grunt) {
     },
     uglify: {
       options: {
-        banner: '\/* \n *  MathJax single file build "<%= grunt.cli.tasks %>" \n *\n *  created with MathJax-grunt-concatenator \n *\n *  Copyright (c) 2015 The MathJax Consortium\n *\n *  Licensed under the Apache License, Version 2.0 (the "License");\n *  you may not use this file except in compliance with the License.\n *  You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n *  Unless required by applicable law or agreed to in writing, software\n *  distributed under the License is distributed on an "AS IS" BASIS,\n *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n *  See the License for the specific language governing permissions and\n *  limitations under the License.\n *\/\n\n'
+        banner: '\/* \n *  MathJax single file build "<%= grunt.cli.tasks %>" \n *\n *  created with MathJax-grunt-concatenator \n *\n *  Copyright (c) 2016 The MathJax Consortium\n *\n *  Licensed under the Apache License, Version 2.0 (the "License");\n *  you may not use this file except in compliance with the License.\n *  You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n *  Unless required by applicable law or agreed to in writing, software\n *  distributed under the License is distributed on an "AS IS" BASIS,\n *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n *  See the License for the specific language governing permissions and\n *  limitations under the License.\n *\/\n\n'
       },
       MMLSVG: {
         files: {
@@ -760,9 +764,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-file-creator'); // to replace grunt-shell hacks
 
-  grunt.registerTask('MMLSVG', ['shell:prepTempHelpers','file-creator:prepTempHelpers', 'concat:MMLSVG', 'uglify:MMLSVG', 'clean:prepTempHelpers']);
-  grunt.registerTask('TeXSVG', ['shell:prepTempHelpers','file-creator:prepTempHelpers', 'concat:TeXSVG', 'uglify:TeXSVG', 'clean:prepTempHelpers']);
+  grunt.registerTask('MMLSVG', ['file-creator:prepTempHelpers', 'concat:MMLSVG', 'uglify:MMLSVG', 'clean:prepTempHelpers']);
+  grunt.registerTask('TeXSVG', ['file-creator:prepTempHelpers', 'concat:TeXSVG', 'uglify:TeXSVG', 'clean:prepTempHelpers']);
 };
