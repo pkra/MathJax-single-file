@@ -489,7 +489,7 @@ module.exports = function (grunt) {
       }
     },
     clean: {
-      prepTempHelpers: ['MathJax_part1', 'MathJax_part2', 'svg-helper1.js', 'svg-helper2.js', 'html-helper1.js', 'html-helper2.js', 'MMLSVG-preload.js', 'TeXSVG-preload.js', 'TeXHTML-preload.js']
+      prepTempHelpers: ['MathJax_part1', 'MathJax_part2', 'svg-helper1.js', 'svg-helper2.js', 'html-helper1.js', 'html-helper2.js', 'html-helper-fonturl.js', 'MMLSVG-preload.js', 'TeXSVG-preload.js', 'TeXHTML-preload.js']
     },
     concat: {
       options: {
