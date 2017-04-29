@@ -11182,6 +11182,8 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
     
 })(MathJax.Ajax,MathJax.Hub,MathJax.HTML,MathJax.OutputJax.CommonHTML);
 
+MathJax.OutputJax.CommonHTML.webfontDir =  'cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/fonts/HTML-CSS';
+
 /* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
 /* vim: set ts=2 et sw=2 tw=80: */
 
@@ -23139,6 +23141,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/verb.js");
 })(MathJax.Hub,MathJax.HTML,MathJax.Ajax,MathJax.OutputJax,MathJax.Localization);
 
  MathJax.Hub.Register.StartupHook("CommonHTML Jax Ready",function () {
+
 /*************************************************************
  *
  *  MathJax/jax/output/CommonHTML/fonts/TeX/AMS-Regular.js
@@ -24904,6 +24907,7 @@ CHTML.fontLoaded("TeX/"+font.substr(8));
 })(MathJax.OutputJax.CommonHTML);
 
  });
+
 HUB.Browser.Select(MathJax.Message.browsers);
 
   if (BASE.AuthorConfig && typeof BASE.AuthorConfig.AuthorInit === "function") {BASE.AuthorConfig.AuthorInit()}
