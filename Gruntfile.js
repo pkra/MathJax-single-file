@@ -59,11 +59,15 @@ module.exports = function (grunt) {
           done();
         },
         "html-helper1.js": function (fs, fd, done) {
-          fs.writeSync(fd, ' MathJax.Hub.Register.StartupHook("CommonHTML Jax Ready",function () {');
+          fs.writeSync(fd, ' MathJax.Hub.Register.StartupHook("CommonHTML Jax Ready",function () {\n');
           done();
         },
         "html-helper2.js": function (fs, fd, done) {
-          fs.writeSync(fd, ' });');
+          fs.writeSync(fd, ' });\n');
+          done();
+        },
+        "html-helper-fonturl.js": function (fs, fd, done) {
+          fs.writeSync(fd,'MathJax.OutputJax.CommonHTML.webfontDir =  \'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/fonts/HTML-CSS\';\n');
           done();
         },
         "MMLSVG-preload.js": function (fs, fd, done) { //TODO There has to be a better way.
@@ -842,6 +846,7 @@ module.exports = function (grunt) {
           'unpacked/jax/element/mml/jax.js',
           'unpacked/extensions/toMathML.js',
           'unpacked/jax/output/CommonHTML/jax.js',
+          'html-helper-fonturl.js',
           'unpacked/jax/output/CommonHTML/fonts/TeX/fontdata.js',
           'unpacked/jax/output/CommonHTML/fonts/TeX/fontdata-extra.js',
           'unpacked/jax/output/CommonHTML/autoload/annotation-xml.js',
