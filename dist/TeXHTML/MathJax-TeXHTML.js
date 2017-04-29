@@ -11182,7 +11182,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
     
 })(MathJax.Ajax,MathJax.Hub,MathJax.HTML,MathJax.OutputJax.CommonHTML);
 
-MathJax.OutputJax.CommonHTML.webfontDir =  'cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/fonts/HTML-CSS';
+MathJax.OutputJax.CommonHTML.webfontDir =  'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/fonts/HTML-CSS';
 
 /* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
 /* vim: set ts=2 et sw=2 tw=80: */
