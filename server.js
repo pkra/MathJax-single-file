@@ -1,0 +1,1 @@
+require('browser-sync')({ server: ['test/', '.'] });

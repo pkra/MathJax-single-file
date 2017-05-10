@@ -12,7 +12,7 @@
  *  
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2009-2016 The MathJax Consortium
+ *  Copyright (c) 2009-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -45,9 +45,9 @@ if (window.MathJax) {window.MathJax = {AuthorConfig: window.MathJax}}
 
 // MathJax.isPacked = true; // This line is uncommented by the packer.
 
-MathJax.version = "2.7.0";
-MathJax.fileversion = "2.7.0";
-MathJax.cdnVersion = "2.7.0";  // specifies a revision to break caching
+MathJax.version = "2.7.1";
+MathJax.fileversion = "2.7.1";
+MathJax.cdnVersion = "2.7.1";  // specifies a revision to break caching
 MathJax.cdnFileVersions = {};  // can be used to specify revisions for individual files
 
 /**********************************************************/
@@ -665,7 +665,8 @@ MathJax.cdnFileVersions = {};  // can be used to specify revisions for individua
   };
   
   var PATH = {};
-  PATH[BASENAME] = "";  // empty path gets the root URL
+  PATH[BASENAME] = "";                                        // empty path gets the root URL
+  PATH.a11y = '[MathJax]/extensions/a11y';                    // a11y extensions
   PATH.Contrib = "https://cdn.mathjax.org/mathjax/contrib";   // the third-party extensions
   
   BASE.Ajax = {
@@ -689,9 +690,10 @@ MathJax.cdnFileVersions = {};  // can be used to specify revisions for individua
     //  Return a complete URL to a file (replacing any root names)
     //
     fileURL: function (file) {
-      var match = file.match(/^\[([-._a-z0-9]+)\]/i);
-      if (match && match[1] in PATH)
-        {file = (PATH[match[1]]||this.config.root) + file.substr(match[1].length+2)}
+      var match;
+      while ((match = file.match(/^\[([-._a-z0-9]+)\]/i)) && PATH.hasOwnProperty(match[1])) {
+        file = (PATH[match[1]]||this.config.root) + file.substr(match[1].length+2);
+      }
       return file;
     },
     //
@@ -700,12 +702,16 @@ MathJax.cdnFileVersions = {};  // can be used to specify revisions for individua
     fileName: function (url) {
       var root = this.config.root;
       if (url.substr(0,root.length) === root) {url = "["+BASENAME+"]"+url.substr(root.length)}
-      else {
+      do {
+        var recheck = false;
         for (var id in PATH) {if (PATH.hasOwnProperty(id) && PATH[id]) {
-          if (url.substr(0,PATH[id].length) === PATH[id])
-            {url = "["+id+"]"+url.substr(PATH[id].length); break}
+          if (url.substr(0,PATH[id].length) === PATH[id]) {
+            url = "["+id+"]"+url.substr(PATH[id].length);
+            recheck = true;
+            break;
+          }
         }}
-      }
+      } while (recheck);
       return url;
     },
     //
@@ -2894,7 +2900,7 @@ MathJax.Hub.Startup = {
     }
   },{
     id: "Jax",
-    version: "2.7.0",
+    version: "2.7.1",
     directory: ROOT+"/jax",
     extensionDir: ROOT+"/extensions"
   });
@@ -2940,7 +2946,7 @@ MathJax.Hub.Startup = {
     }
   },{
     id: "InputJax",
-    version: "2.7.0",
+    version: "2.7.1",
     directory: JAX.directory+"/input",
     extensionDir: JAX.extensionDir
   });
@@ -2973,7 +2979,7 @@ MathJax.Hub.Startup = {
     Remove: function (jax) {}
   },{
     id: "OutputJax",
-    version: "2.7.0",
+    version: "2.7.1",
     directory: JAX.directory+"/output",
     extensionDir: JAX.extensionDir,
     fontDir: ROOT+(BASE.isPacked?"":"/..")+"/fonts",
@@ -3057,7 +3063,7 @@ MathJax.Hub.Startup = {
     }
   },{
     id: "ElementJax",
-    version: "2.7.0",
+    version: "2.7.1",
     directory: JAX.directory+"/element",
     extensionDir: JAX.extensionDir,
     ID: 0,  // jax counter (for IDs)
@@ -3081,7 +3087,7 @@ MathJax.Hub.Startup = {
   //  Some "Fake" jax used to allow menu access for "Math Processing Error" messages
   //
   BASE.OutputJax.Error = {
-    id: "Error", version: "2.7.0", config: {}, errors: 0,
+    id: "Error", version: "2.7.1", config: {}, errors: 0,
     ContextMenu: function () {return BASE.Extension.MathEvents.Event.ContextMenu.apply(BASE.Extension.MathEvents.Event,arguments)},
     Mousedown:   function () {return BASE.Extension.MathEvents.Event.AltContextMenu.apply(BASE.Extension.MathEvents.Event,arguments)},
     getJaxFromMath: function (math) {return (math.nextSibling.MathJax||{}).error},
@@ -3100,7 +3106,7 @@ MathJax.Hub.Startup = {
     }
   };
   BASE.InputJax.Error = {
-    id: "Error", version: "2.7.0", config: {},
+    id: "Error", version: "2.7.1", config: {},
     sourceMenuTitle: /*_(MathMenu)*/ ["Original","Original Form"]
   };
   
@@ -3130,9 +3136,7 @@ MathJax.Hub.Startup = {
              else {STARTUP.params[params[j]] = true}
         }
       }
-      CONFIG.root = scripts[i].src.replace(/(^|\/)[^\/]*(\?.*)?$/,'')
-        // convert mathjax/latest to mathjax/x.y-latest so that all files are the same version
-        .replace(/^(https?:\/\/cdn.mathjax.org\/mathjax\/)(latest)/,"$1"+BASE.version.split(/\./).slice(0,2).join(".")+"-$2");
+      CONFIG.root = scripts[i].src.replace(/(^|\/)[^\/]*(\?.*)?$/,'');
       BASE.Ajax.config.root = CONFIG.root;
       BASE.Ajax.params = STARTUP.params;
       break;
@@ -3360,7 +3364,6 @@ MathJax.Ajax.Preloading(
 "[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/BasicLatin.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/CombDiacritMarks.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/GeometricShapes.js",
-"[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/MathOperators.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/Main/Regular/SuppMathOperators.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/Main.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/Arrows.js",
@@ -3404,7 +3407,6 @@ MathJax.Ajax.Preloading(
 "[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/LatinExtendedB.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/BasicLatin.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/CombDiacritMarks.js",
-"[MathJax]/jax/output/SVG/fonts/TeX/Main/Italic/MathOperators.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/Main.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/Arrows.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/Main/Bold/MiscMathSymbolsA.js",
@@ -3456,7 +3458,7 @@ MathJax.Hub.Config({"v1.0-compatible":false});
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2009-2015 The MathJax Consortium
+ *  Copyright (c) 2009-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -3473,7 +3475,7 @@ MathJax.Hub.Config({"v1.0-compatible":false});
 
 MathJax.InputJax.MathML = MathJax.InputJax({
   id: "MathML",
-  version: "2.6.1",
+  version: "2.7.1",
   directory: MathJax.InputJax.directory + "/MathML",
   extensionDir: MathJax.InputJax.extensionDir + "/MathML",
   entityDir: MathJax.InputJax.directory + "/MathML/entities",
@@ -3498,7 +3500,7 @@ MathJax.InputJax.MathML.loadComplete("config.js");
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -3515,7 +3517,7 @@ MathJax.InputJax.MathML.loadComplete("config.js");
 
 MathJax.OutputJax.SVG = MathJax.OutputJax({
   id: "SVG",
-  version: "2.6.1",
+  version: "2.7.1",
   directory: MathJax.OutputJax.directory + "/SVG",
   extensionDir: MathJax.OutputJax.extensionDir + "/SVG",
   autoloadDir: MathJax.OutputJax.directory + "/SVG/autoload",
@@ -3607,7 +3609,7 @@ MathJax.OutputJax.SVG.loadComplete("config.js");
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -3623,7 +3625,7 @@ MathJax.OutputJax.SVG.loadComplete("config.js");
  */
 
 MathJax.Extension.mml2jax = {
-  version: "2.6.0",
+  version: "2.7.1",
   config: {
     preview: "mathml"       // Use the <math> element as the
                             //   preview.  Set to "none" for no preview,
@@ -3799,6 +3801,8 @@ MathJax.Extension.mml2jax = {
     var preview = this.config.preview;
     if (preview === "none") return;
     var isNodePreview = false;
+    var previewClass = MathJax.Hub.config.preRemoveClass;
+    if ((script.previousSibling||{}).className === previewClass) return;
     if (preview === "mathml") {
       isNodePreview = true;
       // mathml preview does not work with IE < 9, so fallback to alttext.
@@ -3821,10 +3825,10 @@ MathJax.Extension.mml2jax = {
     if (preview) {
       var span;
       if (isNodePreview) {
-        span = MathJax.HTML.Element("span",{className:MathJax.Hub.config.preRemoveClass});
+        span = MathJax.HTML.Element("span",{className:previewClass});
         span.appendChild(preview);
       } else {
-        span = MathJax.HTML.Element("span",{className:MathJax.Hub.config.preRemoveClass},preview);
+        span = MathJax.HTML.Element("span",{className:previewClass},preview);
       }
       script.parentNode.insertBefore(span,script);
     }
@@ -3868,7 +3872,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
  *
  *  ---------------------------------------------------------------------
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -3884,7 +3888,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
  */
 
 (function (HUB,HTML,AJAX,CALLBACK,LOCALE,OUTPUT,INPUT) {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
 
   var EXTENSION = MathJax.Extension;
   var ME = EXTENSION.MathEvents = {version: VERSION};
@@ -4488,7 +4492,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -4504,7 +4508,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
  */
 
 (function (HUB,HTML,AJAX,HTMLCSS,nMML) {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   
   var CONFIG = HUB.CombineConfig("MathZoom",{
     styles: {
@@ -4856,7 +4860,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
  *
  *  ---------------------------------------------------------------------
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -4872,7 +4876,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
  */
 
 (function (HUB,HTML,AJAX,CALLBACK,OUTPUT) {
-  var VERSION = "2.6.1";
+  var VERSION = "2.7.1";
 
   var SIGNAL = MathJax.Callback.Signal("menu");  // signal for menu events
 
@@ -4887,6 +4891,8 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
       [["MathMenu",id]].concat([].slice.call(arguments,1))
     );
   };
+  
+  var isArray = MathJax.Object.isArray;
 
   var isPC = HUB.Browser.isPC, isMSIE = HUB.Browser.isMSIE, isIE9 = ((document.documentMode||0) > 8);
   var ROUND = (isPC ? null : "5px");
@@ -5158,6 +5164,9 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
       this.posted = true;
       if (menu.offsetWidth) menu.style.width = (menu.offsetWidth+2) + "px";
       var x = event.pageX, y = event.pageY;
+      var bbox = document.body.getBoundingClientRect();
+      var styles = (window.getComputedStyle ? window.getComputedStyle(document.body) : {marginLeft: "0px"});
+      var bodyRight = bbox.right - Math.min(0,bbox.left) + parseFloat(styles.marginLeft);
       if (!x && !y && "clientX" in event) {
         x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
         y = event.clientY + document.body.scrollTop  + document.documentElement.scrollTop;
@@ -5171,8 +5180,8 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
           x = (rect.right + rect.left) / 2 + offsetX;
           y = (rect.bottom + rect.top) / 2 + offsetY;
         }
-        if (x + menu.offsetWidth > document.body.offsetWidth - this.margin)
-           {x = document.body.offsetWidth - menu.offsetWidth - this.margin}
+        if (x + menu.offsetWidth > bodyRight - this.margin)
+          {x = bodyRight - menu.offsetWidth - this.margin}
         if (MENU.isMobile) {x = Math.max(5,x-Math.floor(menu.offsetWidth/2)); y -= 20}
         MENU.skipUp = event.isContextMenu;
       } else {
@@ -5184,7 +5193,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
         }
         if (!MENU.isMobile) {
           if ((MENU.isRTL && x - mw - menu.offsetWidth > this.margin) ||
-              (!MENU.isRTL && x + menu.offsetWidth > document.body.offsetWidth - this.margin))
+              (!MENU.isRTL && x + menu.offsetWidth > bodyRight - this.margin))
             {side = "right"; x = Math.max(this.margin,x - mw - menu.offsetWidth + 6)}
         }
         if (!isPC) {
@@ -5648,7 +5657,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
     action: function () {},
 
     Init: function (name,action,def) {
-      if (!(name instanceof Array)) {name = [name,name]}  // make [id,label] pair
+      if (!isArray(name)) {name = [name,name]}  // make [id,label] pair
       this.name = name; this.action = action;
       this.With(def);
     },
@@ -5679,7 +5688,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
       return def;
     },
     Init: function (name,def) {
-      if (!(name instanceof Array)) {name = [name,name]}  // make [id,label] pair
+      if (!isArray(name)) {name = [name,name]}  // make [id,label] pair
       this.name = name; var i = 1;
       if (!(def instanceof MENU.ITEM)) {this.With(def), i++}
       this.submenu = MENU.apply(MENU,[].slice.call(arguments,i));
@@ -5778,7 +5787,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
       return def;
     },
     Init: function (name,variable,def) {
-      if (!(name instanceof Array)) {name = [name,name]}  // make [id,label] pair
+      if (!isArray(name)) {name = [name,name]}  // make [id,label] pair
       this.name = name; this.variable = variable; this.With(def);
       if (this.value == null) {this.value = this.name[0]}
     },
@@ -5825,7 +5834,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
       return def;
     },
     Init: function (name,variable,def) {
-      if (!(name instanceof Array)) {name = [name,name]}  // make [id,label] pair
+      if (!isArray(name)) {name = [name,name]}  // make [id,label] pair
       this.name = name; this.variable = variable; this.With(def);
     },
     Label: function (def,menu) {
@@ -5854,7 +5863,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
     role: "menuitem",  // Aria role.
 
     Init: function (name,def) {
-      if (!(name instanceof Array)) {name = [name,name]}  // make [id,label] pair
+      if (!isArray(name)) {name = [name,name]}  // make [id,label] pair
       this.name = name; this.With(def);
     },
     Label: function (def,menu) {
@@ -6395,9 +6404,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
           ITEM.RADIO(["SVG","SVG"],                 "renderer", {action: MENU.Renderer}),
           ITEM.RADIO(["PlainSource","Plain Source"],"renderer", {action: MENU.Renderer, value:"PlainSource"}),
           ITEM.RULE(),
-          ITEM.CHECKBOX(["FastPreview","Fast Preview"], "FastPreview"),
-          ITEM.CHECKBOX(["AssistiveMML","Assistive MathML"], "assistiveMML", {action:MENU.AssistiveMML}),
-          ITEM.CHECKBOX(["InTabOrder","Include in Tab Order"], "inTabOrder")
+          ITEM.CHECKBOX(["FastPreview","Fast Preview"], "FastPreview")
         ),
         ITEM.SUBMENU("MathPlayer",  {hidden:!HUB.Browser.isMSIE || !CONFIG.showMathPlayer,
                                                     disabled:!HUB.Browser.hasMathPlayer},
@@ -6430,6 +6437,10 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
         ITEM.COMMAND(["Scale","Scale All Math ..."],MENU.Scale),
         ITEM.RULE().With({hidden:!CONFIG.showDiscoverable, name:["","discover_rule"]}),
         ITEM.CHECKBOX(["Discoverable","Highlight on Hover"], "discoverable", {hidden:!CONFIG.showDiscoverable})
+      ),
+      ITEM.SUBMENU(["Accessibility","Accessibility"],
+        ITEM.CHECKBOX(["AssistiveMML","Assistive MathML"], "assistiveMML", {action:MENU.AssistiveMML}),
+        ITEM.CHECKBOX(["InTabOrder","Include in Tab Order"], "inTabOrder")
       ),
       ITEM.SUBMENU(["Locale","Language"],                  {hidden:!CONFIG.showLocale, ltr:true},
         ITEM.RADIO("en", "locale",  {action: MENU.Locale}),
@@ -6514,7 +6525,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2009-2015 The MathJax Consortium
+ *  Copyright (c) 2009-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -6533,7 +6544,7 @@ MathJax.ElementJax.mml = MathJax.ElementJax({
   mimeType: "jax/mml"
 },{
   id: "mml",
-  version: "2.6.0",
+  version: "2.7.1",
   directory: MathJax.ElementJax.directory + "/mml",
   extensionDir: MathJax.ElementJax.extensionDir + "/mml",
   optableDir: MathJax.ElementJax.directory + "/mml/optable"
@@ -6879,7 +6890,7 @@ MathJax.ElementJax.mml.Augment({
       if (prev === MML.TEXCLASS.VCENTER) {prev = MML.TEXCLASS.ORD}
       if (tex  === MML.TEXCLASS.VCENTER) {tex  = MML.TEXCLASS.ORD}
       var space = this.TEXSPACE[prev][tex];
-      if (this.prevLevel > 0 && this.Get("scriptlevel") > 0 && space >= 0) {return ""}
+      if ((this.prevLevel > 0 || this.Get("scriptlevel") > 0) && space >= 0) {return ""}
       return this.TEXSPACELENGTH[Math.abs(space)];
     },
     TEXSPACELENGTH:[
@@ -7966,6 +7977,7 @@ MathJax.ElementJax.mml.Augment({
   
   MML.TeXAtom = MML.mbase.Subclass({
     type: "texatom",
+    linebreakContainer: true,
     inferRow: true, notParent: true,
     texClass: MML.TEXCLASS.ORD,
     Core: MML.mbase.childCore,
@@ -8331,7 +8343,7 @@ MathJax.ElementJax.mml.loadComplete("jax.js");
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -8347,7 +8359,7 @@ MathJax.ElementJax.mml.loadComplete("jax.js");
  */
 
 MathJax.Hub.Register.LoadHook("[MathJax]/jax/element/mml/jax.js",function () {
-  var VERSION = "2.6.1";
+  var VERSION = "2.7.1";
   
   var MML = MathJax.ElementJax.mml,
       SETTINGS = MathJax.Hub.config.menuSettings;
@@ -8574,7 +8586,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -8705,8 +8717,15 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
         value = this.filterAttribute(name,value);
         var defaults = (mml.type === "mstyle" ? MML.math.prototype.defaults : mml.defaults);
         if (value != null) {
-          if (value.toLowerCase() === "true") {value = true}
-            else if (value.toLowerCase() === "false") {value = false}
+          var val = value.toLowerCase();
+          if (val === "true" || val === "false") {
+            if (typeof (defaults[name]) === "boolean" || defaults[name] === MML.INHERIT ||
+               mml.type === "math" || mml.type === "mstyle" ||
+               (defaults[name] === MML.AUTO && 
+               (mml.defaultDef == null || typeof(mml.defaultDef[name]) === "boolean"))) {
+              value = (val === "true");
+            }
+          }
           if (defaults[name] != null || MML.copyAttributes[name])
             {mml[name] = value} else {mml.attr[name] = value}
           mml.attrNames.push(name);
@@ -8845,7 +8864,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
       //
       //  Translate message if it is ["id","message",args]
       //
-      if (message instanceof Array) {message = _.apply(_,message)}
+      if (MathJax.Object.isArray(message)) {message = _.apply(_,message)}
       throw MathJax.Hub.Insert(Error(message),{mathmlError: true});
     },
     //
@@ -9349,7 +9368,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
  *  
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -9367,9 +9386,17 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
 
 (function (AJAX,HUB,HTML,SVG) {
   var MML;
+  var isArray = MathJax.Object.isArray;
 
   var SVGNS   = "http://www.w3.org/2000/svg";
   var XLINKNS = "http://www.w3.org/1999/xlink";
+
+  //
+  //  Get the URL of the page (for use with xlink:href) when there
+  //  is a <base> element on the page.
+  //  
+  var SVGURL = (document.getElementsByTagName("base").length === 0) ? "" :
+                String(document.location).replace(/#.*$/,"");
 
   SVG.Augment({
     HFUZZ: 2,     // adjustments for height and depth of final svg element
@@ -9430,6 +9457,13 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
           width:"1px", height:"60ex",
           "min-height": 0, "max-height":"none",
           padding:0, border: 0, margin: 0
+        },
+        ".MathJax_SVG_LineBox": {display: "table!important"},
+        ".MathJax_SVG_LineBox span": {
+          display: "table-cell!important",
+          width: "10000em!important",
+          "min-width":0, "max-width":"none",
+          padding:0, border:0, margin:0
         },
         
         "#MathJax_SVG_Tooltip": {
@@ -9504,8 +9538,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
       );
 
       // Used in preTranslate to get linebreak width
-      this.linebreakSpan = HTML.Element("span",null,
-        [["hr",{style: {width:"auto", size:1, padding:0, border:0, margin:0}}]]);
+      this.linebreakSpan = HTML.Element("span",{className:"MathJax_SVG_LineBox"},[["span"]]);
 
       // Set up styles
       return AJAX.Styles(this.config.styles,["InitializeSVG",this]);
@@ -9527,7 +9560,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
     },
 
     preTranslate: function (state) {
-      var scripts = state.jax[this.id], i, m = scripts.length,
+      var scripts = state.jax[this.id], i, m = scripts.length, n,
           script, prev, span, div, test, jax, ex, em, maxwidth, relwidth = false, cwidth,
           linebreak = this.config.linebreaks.automatic, width = this.config.linebreaks.width;
       if (linebreak) {
@@ -9545,14 +9578,18 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
         //  Remove any existing output
         //
         prev = script.previousSibling;
-        if (prev && String(prev.className).match(/^MathJax(_SVG)?(_Display)?( MathJax(_SVG)?_Processing)?$/))
+        if (prev && String(prev.className).match(/^MathJax(_SVG)?(_Display)?( MathJax(_SVG)?_Process(ing|ed))?$/))
           {prev.parentNode.removeChild(prev)}
+        if (script.MathJax.preview) script.MathJax.preview.style.display = "none";
         //
         //  Add the span, and a div if in display mode,
         //  then set the role and mark it as being processed
         //
         jax = script.MathJax.elementJax; if (!jax) continue;
-        jax.SVG = {display: (jax.root.Get("display") === "block")}
+        jax.SVG = {
+          display: (jax.root.Get("display") === "block"),
+          preview: (jax.SVG||{}).preview            // in case typeset calls are interleaved
+        };
         span = div = HTML.Element("span",{
           style: {"font-size": this.config.scale+"%", display:"inline-block"},
  	  className:"MathJax_SVG", id:jax.inputID+"-Frame", isMathJax:true, jaxID:this.id,
@@ -9582,25 +9619,28 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
       //  Determine the scaling factors for each script
       //  (this only requires one reflow rather than a reflow for each equation)
       //
+      var hidden = [];
       for (i = 0; i < m; i++) {
         script = scripts[i]; if (!script.parentNode) continue;
         test = script.previousSibling; div = test.previousSibling;
         jax = script.MathJax.elementJax; if (!jax) continue;
         ex = test.firstChild.offsetHeight/60;
-        cwidth = div.previousSibling.firstChild.offsetWidth;
-        if (relwidth) {maxwidth = cwidth}
+        cwidth = Math.max(0,(div.previousSibling.firstChild.offsetWidth-2) / this.config.scale * 100);
         if (ex === 0 || ex === "NaN") {
           // can't read width, so move to hidden div for processing
-          // (this will cause a reflow for each math element that is hidden)
-          this.hiddenDiv.appendChild(div);
+          hidden.push(div);
           jax.SVG.isHidden = true;
           ex = this.defaultEx; cwidth = this.defaultWidth;
-          if (relwidth) {maxwidth = cwidth}
         }
+        if (relwidth) {maxwidth = cwidth}
         jax.SVG.ex = ex;
         jax.SVG.em = em = ex / SVG.TeX.x_height * 1000; // scale ex to x_height
         jax.SVG.cwidth = cwidth/em * 1000;
         jax.SVG.lineWidth = (linebreak ? this.length2em(width,1,maxwidth/em*1000) : SVG.BIGDIMEN);
+      }
+      for (i = 0, n = hidden.length; i < n; i++) {
+        this.hiddenDiv.appendChild(hidden[i]);
+        this.addElement(this.hiddenDiv,"br");
       }
       //
       //  Remove the test spans used for determining scales and linebreak widths
@@ -9612,6 +9652,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
         if (!jax.SVG.isHidden) {span = span.previousSibling}
         span.parentNode.removeChild(span);
         test.parentNode.removeChild(test);
+        if (script.MathJax.preview) script.MathJax.preview.style.display = "";
       }
       //
       //  Set state variables used for displaying equations in chunks
@@ -9635,10 +9676,15 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
       //
       //  Get the data about the math
       //
-      var jax = script.MathJax.elementJax, math = jax.root,
-          span = document.getElementById(jax.inputID+"-Frame"),
-          div = (jax.SVG.display ? (span||{}).parentNode : span),
+      var jax = script.MathJax.elementJax, math = jax.root, div, span,
           localCache = (SVG.config.useFontCache && !SVG.config.useGlobalCache);
+      if (jax.SVG.isHidden) {
+        span = document.getElementById(jax.inputID+"-Frame");
+        div = (jax.SVG.display ? span.parentElement : span);
+      } else {
+        div = script.previousSibling;
+        span = (jax.SVG.display ? (div||{}).firstChild||div : div);
+      }
       if (!div) return;
       //
       //  Set the font metrics
@@ -9707,6 +9753,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
           //
           if (data.preview) {
             data.preview.innerHTML = "";
+            data.preview.style.display = "none";
             script.MathJax.preview = data.preview;
             delete data.preview;
           }
@@ -9744,7 +9791,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
     },
 
     getJaxFromMath: function (math) {
-      if (math.parentNode.className === "MathJax_SVG_Display") {math = math.parentNode}
+      if (math.parentNode.className.match(/MathJax_SVG_Display/)) {math = math.parentNode}
       do {math = math.nextSibling} while (math && math.nodeName.toLowerCase() !== "script");
       return HUB.getJaxFor(math);
     },
@@ -9945,7 +9992,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
         } else if (this.FONTDATA.REMAP[n] && !variant.noRemap) {
           n = this.FONTDATA.REMAP[n];
         }
-        if (n instanceof Array) {variant = this.FONTDATA.VARIANT[n[1]]; n = n[0]}
+        if (isArray(n)) {variant = this.FONTDATA.VARIANT[n[1]]; n = n[0]}
         if (typeof(n) === "string") {
           text = n+text.substr(i+1);
           m = text.length; i = -1;
@@ -10390,7 +10437,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
       if (cache) {
         def = {}; if (transform) {def.transform = transform}
         this.element = SVG.Element("use",def);
-        this.element.setAttributeNS(XLINKNS,"href","#"+id);
+        this.element.setAttributeNS(XLINKNS,"href",SVGURL+"#"+id);
       }
       this.h = (h+t) * scale; this.d = (d+t) * scale; this.w = (w+t/2) *scale;
       this.l = (l+t/2) * scale; this.r = (r+t/2) * scale;
@@ -10454,22 +10501,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
         // FIXME:  if an element is split by linebreaking, the ID will be the same on both parts
         // FIXME:  if an element has an id, its zoomed copy will have the same ID
         if (this.id) {svg.removeable = false; SVG.Element(svg.element,{"id":this.id})}
-        if (this.href) {
-	  var a = SVG.Element("a",{"class":"mjx-svg-href"});
-	  a.setAttributeNS(XLINKNS,"href",this.href);
-          a.onclick = this.SVGlink;
-          SVG.addElement(a,"rect",{width:svg.w, height:svg.h+svg.d, y:-svg.d,
-                                   fill:"none", stroke:"none", "pointer-events":"all"});
-          if (svg.type === "svg") {
-            // for svg element, put <a> inside the main <g> element
-            var g = svg.element.firstChild;
-            while (g.firstChild) {a.appendChild(g.firstChild)}
-            g.appendChild(a);
-          } else {
-            a.appendChild(svg.element); svg.element = a;
-          }
-          svg.removeable = false;
-        }
+        if (this.href) {this.SVGaddHref(svg)}
         if (SVG.config.addMMLclasses) {
           this.SVGaddClass(svg.element,"mjx-svg-"+this.type);
           svg.removeable = false;
@@ -10508,6 +10540,22 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
             }
           }
         }
+      },
+      SVGaddHref: function (svg) {
+	var a = SVG.Element("a",{"class":"mjx-svg-href"});
+        a.setAttributeNS(XLINKNS,"href",this.href);
+        a.onclick = this.SVGlink;
+        SVG.addElement(a,"rect",{width:svg.w, height:svg.h+svg.d, y:-svg.d,
+                                 fill:"none", stroke:"none", "pointer-events":"all"});
+        if (svg.type === "svg") {
+          // for svg element, put <a> inside the main <g> element
+          var g = svg.element.firstChild;
+          while (g.firstChild) {a.appendChild(g.firstChild)}
+          g.appendChild(a);
+        } else {
+          a.appendChild(svg.element); svg.element = a;
+        }
+        svg.removeable = false;
       },
       //
       //  WebKit currently scrolls to the BOTTOM of an svg element if it contains the
@@ -10893,6 +10941,31 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
 	return svg;
       }
     });
+    
+    MML.mn.Augment({
+      SVGremapMinus: function (text) {return text.replace(/^-/,"\u2212")},
+      toSVG: function () {
+        this.SVGgetStyles();
+	var variant = this.SVGgetVariant();
+        var svg = this.SVG(); this.SVGgetScale(svg);
+        this.SVGhandleSpace(svg);
+        var remap = this.SVGremapMinus;
+        for (var i = 0, m = this.data.length; i < m; i++) {
+          if (this.data[i]) {
+            var child = svg.Add(this.data[i].toSVG(variant,svg.scale,remap),svg.w,0,true);
+            if (child.skew) {svg.skew = child.skew}
+            remap = null;
+          }
+        }
+        svg.Clean(); var text = this.data.join("");
+        if (svg.skew && text.length !== 1) {delete svg.skew}
+        if (svg.r > svg.w && text.length === 1 && !variant.noIC)
+          {svg.ic = svg.r - svg.w; svg.w = svg.r}
+	this.SVGhandleColor(svg);
+        this.SVGsaveData(svg);
+	return svg;
+      },
+    }),
 
     MML.mtext.Augment({
       toSVG: function () {
@@ -11420,13 +11493,14 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
           var style = svg.element.style, px = SVG.TeX.x_height/SVG.ex;
           var H = (Math.ceil(svg.H/px)+1)*px+SVG.HFUZZ,  // round to pixels and add padding
               D = (Math.ceil(svg.D/px)+1)*px+SVG.DFUZZ;
-          svg.element.setAttribute("width",SVG.Ex(l+svg.w+r));
+          var w = l + svg.w + r;
+          svg.element.setAttribute("width",SVG.Ex(w));
           svg.element.setAttribute("height",SVG.Ex(H+D));
           style.verticalAlign = SVG.Ex(-D);
           if (l) style.marginLeft = SVG.Ex(-l);
           if (r) style.marginRight = SVG.Ex(-r);
           svg.element.setAttribute("viewBox",SVG.Fixed(-l,1)+" "+SVG.Fixed(-H,1)+" "+
-                                             SVG.Fixed(l+svg.w+r,1)+" "+SVG.Fixed(H+D,1));
+                                             SVG.Fixed(w,1)+" "+SVG.Fixed(H+D,1));
           //
           //  If there is extra height or depth, hide that
           //
@@ -11435,6 +11509,12 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
 	    style.marginBottom = SVG.Ex(svg.d-D);
 	    style.verticalAlign = SVG.Ex(-svg.d);
 	  }
+          //
+          //  The approximate ex can cause full-width equations to be too wide,
+          //    so if they are close to full width, make sure they aren't too big.
+          //
+          if (Math.abs(w-SVG.cwidth) < 10)
+            style.maxWidth = SVG.Fixed(SVG.cwidth*SVG.em/1000);
           //
           //  Add it to the MathJax span
           //
@@ -11462,7 +11542,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
             if (shift) {
               HUB.Insert(style,({
                 left: {marginLeft: SVG.Ex(shift)},
-                right: {marginRight: SVG.Ex(-shift), marginLeft: SVG.Ex(Math.max(0,shift-(l+svg.w+r)))},
+                right: {marginRight: SVG.Ex(-shift), marginLeft: SVG.Ex(Math.max(0,shift-w))},
                 center: {marginLeft: SVG.Ex(shift), marginRight: SVG.Ex(-shift)}
               })[values.indentalign]);
             }
@@ -11555,7 +11635,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -11571,7 +11651,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
  */
 
 (function (SVG,MML,AJAX,HUB) {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   
   var MAIN   = "MathJax_Main",
       BOLD   = "MathJax_Main-bold",
@@ -11583,8 +11663,8 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
       SIZE4  = "MathJax_Size4";
   var H = "H", V = "V", EXTRAH = {load:"extra", dir:H}, EXTRAV = {load:"extra", dir:V};
   var STDHW = [[1000,MAIN],[1200,SIZE1],[1800,SIZE2],[2400,SIZE3],[3000,SIZE4]];
-  var ARROWREP = [0x2212,MAIN,0,0,0,0,.1];   // add depth for arrow extender
-  var DARROWREP = [0x3D,MAIN,0,0,0,0,.1];    // add depth for arrow extender
+  var ARROWREP = [0x2212,MAIN,0,0,0,-.31,-.31];  // add depth for arrow extender
+  var DARROWREP = [0x3D,MAIN,0,0,0,0,.1];        // add depth for arrow extender
 
   SVG.Augment({
     FONTDATA: {
@@ -11621,6 +11701,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
                    remap: {0x391:0x41, 0x392:0x42, 0x395:0x45, 0x396:0x5A, 0x397:0x48,
                            0x399:0x49, 0x39A:0x4B, 0x39C:0x4D, 0x39D:0x4E, 0x39F:0x4F,
                            0x3A1:0x50, 0x3A4:0x54, 0x3A7:0x58,
+                           0x2016:0x2225,
                            0x2216:[0x2216,"-TeX-variant"],  // \smallsetminus
                            0x210F:[0x210F,"-TeX-variant"],  // \hbar
                            0x2032:[0x27,"sans-serif-italic"],  // HACK: a smaller prime
@@ -11630,6 +11711,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
                    remap: {0x391:0x41, 0x392:0x42, 0x395:0x45, 0x396:0x5A, 0x397:0x48,
                            0x399:0x49, 0x39A:0x4B, 0x39C:0x4D, 0x39D:0x4E, 0x39F:0x4F,
                            0x3A1:0x50, 0x3A4:0x54, 0x3A7:0x58, 0x29F8:[0x002F,"bold-italic"],
+                           0x2016:0x2225,
                            0x219A:"\u2190\u0338", 0x219B:"\u2192\u0338", 0x21AE:"\u2194\u0338",
                            0x21CD:"\u21D0\u0338", 0x21CE:"\u21D4\u0338", 0x21CF:"\u21D2\u0338",
                            0x2204:"\u2203\u0338", 0x2224:"\u2223\u0338", 0x2226:"\u2225\u0338",
@@ -11705,6 +11787,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
         0xB7: 0x22C5,                   // center dot
         0x2B9: 0x2032,                  // prime,
         0x3D2: 0x3A5,                   // Upsilon
+        0x2206: 0x394,                  // increment
         0x2015: 0x2014, 0x2017: 0x5F,   // horizontal bars
         0x2022: 0x2219, 0x2044: 0x2F,   // bullet, fraction slash
         0x2305: 0x22BC, 0x2306: 0x2A5E, // barwedge, doublebarwedge
@@ -11912,6 +11995,10 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
         {
           dir: H, HW: [[333+250,MAIN],[555+250,SIZE1],[1000+330,SIZE2],[1443+330,SIZE3],[1887,SIZE4]]
         },
+        0x2013: // en-dash
+        {
+          dir: H, HW: [[500,MAIN]], stretch: {rep:[0x2013,MAIN]}
+        },
         0x2016: // vertical arrow extension
         {
           dir: V, HW: [[602,SIZE1],[1000,MAIN,null,0x2225]], stretch: {ext:[0x2225,MAIN]}
@@ -11970,8 +12057,8 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
         },
         0x2212: // horizontal line
         {
-          dir: H, HW: [[778,MAIN]], stretch: {rep:[0x2212,MAIN], fuzz:300}
-        },
+          dir: H, HW: [[.5,MAIN,0,0x2013]], stretch: {rep:ARROWREP, fuzz:300}
+         },
         0x221A: // \surd
         {
           dir: V, HW: STDHW,
@@ -12057,9 +12144,11 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
         0x0303: {alias: 0x02DC, dir:H}, // wide tilde
         0x030C: {alias: 0x02C7, dir:H}, // wide caron
         0x0332: {alias: 0x2212, dir:H}, // combining low line
-        0x2015: {alias: 0x2212, dir:H}, // horizontal line
-        0x2017: {alias: 0x2212, dir:H}, // horizontal line
+        0x2014: {alias: 0x2013, dir:H}, // em-dash
+        0x2015: {alias: 0x2013, dir:H}, // horizontal line
+        0x2017: {alias: 0x2013, dir:H}, // horizontal line
         0x203E: {alias: 0x00AF, dir:H}, // over line
+        0x20D7: {alias: 0x2192, dir:H}, // combining over right arrow (vector arrow)
         0x2215: {alias: 0x002F, dir:V}, // division slash
         0x2329: {alias: 0x27E8, dir:V}, // langle
         0x232A: {alias: 0x27E9, dir:V}, // rangle
@@ -12147,7 +12236,6 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
       [0x300,0x36F,"CombDiacritMarks"],
       [0x370,0x3FF,"GreekAndCoptic"],
       [0x2100,0x214F,"LetterlikeSymbols"],
-      [0x2200,0x22FF,"MathOperators"],
       [0x25A0,0x25FF,"GeometricShapes"],
       [0x2600,0x26FF,"MiscSymbols"],
       [0x2A00,0x2AFF,"SuppMathOperators"]
@@ -13100,19 +13188,18 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
       0x3F1: [442,194,517,67,510,'205 -174Q136 -174 102 -153T67 -76Q67 -25 91 85T127 234Q143 289 182 341Q252 427 341 441Q343 441 349 441T359 442Q432 442 471 394T510 276Q510 169 431 80T253 -10Q226 -10 204 -2T169 19T146 44T132 64L128 73Q128 72 124 53T116 5T112 -44Q112 -68 117 -78T150 -95T236 -102Q327 -102 356 -111T386 -154Q386 -166 384 -178Q381 -190 378 -192T361 -194H348Q342 -188 342 -179Q342 -169 315 -169Q294 -169 264 -171T205 -174ZM424 322Q424 359 407 382T357 405Q322 405 287 376T231 300Q221 276 204 217Q188 152 188 116Q188 68 210 47T259 26Q297 26 334 62Q367 92 389 158T418 266T424 322'],
   
       // GREEK LUNATE EPSILON SYMBOL
-      0x3F5: [431,11,406,40,382,'227 -11Q149 -11 95 41T40 174Q40 262 87 322Q121 367 173 396T287 430Q289 431 329 431H367Q382 426 382 411Q382 385 341 385H325H312Q191 385 154 277L150 265H327Q340 256 340 246Q340 228 320 219H138V217Q128 187 128 143Q128 77 160 52T231 26Q258 26 284 36T326 57T343 68Q350 68 354 58T358 39Q358 36 357 35Q354 31 337 21T289 0T227 -11'],
-  
-      // INCREMENT
-      0x2206: [716,0,833,48,788,'']
+      0x3F5: [431,11,406,40,382,'227 -11Q149 -11 95 41T40 174Q40 262 87 322Q121 367 173 396T287 430Q289 431 329 431H367Q382 426 382 411Q382 385 341 385H325H312Q191 385 154 277L150 265H327Q340 256 340 246Q340 228 320 219H138V217Q128 187 128 143Q128 77 160 52T231 26Q258 26 284 36T326 57T343 68Q350 68 354 58T358 39Q358 36 357 35Q354 31 337 21T289 0T227 -11']
   };
 
-  SVG.FONTDATA.FONTS['MathJax_Main'][0x22EE][0]  += 400;  // adjust height for \vdots
-  SVG.FONTDATA.FONTS['MathJax_Main'][0x22F1][0]  += 700;  // adjust height for \ddots
+  SVG.FONTDATA.FONTS[MAIN][0x2212][0] = SVG.FONTDATA.FONTS[MAIN][0x002B][0]; // minus is size
+  SVG.FONTDATA.FONTS[MAIN][0x2212][1] = SVG.FONTDATA.FONTS[MAIN][0x002B][1]; // minus is size
+  SVG.FONTDATA.FONTS[MAIN][0x22EE][0]  += 400;  // adjust height for \vdots
+  SVG.FONTDATA.FONTS[MAIN][0x22F1][0]  += 700;  // adjust height for \ddots
 
   //
   //  Add some spacing characters (more will come later)
   //
-  MathJax.Hub.Insert(SVG.FONTDATA.FONTS['MathJax_Main'],{
+  MathJax.Hub.Insert(SVG.FONTDATA.FONTS[MAIN],{
     0x2000: [0,0,500,0,0,{space:1}],     // en quad
     0x2001: [0,0,1000,0,0,{space:1}],    // em quad
     0x2002: [0,0,500,0,0,{space:1}],     // en space
@@ -13130,13 +13217,13 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
 
   HUB.Register.StartupHook("SVG Jax Require",function () {
     HUB.Register.LoadHook(SVG.fontDir+"/Size4/Regular/Main.js",function () {
-      SVG.FONTDATA.FONTS['MathJax_Size4'][0xE154][0] += 200;  // adjust height for brace extender
-      SVG.FONTDATA.FONTS['MathJax_Size4'][0xE154][1] += 200;  // adjust depth for brace extender
+      SVG.FONTDATA.FONTS[SIZE4][0xE154][0] += 200;  // adjust height for brace extender
+      SVG.FONTDATA.FONTS[SIZE4][0xE154][1] += 200;  // adjust depth for brace extender
     });
     
-    SVG.FONTDATA.FONTS['MathJax_Main'][0x2245][2] -= 222; // fix incorrect right bearing in font
+    SVG.FONTDATA.FONTS[MAIN][0x2245][2] -= 222; // fix incorrect right bearing in font
     HUB.Register.LoadHook(SVG.fontDir+"/Main/Bold/MathOperators.js",function () {
-      SVG.FONTDATA.FONTS['MathJax_Main-bold'][0x2245][2] -= 106; // fix incorrect right bearing in font
+      SVG.FONTDATA.FONTS[BOLD][0x2245][2] -= 106; // fix incorrect right bearing in font
     });
 
     HUB.Register.LoadHook(SVG.fontDir+"/Typewriter/Regular/BasicLatin.js",function () {
@@ -13160,7 +13247,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13176,7 +13263,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
  */
 
 (function (SVG) {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   
   var DELIMITERS = SVG.FONTDATA.DELIMITERS;
 
@@ -13186,24 +13273,26 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
       SIZE1  = "MathJax_Size1",
       SIZE4  = "MathJax_Size4";
   var H = "H", V = "V";
+  var ARROWREP = [0x2212,MAIN,0,0,0,-.31,-.31];   // add depth for arrow extender
+  var DARROWREP = [0x3D,MAIN,0,0,0,0,.1];         // add depth for arrow extender
   
   var delim = {
     0x003D: // equal sign
     {
-      dir: H, HW: [[.767,MAIN]], stretch: {rep:[0x003D,MAIN]}
+      dir: H, HW: [[767,MAIN]], stretch: {rep:[0x003D,MAIN]}
     },
     0x219E: // left two-headed arrow
     {
-      dir: H, HW: [[1,AMS]], stretch: {left:[0x219E,AMS], rep:[0x2212,MAIN]}
+      dir: H, HW: [[1000,AMS]], stretch: {left:[0x219E,AMS], rep:ARROWREP}
     },
     0x21A0: // right two-headed arrow
     {
-      dir: H, HW: [[1,AMS]], stretch: {right:[0x21A0,AMS], rep:[0x2212,MAIN]}
+      dir: H, HW: [[1000,AMS]], stretch: {right:[0x21A0,AMS], rep:ARROWREP}
     },
     0x21A4: // left arrow from bar
     {
       dir: H, HW: [],
-      stretch: {min:1, left:[0x2190,MAIN], rep:[0x2212,MAIN], right:[0x2223,SIZE1,0,-.05,.9]}
+      stretch: {min:1, left:[0x2190,MAIN], rep:ARROWREP, right:[0x2223,SIZE1,0,-.05,.9]}
     },
     0x21A5: // up arrow from bar
     {
@@ -13212,8 +13301,8 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
     },
     0x21A6: // right arrow from bar
     {
-      dir: H, HW: [[1,MAIN]],
-      stretch: {left:[0x2223,SIZE1,-.09,-.05,.9], rep:[0x2212,MAIN], right:[0x2192,MAIN]}
+      dir: H, HW: [[1000,MAIN]],
+      stretch: {left:[0x2223,SIZE1,-.09,-.05,.9], rep:ARROWREP, right:[0x2192,MAIN]}
     },
     0x21A7: // down arrow from bar
     {
@@ -13222,62 +13311,62 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
     },
     0x21B0: // up arrow with top leftwards
     {
-      dir: V, HW: [[.722,AMS]],
+      dir: V, HW: [[722,AMS]],
       stretch: {top:[0x21B0,AMS], ext:[0x23D0,SIZE1,.097]}
     },
     0x21B1: // up arrow with top right
     {
-      dir: V, HW: [[.722,AMS]],
+      dir: V, HW: [[722,AMS]],
       stretch: {top:[0x21B1,AMS,.27], ext:[0x23D0,SIZE1]}
     },
     0x21BC: // left harpoon with barb up
     {
-      dir: H, HW: [[1,MAIN]],
-      stretch: {left:[0x21BC,MAIN], rep:[0x2212,MAIN]}
+      dir: H, HW: [[1000,MAIN]],
+      stretch: {left:[0x21BC,MAIN], rep:ARROWREP}
     },
     0x21BD: // left harpoon with barb down
     {
-      dir: H, HW: [[1,MAIN]],
-      stretch: {left:[0x21BD,MAIN], rep:[0x2212,MAIN]}
+      dir: H, HW: [[1000,MAIN]],
+      stretch: {left:[0x21BD,MAIN], rep:ARROWREP}
     },
     0x21BE: // up harpoon with barb right
     {
-      dir: V, HW: [[.888,AMS]],
+      dir: V, HW: [[888,AMS]],
       stretch: {top:[0x21BE,AMS,.12,0,1.1], ext:[0x23D0,SIZE1]}
     },
     0x21BF: // up harpoon with barb left
     {
-      dir: V, HW: [[.888,AMS]],
+      dir: V, HW: [[888,AMS]],
       stretch: {top:[0x21BF,AMS,.12,0,1.1], ext:[0x23D0,SIZE1]}
     },
     0x21C0: // right harpoon with barb up
     {
-      dir: H, HW: [[1,MAIN]],
-      stretch: {right:[0x21C0,MAIN], rep:[0x2212,MAIN]}
+      dir: H, HW: [[1000,MAIN]],
+      stretch: {right:[0x21C0,MAIN], rep:ARROWREP}
     },
     0x21C1: // right harpoon with barb down
     {
-      dir: H, HW: [[1,MAIN]],
-      stretch: {right:[0x21C1,MAIN], rep:[0x2212,MAIN]}
+      dir: H, HW: [[1000,MAIN]],
+      stretch: {right:[0x21C1,MAIN], rep:ARROWREP}
     },
     0x21C2: // down harpoon with barb right
     {
-      dir: V, HW: [[.888,AMS]],
+      dir: V, HW: [[888,AMS]],
       stretch: {bot:[0x21C2,AMS,.12,0,1.1], ext:[0x23D0,SIZE1]}
     },
     0x21C3: // down harpoon with barb left
     {
-      dir: V, HW: [[.888,AMS]],
+      dir: V, HW: [[888,AMS]],
       stretch: {bot:[0x21C3,AMS,.12,0,1.1], ext:[0x23D0,SIZE1]}
     },
     0x21DA: // left triple arrow
     {
-      dir: H, HW: [[1,AMS]],
+      dir: H, HW: [[1000,AMS]],
       stretch: {left:[0x21DA,AMS], rep:[0x2261,MAIN]}
     },
     0x21DB: // right triple arrow
     {
-      dir: H, HW: [[1,AMS]],
+      dir: H, HW: [[1000,AMS]],
       stretch: {right:[0x21DB,AMS], rep:[0x2261,MAIN]}
     },
     0x23B4: // top square bracket
@@ -13292,12 +13381,12 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
     },
     0x23DC: // top paren
     {
-      dir: H, HW: [[.778,AMS,0,0x2322],[1,MAIN,0,0x2322]],
+      dir: H, HW: [[778,AMS,0,0x2322],[100,MAIN,0,0x2322]],
       stretch: {left:[0xE150,SIZE4], rep:[0xE154,SIZE4], right:[0xE151,SIZE4]}
     },
     0x23DD: // bottom paren
     {
-      dir: H, HW: [[.778,AMS,0,0x2323],[1,MAIN,0,0x2323]],
+      dir: H, HW: [[778,AMS,0,0x2323],[100,MAIN,0,0x2323]],
       stretch: {left:[0xE152,SIZE4], rep:[0xE154,SIZE4], right:[0xE153,SIZE4]}
     },
     0x23E0: // top tortoise shell
@@ -13313,17 +13402,17 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
     0x2906: // leftwards double arrow from bar
     {
       dir: H, HW: [],
-      stretch: {min:1, left:[0x21D0,MAIN], rep:[0x3D,MAIN], right:[0x2223,SIZE1,0,-.1]}
+      stretch: {min:1, left:[0x21D0,MAIN], rep:DARROWREP, right:[0x2223,SIZE1,0,-.1]}
     },
     0x2907: // rightwards double arrow from bar
     {
       dir: H, HW: [],
-      stretch: {min:.7, left:[0x22A8,AMS,0,-.12], rep:[0x3D,MAIN], right:[0x21D2,MAIN]}
+      stretch: {min:.7, left:[0x22A8,AMS,0,-.12], rep:DARROWREP, right:[0x21D2,MAIN]}
     },
     0x294E: // left barb up right barb up harpoon
     {
       dir: H, HW: [],
-      stretch: {min:.5, left:[0x21BC,MAIN], rep:[0x2212,MAIN], right:[0x21C0,MAIN]}
+      stretch: {min:.5, left:[0x21BC,MAIN], rep:ARROWREP, right:[0x21C0,MAIN]}
     },
     0x294F: // up barb right down barb right harpoon
     {
@@ -13333,7 +13422,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
     0x2950: // left barb dow right barb down harpoon
     {
       dir: H, HW: [],
-      stretch: {min:.5, left:[0x21BD,MAIN], rep:[0x2212,MAIN], right:[0x21C1,MAIN]}
+      stretch: {min:.5, left:[0x21BD,MAIN], rep:ARROWREP, right:[0x21C1,MAIN]}
     },
     0x2951: // up barb left down barb left harpoon
     {
@@ -13343,12 +13432,12 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
     0x295A: // leftwards harpoon with barb up from bar
     {
       dir: H, HW: [],
-      stretch: {min:1, left:[0x21BC,MAIN], rep:[0x2212,MAIN], right:[0x2223,SIZE1,0,-.05,.9]}
+      stretch: {min:1, left:[0x21BC,MAIN], rep:ARROWREP, right:[0x2223,SIZE1,0,-.05,.9]}
     },
     0x295B: // rightwards harpoon with barb up from bar
     {
       dir: H, HW: [],
-      stretch: {min:1, left:[0x2223,SIZE1,-.05,-.05,.9], rep:[0x2212,MAIN], right:[0x21C0,MAIN]}
+      stretch: {min:1, left:[0x2223,SIZE1,-.05,-.05,.9], rep:ARROWREP, right:[0x21C0,MAIN]}
     },
     0x295C: // up harpoon with barb right from bar
     {
@@ -13363,12 +13452,12 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
     0x295E: // leftwards harpoon with barb down from bar
     {
       dir: H, HW: [],
-      stretch: {min:1, left:[0x21BD,MAIN], rep:[0x2212,MAIN], right:[0x2223,SIZE1,0,-.05,.9]}
+      stretch: {min:1, left:[0x21BD,MAIN], rep:ARROWREP, right:[0x2223,SIZE1,0,-.05,.9]}
     },
     0x295F: // rightwards harpoon with barb down from bar
     {
       dir: H, HW: [],
-      stretch: {min:1, left:[0x2223,SIZE1,-.05,-.05,.9], rep:[0x2212,MAIN], right:[0x21C1,MAIN]}
+      stretch: {min:1, left:[0x2223,SIZE1,-.05,-.05,.9], rep:ARROWREP, right:[0x21C1,MAIN]}
     },
     0x2960: // up harpoon with barb left from bar
     {
@@ -13400,7 +13489,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13416,7 +13505,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
  */
 
 MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   var MML = MathJax.ElementJax.mml,
       SVG = MathJax.OutputJax.SVG,
       BBOX = SVG.BBOX;
@@ -13699,7 +13788,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       y = Y - lw/2;
       for (i = 0, m = A.length-1; i < m; i++) {
         dy = Math.max(0,D[i]+H[i+1]+RSPACE[i]);
-        if (RLINES[i] !== "none")
+        if (RLINES[i] !== MML.LINES.NONE && RLINES[i] !== "")
           {svg.Add(BBOX.HLINE(fW,lw,RLINES[i]),0,y-D[i]-(dy-D[i]-H[i+1])/2)}
         y -= dy;
       }
@@ -13790,7 +13879,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13806,7 +13895,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  */
 
 MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   var MML = MathJax.ElementJax.mml,
       SVG = MathJax.OutputJax.SVG,
       BBOX = SVG.BBOX,
@@ -13827,7 +13916,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       def.transform = "translate(0,"+H+") matrix(1 0 0 -1 0 0)";
       def.preserveAspectRatio = "none";
       this.SUPER(arguments).Init.call(this,def);
-      this.element.setAttributeNS(XLINKNS,"href",img.src);
+      this.element.setAttributeNS(XLINKNS,"href",img.SRC);
       this.w = this.r = W; this.h = this.H = H + y;
       this.d = this.D = -y; this.l = 0;
     }
@@ -13852,7 +13941,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
           img = this.img.img;
           img.onload  = MathJax.Callback(["SVGimgLoaded",this]);
           img.onerror = MathJax.Callback(["SVGimgError",this]);
-          img.src = values.src;
+          img.src = img.SRC = values.src;
           MathJax.Hub.RestartAfter(img.onload);
         }
         if (this.img.status !== "OK") {
@@ -13863,7 +13952,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
         } else {
           var mu = this.SVGgetMu(svg);
           svg.Add(BBOX.MGLYPH(this.img.img,values.width,values.height,values.valign,mu,
-                              {src:values.src, alt:values.alt, title:values.alt}));
+                              {alt:values.alt, title:values.alt}));
         }
       }
       svg.Clean();
@@ -13897,7 +13986,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13913,7 +14002,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  */
 
 MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   var MML = MathJax.ElementJax.mml,
       SVG = MathJax.OutputJax.SVG;
   
@@ -14028,7 +14117,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2013-2015 The MathJax Consortium
+ *  Copyright (c) 2013-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14044,7 +14133,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  */
 
 MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   var MML = MathJax.ElementJax.mml,
       SVG = MathJax.OutputJax.SVG;
   var BBOX = SVG.BBOX;
@@ -14121,7 +14210,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14137,7 +14226,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  */
 
 MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   var MML = MathJax.ElementJax.mml,
       SVG = MathJax.OutputJax["SVG"];
   
@@ -14323,7 +14412,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14339,7 +14428,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  */
 
 MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   var MML = MathJax.ElementJax.mml,
       SVG = MathJax.OutputJax.SVG,
       BBOX = SVG.BBOX;
@@ -14379,7 +14468,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       //
       var parent = this;
       while (parent.inferred || (parent.parent && parent.parent.type === "mrow" &&
-             parent.parent.data.length === 1)) {parent = parent.parent}
+             parent.isEmbellished())) {parent = parent.parent}
       var isTop = ((parent.type === "math" && parent.Get("display") === "block") ||
                     parent.type === "mtd");
       parent.isMultiline = true;
@@ -14622,6 +14711,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       var slice = BBOX();
       this.SVGmoveLine(start,end,slice,state,values);
       slice.Clean();
+      if (this.href) {this.SVGaddHref(slice)}
       this.SVGhandleColor(slice);
       svg.Add(slice,svg.w,0,true);
       return slice;
@@ -14919,7 +15009,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       //    use it to modify the default penalty
       //
       var linebreak = PENALTY[values.linebreak||MML.LINEBREAK.AUTO];
-      if (!(linebreak instanceof Array)) {
+      if (!MathJax.Object.isArray(linebreak)) {
         //  for breaks past the width, don't modify penalty
         if (offset >= 0) {penalty = linebreak * info.nest}
       } else {penalty = Math.max(1,penalty + linebreak[0] * info.nest)}
@@ -14968,7 +15058,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       if (linebreakValue === MML.LINEBREAK.AUTO && w >= PENALTY.spacelimit*1000 &&
           !this.mathbackground && !this.backrgound)
         {linebreak = [(w/1000+PENALTY.spaceoffset)*PENALTY.spacefactor]}
-      if (!(linebreak instanceof Array)) {
+      if (!MathJax.Object.isArray(linebreak)) {
         //  for breaks past the width, don't modify penalty
         if (offset >= 0) {penalty = linebreak * info.nest}
       } else {penalty = Math.max(1,penalty + linebreak[0] * info.nest)}
@@ -15042,7 +15132,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15058,7 +15148,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  */
 
 MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   var MML = MathJax.ElementJax.mml,
       SVG = MathJax.OutputJax.SVG,
       BBOX = SVG.BBOX;
@@ -15146,7 +15236,6 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       t = Math.max(1/SVG.em,t);  // see issue #414
       var H = base.h+p+t, D = base.d+p+t, W = base.w+2*(p+t);
       var dx = 0, w, h, i, m, borders = [false,false,false,false];
-      if (!values.mathcolor) {values.mathcolor = "black"}
 
       // perform some reduction e.g. eliminate duplicate notations.
       var nl = MathJax.Hub.SplitList(values.notation), notation = {};
@@ -15277,7 +15366,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15293,7 +15382,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  */
 
 MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   var MML = MathJax.ElementJax.mml,
       SVG = MathJax.OutputJax.SVG;
   
@@ -15349,7 +15438,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
  *  The remainder falls under the copyright that follows.
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2013-2015 The MathJax Consortium
+ *  Copyright (c) 2013-2017 The MathJax Consortium
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15366,7 +15455,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 
 
 MathJax.Extension["MathML/mml3"] = {
-  version: "2.6.0"
+  version: "2.7.1"
 };
 
 MathJax.Hub.Register.StartupHook("MathML Jax Ready",function () {
@@ -16119,7 +16208,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/MathML/mml3.js");
  *  
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2015 The MathJax Consortium
+ *  Copyright (c) 2015-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16138,7 +16227,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/MathML/mml3.js");
   var SETTINGS = HUB.config.menuSettings;
   
   var AssistiveMML = MathJax.Extension["AssistiveMML"] = {
-    version: "2.6.1",
+    version: "2.7.1",
     
     config: HUB.CombineConfig("AssistiveMML",{
       disabled: false,
@@ -16224,7 +16313,8 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/MathML/mml3.js");
       while (state.i < m) {
         jax = state.jax[state.i];
         frame = document.getElementById(jax.inputID+"-Frame");
-        if (jax.outputJax !== "NativeMML" && frame && !frame.getAttribute("data-mathml")) {
+        if (jax.outputJax !== "NativeMML" && jax.outputJax !== "PlainSource" &&
+            frame && !frame.getAttribute("data-mathml")) {
           try {
             mml = jax.root.toMathML("").replace(/\n */g,"").replace(/<!--.*?-->/g,"");
           } catch (err) {
@@ -16237,7 +16327,7 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/MathML/mml3.js");
             className: "MJX_Assistive_MathML"
               + (jax.root.Get("display") === "block" ? " MJX_Assistive_MathML_Block" : "")
           });
-          span.innerHTML = mml;
+          try {span.innerHTML = mml} catch (err) {}
           frame.style.position = "relative";
           frame.setAttribute("role","presentation");
           frame.firstChild.setAttribute("aria-hidden","true");
@@ -16272,7 +16362,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/scr.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16352,7 +16442,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/opf.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16432,7 +16522,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/z.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16475,7 +16565,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/g.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16559,7 +16649,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/r.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16698,7 +16788,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/p.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16783,7 +16873,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/m.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16845,7 +16935,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/q.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16881,7 +16971,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/t.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16968,7 +17058,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/w.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17004,7 +17094,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/f.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17065,7 +17155,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/v.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17139,7 +17229,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/e.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17232,7 +17322,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/k.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17270,7 +17360,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/x.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17318,7 +17408,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/c.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17433,7 +17523,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/n.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17654,7 +17744,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/a.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17745,7 +17835,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/j.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17781,7 +17871,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/u.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17874,7 +17964,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/b.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17991,7 +18081,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/i.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18078,7 +18168,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/l.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18258,7 +18348,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/y.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18300,7 +18390,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/fr.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18380,7 +18470,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/o.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18471,7 +18561,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/s.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18642,7 +18732,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/d.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18755,7 +18845,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/entities/h.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18808,7 +18898,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/Arrows.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18931,7 +19021,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/MiscMathSymbolsA.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18974,7 +19064,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/Dingbats.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19013,7 +19103,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/GeneralPunctuation.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19056,7 +19146,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/SpacingModLetters.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19095,7 +19185,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/MiscTechnical.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19136,7 +19226,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/SupplementalArrowsA.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19177,7 +19267,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/GreekAndCoptic.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19213,7 +19303,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/LetterlikeSymbols.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19250,7 +19340,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/SupplementalArrowsB.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19413,7 +19503,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/BasicLatin.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19479,7 +19569,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/MiscSymbolsAndArrows.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19516,7 +19606,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/CombDiacritMarks.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19552,7 +19642,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/GeometricShapes.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19619,7 +19709,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/MathOperators.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19848,7 +19938,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/MiscMathSymbolsB.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20017,7 +20107,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/SuppMathOperators.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20307,7 +20397,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/CombDiactForSymbols.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20344,7 +20434,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/HTML-CSS/optable/Latin1Supplement.js
  *
- *  Copyright (c) 2010-2015 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20392,7 +20482,7 @@ MathJax.Callback.Queue(
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2013-2015 The MathJax Consortium
+ *  Copyright (c) 2013-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20408,7 +20498,7 @@ MathJax.Callback.Queue(
  */
 
 (function (HUB,AJAX) {
-  var VERSION = "2.6.0";
+  var VERSION = "2.7.1";
   
   var CONFIG = MathJax.Hub.CombineConfig("MatchWebFonts",{
     matchFor: {
@@ -20696,7 +20786,7 @@ MathJax.Callback.Queue(
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2013-2015 The MathJax Consortium
+ *  Copyright (c) 2013-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20714,7 +20804,7 @@ MathJax.Callback.Queue(
 (function (HUB,HTML,AJAX,OUTPUT,LOCALE) {
 
   var HELP = MathJax.Extension.Help = {
-    version: "2.6.0"
+    version: "2.7.1"
   };
 
   var STIXURL = "http://www.stixfonts.org/";
@@ -20897,7 +20987,7 @@ MathJax.Callback.Queue(
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Regular/LatinExtendedA.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20927,7 +21017,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Regular/LatinExte
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Regular/MiscSymbols.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20975,7 +21065,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Regular/MiscSymbo
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Regular/SpacingModLetters.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21005,7 +21095,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Regular/SpacingMo
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Regular/GreekAndCoptic.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21065,7 +21155,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Regular/GreekAndC
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Regular/LetterlikeSymbols.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21110,7 +21200,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Regular/Letterlik
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Regular/LatinExtendedB.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21140,7 +21230,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Regular/LatinExte
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Regular/BasicLatin.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21287,7 +21377,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Regular/BasicLati
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Regular/CombDiacritMarks.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21350,7 +21440,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Regular/CombDiacr
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Regular/GeometricShapes.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21390,39 +21480,9 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Regular/Geometric
 
 /*************************************************************
  *
- *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Regular/MathOperators.js
- *
- *  Copyright (c) 2011-2015 The MathJax Consortium
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- */
-
-MathJax.Hub.Insert(
-  MathJax.OutputJax.SVG.FONTDATA.FONTS['MathJax_Main'],
-  {
-    // INCREMENT
-    0x2206: [716,0,833,46,786,'']
-  }
-);
-
-MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Regular/MathOperators.js");
-
-/*************************************************************
- *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Regular/SuppMathOperators.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21452,7 +21512,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Regular/SuppMathO
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21584,7 +21644,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/Main.js");
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/Arrows.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21725,7 +21785,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/Arrows.js"
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/PUA.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21800,7 +21860,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/PUA.js");
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/Dingbats.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21833,7 +21893,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/Dingbats.j
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/LatinExtendedA.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21863,7 +21923,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/LatinExten
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/GeneralPunctuation.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21893,7 +21953,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/GeneralPun
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/MiscSymbols.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21923,7 +21983,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/MiscSymbol
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/SpacingModLetters.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21956,7 +22016,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/SpacingMod
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/MiscTechnical.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21989,7 +22049,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/MiscTechni
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/GreekAndCoptic.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22022,7 +22082,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/GreekAndCo
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/LetterlikeSymbols.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22070,7 +22130,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/Letterlike
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/BoxDrawing.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22115,7 +22175,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/BoxDrawing
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/CombDiacritMarks.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22148,7 +22208,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/CombDiacri
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/GeometricShapes.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22202,7 +22262,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/GeometricS
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/MathOperators.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22562,7 +22622,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/MathOperat
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/MiscMathSymbolsB.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22592,7 +22652,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/MiscMathSy
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/SuppMathOperators.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22688,7 +22748,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/SuppMathOp
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/Latin1Supplement.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22724,7 +22784,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/Latin1Supp
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/AMS/Regular/EnclosedAlphanum.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22754,7 +22814,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/AMS/Regular/EnclosedAl
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Typewriter/Regular/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22789,7 +22849,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Typewriter/Regular/Mai
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Typewriter/Regular/Other.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22854,10 +22914,7 @@ MathJax.Hub.Insert(
     0x7E3: [681,-357,525,176,350,'176 479Q176 563 227 622T310 681Q324 680 337 667T350 641Q350 627 340 619T312 599T280 566Q256 531 252 485V471Q261 472 262 472Q285 472 302 455T320 414Q320 389 303 373T261 357Q223 357 200 391T176 479'],
 
     // PRIME
-    0x2032: [623,-334,525,211,313,'211 572Q211 593 226 608T262 623Q281 623 297 610T313 573Q313 561 307 465Q301 370 299 357T284 336Q279 334 262 334Q240 334 231 343Q226 350 225 362T217 465Q211 549 211 572'],
-
-    // INCREMENT
-    0x2206: [623,0,525,35,489,'']
+    0x2032: [623,-334,525,211,313,'211 572Q211 593 226 608T262 623Q281 623 297 610T313 573Q313 561 307 465Q301 370 299 357T284 336Q279 334 262 334Q240 334 231 343Q226 350 225 362T217 465Q211 549 211 572']
   }
 );
 
@@ -22867,7 +22924,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Typewriter/Regular/Oth
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Typewriter/Regular/BasicLatin.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23182,7 +23239,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Typewriter/Regular/Bas
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Typewriter/Regular/CombDiacritMarks.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23236,7 +23293,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Typewriter/Regular/Com
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Fraktur/Regular/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23271,7 +23328,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Fraktur/Regular/Main.j
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Fraktur/Regular/PUA.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23322,7 +23379,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Fraktur/Regular/PUA.js
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Fraktur/Regular/Other.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23355,7 +23412,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Fraktur/Regular/Other.
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Fraktur/Regular/BasicLatin.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23628,7 +23685,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Fraktur/Regular/BasicL
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Fraktur/Bold/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23664,7 +23721,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Fraktur/Bold/Main.js")
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Fraktur/Bold/PUA.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23712,7 +23769,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Fraktur/Bold/PUA.js");
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Fraktur/Bold/Other.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23745,7 +23802,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Fraktur/Bold/Other.js"
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Fraktur/Bold/BasicLatin.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24018,7 +24075,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Fraktur/Bold/BasicLati
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Math/BoldItalic/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24402,10 +24459,7 @@ MathJax.OutputJax.SVG.FONTDATA.FONTS['MathJax_Math-bold-italic'] = {
     0x3F1: [451,194,612,75,603,'371 -168Q357 -168 323 -171T245 -175Q143 -175 109 -150T75 -66Q75 -5 100 108T137 254Q153 299 179 334T232 390T277 419T311 434Q357 451 403 451Q435 451 455 449T506 435T560 400Q603 357 603 282Q603 213 569 148T465 38T304 -8Q273 -8 247 -2T204 14T176 31T159 46T152 53Q152 52 148 27T144 -16Q144 -36 150 -44T189 -58T293 -64Q405 -65 432 -75Q466 -88 466 -127Q466 -140 459 -172Q455 -188 451 -191T426 -194H420Q405 -194 400 -191T395 -176Q396 -170 394 -169T378 -168Q373 -168 371 -168ZM236 116Q236 77 258 60T311 43Q369 43 407 94Q429 123 451 206T474 331Q474 400 409 400H406Q339 400 299 341Q276 305 256 227T236 116'],
 
     // GREEK LUNATE EPSILON SYMBOL
-    0x3F5: [444,7,483,44,450,'415 89Q423 89 429 74T436 46Q436 43 434 39Q432 36 420 29T380 11T322 -5Q311 -7 281 -7Q216 -7 168 10T94 54T56 110T44 167V181Q44 262 94 329Q104 343 119 357T162 391T234 425T327 443Q328 443 348 443T383 444Q434 444 442 438Q450 430 450 416Q446 392 424 383L376 382Q306 381 278 369Q230 349 208 294Q199 274 199 268Q199 267 291 267Q305 267 325 267T353 268Q383 268 394 263T406 241Q406 214 380 206Q375 205 279 205T183 203Q174 176 174 140Q174 87 208 65T292 43Q295 43 300 43T307 44Q337 49 372 69T415 89'],
-
-    // INCREMENT
-    0x2206: [711,0,958,59,904,'']
+    0x3F5: [444,7,483,44,450,'415 89Q423 89 429 74T436 46Q436 43 434 39Q432 36 420 29T380 11T322 -5Q311 -7 281 -7Q216 -7 168 10T94 54T56 110T44 167V181Q44 262 94 329Q104 343 119 357T162 391T234 425T327 443Q328 443 348 443T383 444Q434 444 442 438Q450 430 450 416Q446 392 424 383L376 382Q306 381 278 369Q230 349 208 294Q199 274 199 268Q199 267 291 267Q305 267 325 267T353 268Q383 268 394 263T406 241Q406 214 380 206Q375 205 279 205T183 203Q174 176 174 140Q174 87 208 65T292 43Q295 43 300 43T307 44Q337 49 372 69T415 89']
 };
 
 MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Math/BoldItalic/Main.js");
@@ -24414,7 +24468,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Math/BoldItalic/Main.j
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Caligraphic/Regular/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24581,7 +24635,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Caligraphic/Regular/Ma
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Caligraphic/Bold/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24749,7 +24803,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Caligraphic/Bold/Main.
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Italic/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24777,8 +24831,7 @@ MathJax.OutputJax.SVG.FONTDATA.FONTS['MathJax_Main-italic'] = {
     [0x300,0x36F,"CombDiacritMarks"],
     [0x370,0x3FF,"GreekAndCoptic"],
     [0x2000,0x206F,"GeneralPunctuation"],
-    [0x2100,0x214F,"LetterlikeSymbols"],
-    [0x2200,0x22FF,"MathOperators"]
+    [0x2100,0x214F,"LetterlikeSymbols"]
   ],
 
     // POUND SIGN
@@ -24791,7 +24844,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Italic/Main.js");
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Italic/LatinExtendedA.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24821,7 +24874,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Italic/LatinExten
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Italic/GeneralPunctuation.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24866,7 +24919,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Italic/GeneralPun
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Italic/GreekAndCoptic.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24926,7 +24979,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Italic/GreekAndCo
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Italic/LetterlikeSymbols.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24956,7 +25009,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Italic/Letterlike
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Italic/LatinExtendedB.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24986,7 +25039,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Italic/LatinExten
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Italic/BasicLatin.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25274,7 +25327,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Italic/BasicLatin
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Italic/CombDiacritMarks.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25332,39 +25385,9 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Italic/CombDiacri
 
 /*************************************************************
  *
- *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Italic/MathOperators.js
- *
- *  Copyright (c) 2011-2015 The MathJax Consortium
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- */
-
-MathJax.Hub.Insert(
-  MathJax.OutputJax.SVG.FONTDATA.FONTS['MathJax_Main-italic'],
-  {
-    // INCREMENT
-    0x2206: [716,0,818,70,751,'']
-  }
-);
-
-MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Italic/MathOperators.js");
-
-/*************************************************************
- *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25582,7 +25605,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/Main.js");
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/Arrows.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25681,7 +25704,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/Arrows.js");
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/MiscMathSymbolsA.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25714,7 +25737,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/MiscMathSymb
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/LatinExtendedA.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25744,7 +25767,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/LatinExtende
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/GeneralPunctuation.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25801,7 +25824,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/GeneralPunct
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/MiscSymbols.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25849,7 +25872,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/MiscSymbols.
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/SpacingModLetters.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25903,7 +25926,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/SpacingModLe
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/MiscTechnical.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25948,7 +25971,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/MiscTechnica
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/SupplementalArrowsA.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25996,7 +26019,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/Supplemental
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/GreekAndCoptic.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26056,7 +26079,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/GreekAndCopt
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/LetterlikeSymbols.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26101,7 +26124,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/LetterlikeSy
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/LatinExtendedB.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26131,7 +26154,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/LatinExtende
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/BasicLatin.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26281,7 +26304,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/BasicLatin.j
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/CombDiacritMarks.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26344,7 +26367,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/CombDiacritM
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/GeometricShapes.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26386,7 +26409,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/GeometricSha
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/MathOperators.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26416,9 +26439,6 @@ MathJax.Hub.Insert(
 
     // EMPTY SET
     0x2205: [767,73,575,46,528,'285 711Q307 711 326 708T357 701T370 698Q371 698 375 710T383 735T389 750Q395 767 415 767Q431 767 438 757T446 738T436 701T426 670Q426 668 433 664Q468 633 489 588Q511 542 519 488T528 344Q528 286 524 243T508 150T466 63T394 6Q345 -17 287 -17Q265 -17 246 -14T216 -7T203 -4Q191 -47 183 -60T159 -73Q146 -73 137 -63T128 -44Q128 -38 138 -7L148 24L141 30Q134 35 120 49Q94 77 78 113T56 194T48 268T46 344Q46 388 47 416T56 494T78 577T122 644T194 694Q239 711 285 711ZM351 639Q350 639 346 642T337 648T325 654T306 658T283 660Q254 660 221 638T181 567Q171 513 171 375Q171 164 182 129L351 639ZM402 356Q402 516 395 555Q395 557 395 559T394 563T394 566L393 568L223 57Q252 34 286 34H288Q318 34 346 53T387 109Q402 152 402 329V356'],
-
-    // INCREMENT
-    0x2206: [698,0,958,56,901,''],
 
     // NABLA
     0x2207: [686,24,958,56,901,'56 673Q56 679 65 686H892Q901 679 901 673Q901 668 714 331T521 -15Q518 -18 506 -24H452Q440 -19 436 -15Q431 -8 337 162T150 501L57 669Q57 670 56 672V673ZM528 136L758 553H297Q298 551 414 341L528 136'],
@@ -26617,7 +26637,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/MathOperator
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/SuppMathOperators.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26653,7 +26673,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/SuppMathOper
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/CombDiactForSymbols.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26683,7 +26703,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/CombDiactFor
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Main/Bold/Latin1Supplement.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26734,7 +26754,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Main/Bold/Latin1Supple
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Size3/Regular/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26822,7 +26842,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Size3/Regular/Main.js"
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Size2/Regular/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26958,7 +26978,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Size2/Regular/Main.js"
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Script/Regular/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27019,7 +27039,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Script/Regular/Main.js
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Script/Regular/BasicLatin.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27127,7 +27147,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Script/Regular/BasicLa
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Size1/Regular/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27287,7 +27307,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/Size1/Regular/Main.js"
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Italic/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27323,7 +27343,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Italic/Main.
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Italic/Other.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27397,10 +27417,7 @@ MathJax.Hub.Insert(
     0x201C: [694,-471,500,274,613,'393 567L383 520Q373 474 372 473Q372 471 323 471T274 473L276 480Q277 486 280 499T285 522L295 569L371 694H396L419 693L416 685Q412 677 405 661T391 630L363 570L378 569Q393 569 393 567ZM587 567L577 520Q567 474 566 473Q566 471 517 471T468 473L470 480Q471 486 474 499T479 522L489 569L565 694H590L613 693L610 685Q606 677 599 661T585 630L557 570L572 569Q587 569 587 567'],
 
     // RIGHT DOUBLE QUOTATION MARK
-    0x201D: [694,-471,500,133,472,'171 647L180 694H229Q278 694 278 693L276 686Q275 680 273 668T268 644L258 597L182 471H157Q133 471 133 472L189 595Q189 596 174 596H160V598Q160 601 171 647ZM365 647L374 694H423Q472 694 472 693L470 686Q469 680 467 668T462 644L452 597L376 471H351Q327 471 327 472L383 595Q383 596 368 596H354V598Q354 601 365 647'],
-
-    // INCREMENT
-    0x2206: [694,0,833,42,790,'']
+    0x201D: [694,-471,500,133,472,'171 647L180 694H229Q278 694 278 693L276 686Q275 680 273 668T268 644L258 597L182 471H157Q133 471 133 472L189 595Q189 596 174 596H160V598Q160 601 171 647ZM365 647L374 694H423Q472 694 472 693L470 686Q469 680 467 668T462 644L452 597L376 471H351Q327 471 327 472L383 595Q383 596 368 596H354V598Q354 601 365 647']
   }
 );
 
@@ -27410,7 +27427,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Italic/Other
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Italic/BasicLatin.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27701,7 +27718,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Italic/Basic
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Italic/CombDiacritMarks.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27761,7 +27778,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Italic/CombD
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Regular/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27796,7 +27813,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Regular/Main
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Regular/Other.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27870,10 +27887,7 @@ MathJax.Hub.Insert(
     0x201C: [694,-471,500,174,467,'174 568L224 694H273L258 633Q243 572 242 571Q242 569 257 569H272V471H174V568ZM368 568L418 694H467L452 633Q437 572 436 571Q436 569 451 569H466V471H368V568'],
 
     // RIGHT DOUBLE QUOTATION MARK
-    0x201D: [694,-471,500,32,325,'33 596V694H131V597L82 471H32L47 532Q62 593 63 594Q63 596 48 596H33ZM227 596V694H325V597L276 471H226L241 532Q256 593 257 594Q257 596 242 596H227'],
-
-    // INCREMENT
-    0x2206: [694,0,833,42,790,'']
+    0x201D: [694,-471,500,32,325,'33 596V694H131V597L82 471H32L47 532Q62 593 63 594Q63 596 48 596H33ZM227 596V694H325V597L276 471H226L241 532Q256 593 257 594Q257 596 242 596H227']
   }
 );
 
@@ -27883,7 +27897,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Regular/Othe
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Regular/BasicLatin.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28174,7 +28188,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Regular/Basi
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Regular/CombDiacritMarks.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28234,7 +28248,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Regular/Comb
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Bold/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28270,7 +28284,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Bold/Main.js
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Bold/Other.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28344,10 +28358,7 @@ MathJax.Hub.Insert(
     0x201C: [694,-443,558,138,520,'144 443L138 449V581L176 636Q182 644 188 653T198 667T205 677T211 685T215 689T220 692T224 693T230 694H247H258Q283 694 283 683Q283 678 265 635T246 590Q246 588 261 588H276Q279 584 283 581V449L276 443H144ZM381 443L375 449V581L413 636Q419 644 425 653T435 667T442 677T448 685T452 689T457 692T461 693T467 694H484H495Q520 694 520 683Q520 678 502 635T483 590Q483 588 498 588H513Q516 584 520 581V449L513 443H381'],
 
     // RIGHT DOUBLE QUOTATION MARK
-    0x201D: [694,-442,558,37,420,'38 687Q42 693 45 693Q46 694 111 694H176Q179 690 183 687V556L144 501Q139 494 134 486T126 474T120 465T114 457T110 451T106 447T102 445T98 443T94 443T89 442H73H62Q37 442 37 453Q37 458 55 501T74 546Q74 548 59 548L44 549L38 555V687ZM275 687Q279 693 282 693Q283 694 348 694H413Q416 690 420 687V556L381 501Q376 494 371 486T363 474T357 465T351 457T347 451T343 447T339 445T335 443T331 443T326 442H310H299Q274 442 274 453Q274 458 292 501T311 546Q311 548 296 548L281 549L275 555V687'],
-
-    // INCREMENT
-    0x2206: [694,1,917,60,856,'']
+    0x201D: [694,-442,558,37,420,'38 687Q42 693 45 693Q46 694 111 694H176Q179 690 183 687V556L144 501Q139 494 134 486T126 474T120 465T114 457T110 451T106 447T102 445T98 443T94 443T89 442H73H62Q37 442 37 453Q37 458 55 501T74 546Q74 548 59 548L44 549L38 555V687ZM275 687Q279 693 282 693Q283 694 348 694H413Q416 690 420 687V556L381 501Q376 494 371 486T363 474T357 465T351 457T347 451T343 447T339 445T335 443T331 443T326 442H310H299Q274 442 274 453Q274 458 292 501T311 546Q311 548 296 548L281 549L275 555V687']
   }
 );
 
@@ -28357,7 +28368,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Bold/Other.j
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Bold/BasicLatin.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28648,7 +28659,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Bold/BasicLa
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/SansSerif/Bold/CombDiacritMarks.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28708,7 +28719,7 @@ MathJax.Ajax.loadComplete(MathJax.OutputJax.SVG.fontDir+"/SansSerif/Bold/CombDia
  *
  *  MathJax/jax/output/SVG/fonts/TeX/svg/Size4/Regular/Main.js
  *
- *  Copyright (c) 2011-2015 The MathJax Consortium
+ *  Copyright (c) 2011-2017 The MathJax Consortium
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
