@@ -38,11 +38,11 @@ const input = {
         '/jax/input/TeX/config.js',
         '/jax/input/TeX/jax.js'
     ],
-    ascii: [
+    AsciiMath: [
         '/jax/input/AsciiMath/config.js',
         '/jax/input/AsciiMath/jax.js'
     ],
-    mml: [
+    MathML: [
         '/jax/input/MathML/config.js',
         '/jax/input/MathML/jax.js',
         '/jax/input/MathML/entities/scr.js',
@@ -288,7 +288,8 @@ const fonts = {
             '/jax/output/SVG/fonts/TeX/AMS/Regular/SpacingModLetters.js',
             '/jax/output/SVG/fonts/TeX/AMS/Regular/SuppMathOperators.js',
             '/jax/output/SVG/fonts/TeX/Caligraphic/Bold/Main.js',
-            '/jax/output/SVG/fonts/TeX/Caligraphic/Regular/Main.js', '/jax/output/SVG/fonts/TeX/Fraktur/Bold/BasicLatin.js',
+            '/jax/output/SVG/fonts/TeX/Caligraphic/Regular/Main.js',
+            '/jax/output/SVG/fonts/TeX/Fraktur/Bold/BasicLatin.js',
             '/jax/output/SVG/fonts/TeX/Fraktur/Bold/Main.js',
             '/jax/output/SVG/fonts/TeX/Fraktur/Bold/Other.js',
             '/jax/output/SVG/fonts/TeX/Fraktur/Bold/PUA.js',
@@ -560,6 +561,27 @@ const preConfig = function (array) {
 
 
 const packitup = function (inputJax, outputJax, font) {
+    // check input
+    const inputJaxs = ['TeX', 'MathML', 'AsciiMath'];
+    const outputJaxs = ['CommonHTML', 'SVG', 'PreviewHTML', 'HTML-CSS'];
+    const fontNames = ['TeX', 'STIX-Web', 'Asana Math', 'Gyre Pagella', 'Gyre Termes', 'Neo Euler'];
+    if (inputJaxs.indexOf(inputJax) === -1) {
+        console.log('Unknown input: ' + inputJax);
+        return new Error('Unknown input: ' + inputJax);
+    }
+    if (outputJaxs.indexOf(outputJax) === -1) {
+        console.log('Unknown output: ' + outputJax);
+        return new Error('Unknown output: ' + outputJax);
+    }
+    if (!font && outputJax !== 'PreviewHTML') {
+        console.log(('Ouput ' + outputJax + ' needs to specify a font'));
+        return new Error('Ouput ' + outputJax + ' needs to specify a font');
+    } else if (!font && output === 'PreviewHTML') {
+        font = [];
+    } else if (fontNames.indexOf(font) === -1) {
+        console.log('Unknown font: ' + font);
+        return new Error('Unknown font: ' + font);
+    }
 
     const array = [
         ...core,
@@ -574,13 +596,16 @@ const packitup = function (inputJax, outputJax, font) {
     const concat = new Concat(true, 'MathJax.js', '\n');
 
     concat.add(null, '// MathJax single file build');
+    // if (outputJax === "SVG") {
+    //     concat.add(null, 'window.MathJax = { STIX: {font: "' + font + '"} };');
+    // }
     concat.add(null, mathjaxStart);
     concat.add(null, preConfig(
         [
             ...array,
             fontdataName,
             fontdataExtraName,
-            fonts[outputJax][font]
+            ...fonts[outputJax][font]
         ]
     ));
 
@@ -598,7 +623,10 @@ const packitup = function (inputJax, outputJax, font) {
     for (let item of fonts[outputJax][font]) concat.add(item, fs.readFileSync(unpackedPath + item));
     concat.add(null, ' });\n');
     concat.add(null, mathjaxEnd);
-    writeFile('dist/' + inputJax + outputJax + font + '/MathJax-' + inputJax + outputJax + font + '.js', concat.content, function (err) {
+    const final = concat.content;
+    //TODO SVG output + not TeX font will log an unproblematic error (trying to load TeX font's fontdata.js)
+    // but e.g., `final.toString().replace(/font: "TeX"/,'font: "'+ font + '"');` does not help (breaks build)
+    writeFile('dist/' + inputJax + outputJax + font + '/MathJax-' + inputJax + outputJax + font + '.js', final, function (err) {
         // if (err) console.log(err);
         console.log('dist/' + inputJax + outputJax + font + '/MathJax-' + inputJax + outputJax + '.js')
     });
