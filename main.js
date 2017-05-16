@@ -540,7 +540,9 @@ const fonts = {
     }
 }
 
+// Complication 1
 // SETUP MathJax.js
+// to generate a single-file build, we need to insert MathJax's components at the correct position in MathJax.js
 
 const splitter = 'HUB.Browser.Select(MathJax.Message.browsers);';
 const array = fs.readFileSync(require.resolve('mathjax')).toString().split(splitter)
@@ -550,6 +552,7 @@ const mathjaxEnd = splitter + array[1];
 // SETUP file path
 const unpackedPath = require.resolve('mathjax').replace(/\/MathJax.js$/, '');
 
+// helper function to generate configuration information
 const preConfig = function (array) {
     let result = 'MathJax.Ajax.Preloading(\n';
     for (let item of array) result += '"[MathJax]' + item + '",\n';
@@ -559,9 +562,9 @@ const preConfig = function (array) {
     return result;
 };
 
-
-const packitup = function (inputJax, outputJax, font) {
-    // check input
+// the build process
+exports.build = function (font, inputJax, outputJax, customExtensions) {
+    // check parameters
     const inputJaxs = ['TeX', 'MathML', 'AsciiMath'];
     const outputJaxs = ['CommonHTML', 'SVG', 'PreviewHTML', 'HTML-CSS'];
     const fontNames = ['TeX', 'STIX-Web', 'Asana Math', 'Gyre Pagella', 'Gyre Termes', 'Neo Euler'];
@@ -582,50 +585,75 @@ const packitup = function (inputJax, outputJax, font) {
         console.log('Unknown font: ' + font);
         return new Error('Unknown font: ' + font);
     }
+    if (!Array.isArray(customExtensions)) customExtensions = extensions[inputJax];
 
-    const array = [
+    // the big array of file names
+    const fileNames = [
         ...core,
         ...extensions.defaults,
         ...input[inputJax],
         ...output[outputJax],
-        ...extensions[inputJax]
+        ...customExtensions
     ];
+
+    // Complication 2
+    // Helper for top-level fontdata files
+    // (need to be loaded before other font resources)
     const fontdataName = '/jax/output/' + outputJax + '/fonts/' + font + '/fontdata.js';
     const fontdataExtraName = '/jax/output/' + outputJax + '/fonts/' + font + '/fontdata-extra.js'
 
+    // set-up concatenation
     const concat = new Concat(true, 'MathJax.js', '\n');
 
-    concat.add(null, '// MathJax single file build');
-    // if (outputJax === "SVG") {
-    //     concat.add(null, 'window.MathJax = { STIX: {font: "' + font + '"} };');
-    // }
+    // begin adding content
+    concat.add(null, '// MathJax single file build. Licenses of its components apply');
+
+    // add initial piece of MathJax.js
     concat.add(null, mathjaxStart);
+    // add configuration information
     concat.add(null, preConfig(
         [
-            ...array,
+            ...fileNames,
             fontdataName,
             fontdataExtraName,
             ...fonts[outputJax][font]
         ]
     ));
 
-    for (let item of array) concat.add(item, fs.readFileSync(unpackedPath + item));
+    // add main bulk of files
+    for (let item of fileNames) concat.add(item, fs.readFileSync(unpackedPath + item));
 
+
+    // add top-level fontdata
     concat.add('fontdata.js', fs.readFileSync(unpackedPath + fontdataName));
     concat.add('fontdata-extra.js', fs.readFileSync(unpackedPath + fontdataExtraName));
 
+    // if CommonHTML is used, update webfont location
+    // TODO enable customization
     if (outputJax === "CommonHTML") {
         concat.add(null, 'MathJax.OutputJax.CommonHTML.webfontDir =  "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/fonts/HTML-CSS";\n ');
     }
 
+    // Complication 3
+    // remaining font-data needs wrapper to get signal from outputJax
     concat.add(null, 'MathJax.Hub.Register.StartupHook("' + outputJax + ' Jax Ready",function () {\n');
 
+    // add remaining fontdata
+    // NOTE for SVG output, this includes the actual 'fonts' (js files with SVG path data for each glyph)
     for (let item of fonts[outputJax][font]) concat.add(item, fs.readFileSync(unpackedPath + item));
     concat.add(null, ' });\n');
     concat.add(null, mathjaxEnd);
     const final = concat.content;
-    //TODO SVG output + not TeX font will log an unproblematic error (trying to load TeX font's fontdata.js)
+
+    //TODO SVG output + non-default font will log an (unproblematic) error because it will be trying to load TeX font's fontdata.js)
     // but e.g., `final.toString().replace(/font: "TeX"/,'font: "'+ font + '"');` does not help (breaks build)
+    // e.g.
+    // if (outputJax === "SVG") {
+    //     concat.add(null, 'window.MathJax = { STIX: {font: "' + font + '"} };');
+    // }
+    // does not work
+
+    // TODO make optional
     writeFile('dist/' + inputJax + outputJax + font + '/MathJax-' + inputJax + outputJax + font + '.js', final, function (err) {
         // if (err) console.log(err);
         console.log('dist/' + inputJax + outputJax + font + '/MathJax-' + inputJax + outputJax + '.js')
@@ -636,15 +664,3 @@ const packitup = function (inputJax, outputJax, font) {
     })
 }
 
-packitup(
-    'TeX',
-    'CommonHTML',
-    'TeX');
-packitup(
-    'TeX',
-    'SVG',
-    'TeX');
-packitup(
-    'TeX',
-    'SVG',
-    'STIX-Web');
