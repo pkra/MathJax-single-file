@@ -243,12 +243,12 @@ const extensions = {
 
 const fonts = {
     // NOTE
-    // fontdata.js and fontdata-extra.js will be handled programatically later
+    // for each font, the files `fontdata.js` and `fontdata-extra.js` must be handled separately
 
     // fonts for the CommonHTML output
-    // Note. Only the TeX fonts are currently supported
-    CommonHTML: {
 
+    // NOTE. the CommonHTML output currently only supports the default "TeX"" fonts
+    CommonHTML: {
         TeX: [
             '/jax/output/CommonHTML/fonts/TeX/AMS-Regular.js',
             '/jax/output/CommonHTML/fonts/TeX/Caligraphic-Bold.js',
@@ -260,7 +260,7 @@ const fonts = {
             '/jax/output/CommonHTML/fonts/TeX/SansSerif-Italic.js',
             '/jax/output/CommonHTML/fonts/TeX/SansSerif-Regular.js',
             '/jax/output/CommonHTML/fonts/TeX/Script-Regular.js',
-            '/jax/output/CommonHTML/fonts/TeX/Typewriter-Regular.js',
+            '/jax/output/CommonHTML/fonts/TeX/Typewriter-Regular.js'
         ]
     },
 
@@ -555,15 +555,17 @@ const unpackedPath = require.resolve('mathjax').replace(/\/MathJax.js$/, '');
 // helper function to generate configuration information
 const preConfig = function (array) {
     let result = 'MathJax.Ajax.Preloading(\n';
-    for (let item of array) result += '"[MathJax]' + item + '",\n';
+    const prefixedArray = array.map(i => '"[MathJax]' + i );
+    result += prefixedArray.join('",\n');
     result +=
-        ');\n' +
+        '");\n' +
         'MathJax.Hub.Config({"v1.0-compatible":false});\n'
     return result;
 };
 
+let defaultOptions =  {toFile: false, compress:false, customExtensions: []};
 // the build process
-exports.build = function (font, inputJax, outputJax, customExtensions) {
+exports.build = function (font, inputJax, outputJax, options = defaultOptions) {
     // check parameters
     const inputJaxs = ['TeX', 'MathML', 'AsciiMath'];
     const outputJaxs = ['CommonHTML', 'SVG', 'PreviewHTML', 'HTML-CSS'];
@@ -585,7 +587,7 @@ exports.build = function (font, inputJax, outputJax, customExtensions) {
         console.log('Unknown font: ' + font);
         return new Error('Unknown font: ' + font);
     }
-    if (!Array.isArray(customExtensions)) customExtensions = extensions[inputJax];
+    if (!Array.isArray(options.customExtensions)) customExtensions = extensions[inputJax];
 
     // the big array of file names
     const fileNames = [
@@ -607,6 +609,14 @@ exports.build = function (font, inputJax, outputJax, customExtensions) {
 
     // begin adding content
     concat.add(null, '// MathJax single file build. Licenses of its components apply');
+
+    //TODO SVG output + non-default font will log an (unproblematic) error because it will be trying to load TeX font's fontdata.js
+    // e.g.
+    // doing the following here
+    // if (outputJax === "SVG" && font !== "TeX") {
+    //     concat.add(null, 'window.MathJax = { SVG: {font: "' + font + '"} };');
+    // }
+    // breaks the build -- even though `MathJax.OutputJax.SVG.config.font` gives "STIX-Web"
 
     // add initial piece of MathJax.js
     concat.add(null, mathjaxStart);
@@ -643,24 +653,19 @@ exports.build = function (font, inputJax, outputJax, customExtensions) {
     for (let item of fonts[outputJax][font]) concat.add(item, fs.readFileSync(unpackedPath + item));
     concat.add(null, ' });\n');
     concat.add(null, mathjaxEnd);
-    const final = concat.content;
-
-    //TODO SVG output + non-default font will log an (unproblematic) error because it will be trying to load TeX font's fontdata.js)
-    // but e.g., `final.toString().replace(/font: "TeX"/,'font: "'+ font + '"');` does not help (breaks build)
-    // e.g.
-    // if (outputJax === "SVG") {
-    //     concat.add(null, 'window.MathJax = { STIX: {font: "' + font + '"} };');
-    // }
-    // does not work
-
-    // TODO make optional
-    writeFile('dist/' + inputJax + outputJax + font + '/MathJax-' + inputJax + outputJax + font + '.js', final, function (err) {
-        // if (err) console.log(err);
-        console.log('dist/' + inputJax + outputJax + font + '/MathJax-' + inputJax + outputJax + '.js')
-    });
-    writeFile('dist/' + inputJax + outputJax + font + '/MathJax.js', uglify.minify(concat.content), function (err) {
-        // if (err) console.log(err);
-        console.log('dist/' + inputJax + outputJax + font + '/MathJax.js')
-    })
+    let result = concat.content;
+    if (options.toFile) {
+        writeFile('dist/' + inputJax + outputJax + font + '/MathJax.js', result, function (err) {
+            if (err) console.log(err);
+            console.log('dist/' + inputJax + outputJax + font + '/MathJax.js')
+        });
+    }
+    if (options.compress) result = uglify.minify(result.toString()).code;
+    if (options.toFile && options.compress) {
+        writeFile('dist/' + inputJax + outputJax + font + '/MathJax.min.js', result, function (err) {
+            if (err) console.log(err);
+            console.log('dist/' + inputJax + outputJax + font + '/MathJax.min.js')
+        })
+    }
+    return result;
 }
-

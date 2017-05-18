@@ -3,13 +3,21 @@ var build = require('./main.js').build;
 build(
     'TeX',
     'TeX',
-    'CommonHTML');
+    'CommonHTML', {
+        toFile: true,
+        compress: true
+    });
 build(
     'TeX',
     'TeX',
-    'SVG');
+    'SVG', {
+        toFile: true,
+        compress: true
+    });
 build(
     'STIX-Web',
     'TeX',
-    'SVG'
-);
+    'SVG', {
+        toFile: true,
+        compress: true
+    });
