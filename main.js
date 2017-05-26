@@ -870,8 +870,8 @@ const fonts = {
             '/jax/output/HTML-CSS/fonts/STIX/SizeTwoSym/Regular/All.js',
             '/jax/output/HTML-CSS/fonts/STIX/Variants/Bold/Main.js',
             '/jax/output/HTML-CSS/fonts/STIX/Variants/Bold/All.js',
-            '/jax/output/HTML-CSS/fonts/STIX/Variants/Regular/Main.js'
-            '/jax/output/HTML-CSS/fonts/STIX/Variants/Regular/All.js',
+            '/jax/output/HTML-CSS/fonts/STIX/Variants/Regular/Main.js',
+            '/jax/output/HTML-CSS/fonts/STIX/Variants/Regular/All.js'
         ],
         "STIX-Web": [
             '/jax/output/HTML-CSS/fonts/STIX-Web/Alphabets/BoldItalic/Main.js',
@@ -1053,7 +1053,8 @@ let defaultOptions = {
     toFile: false,
     compress: false,
     customExtensions: [],
-    webfontURL: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/fonts/HTML-CSS'
+    webfontURL: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/fonts/HTML-CSS',
+    folder: ''
 };
 // the build process
 exports.build = function (font, inputJax, outputJax, options = defaultOptions) {
@@ -1079,6 +1080,7 @@ exports.build = function (font, inputJax, outputJax, options = defaultOptions) {
         return new Error('Unknown font: ' + font);
     }
     if (!Array.isArray(options.customExtensions)) options.customExtensions = extensions[inputJax];
+    if (!options.folder) options.folder = inputJax + outputJax + font;
 
     // the big array of file names
     const fileNames = [
@@ -1150,16 +1152,16 @@ exports.build = function (font, inputJax, outputJax, options = defaultOptions) {
 
     let result = concat.content;
     if (options.toFile) {
-        writeFile('dist/' + inputJax + outputJax + font + '/MathJax.js', result, function (err) {
+        writeFile('dist/' + options.folder + '/MathJax.js', result, function (err) {
             if (err) console.log(err);
-            console.log('dist/' + inputJax + outputJax + font + '/MathJax.js')
+            console.log('dist/' + options.folder + '/MathJax.js')
         });
     }
     if (options.compress) result = uglify.minify(result.toString()).code;
     if (options.toFile && options.compress) {
-        writeFile('dist/' + inputJax + outputJax + font + '/MathJax.min.js', result, function (err) {
+        writeFile('dist/' + options.folder + '/MathJax.min.js', result, function (err) {
             if (err) console.log(err);
-            console.log('dist/' + inputJax + outputJax + font + '/MathJax.min.js')
+            console.log('dist/' + options.folder + '/MathJax.min.js')
         })
     }
     return result;
