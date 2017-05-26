@@ -1078,7 +1078,7 @@ exports.build = function (font, inputJax, outputJax, options = defaultOptions) {
         console.log('Unknown font: ' + font);
         return new Error('Unknown font: ' + font);
     }
-    if (!Array.isArray(options.customExtensions)) customExtensions = extensions[inputJax];
+    if (!Array.isArray(options.customExtensions)) options.customExtensions = extensions[inputJax];
 
     // the big array of file names
     const fileNames = [
@@ -1086,7 +1086,7 @@ exports.build = function (font, inputJax, outputJax, options = defaultOptions) {
         ...extensions.defaults,
         ...input[inputJax],
         ...output[outputJax],
-        ...customExtensions
+        ...options.customExtensions
     ];
 
     // Complication 2
