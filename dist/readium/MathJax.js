@@ -3309,8 +3309,37 @@ MathJax.Ajax.Preloading(
 "[MathJax]/extensions/MathMenu.js",
 "[MathJax]/extensions/toMathML.js",
 "[MathJax]/extensions/HelpDialog.js",
-"[MathJax]/jax/input/TeX/config.js",
-"[MathJax]/jax/input/TeX/jax.js",
+"[MathJax]/jax/input/MathML/config.js",
+"[MathJax]/jax/input/MathML/jax.js",
+"[MathJax]/jax/input/MathML/entities/scr.js",
+"[MathJax]/jax/input/MathML/entities/opf.js",
+"[MathJax]/jax/input/MathML/entities/z.js",
+"[MathJax]/jax/input/MathML/entities/g.js",
+"[MathJax]/jax/input/MathML/entities/r.js",
+"[MathJax]/jax/input/MathML/entities/p.js",
+"[MathJax]/jax/input/MathML/entities/m.js",
+"[MathJax]/jax/input/MathML/entities/q.js",
+"[MathJax]/jax/input/MathML/entities/t.js",
+"[MathJax]/jax/input/MathML/entities/w.js",
+"[MathJax]/jax/input/MathML/entities/f.js",
+"[MathJax]/jax/input/MathML/entities/v.js",
+"[MathJax]/jax/input/MathML/entities/e.js",
+"[MathJax]/jax/input/MathML/entities/k.js",
+"[MathJax]/jax/input/MathML/entities/x.js",
+"[MathJax]/jax/input/MathML/entities/c.js",
+"[MathJax]/jax/input/MathML/entities/n.js",
+"[MathJax]/jax/input/MathML/entities/a.js",
+"[MathJax]/jax/input/MathML/entities/j.js",
+"[MathJax]/jax/input/MathML/entities/u.js",
+"[MathJax]/jax/input/MathML/entities/b.js",
+"[MathJax]/jax/input/MathML/entities/i.js",
+"[MathJax]/jax/input/MathML/entities/l.js",
+"[MathJax]/jax/input/MathML/entities/y.js",
+"[MathJax]/jax/input/MathML/entities/fr.js",
+"[MathJax]/jax/input/MathML/entities/o.js",
+"[MathJax]/jax/input/MathML/entities/s.js",
+"[MathJax]/jax/input/MathML/entities/d.js",
+"[MathJax]/jax/input/MathML/entities/h.js",
 "[MathJax]/jax/output/SVG/config.js",
 "[MathJax]/jax/output/SVG/jax.js",
 "[MathJax]/jax/output/SVG/autoload/mtable.js",
@@ -3321,25 +3350,8 @@ MathJax.Ajax.Preloading(
 "[MathJax]/jax/output/SVG/autoload/multiline.js",
 "[MathJax]/jax/output/SVG/autoload/menclose.js",
 "[MathJax]/jax/output/SVG/autoload/ms.js",
-"[MathJax]/extensions/tex2jax.js",
-"[MathJax]/extensions/TeX/AMScd.js",
-"[MathJax]/extensions/TeX/AMSmath.js",
-"[MathJax]/extensions/TeX/AMSsymbols.js",
-"[MathJax]/extensions/TeX/HTML.js",
-"[MathJax]/extensions/TeX/action.js",
-"[MathJax]/extensions/TeX/autobold.js",
-"[MathJax]/extensions/TeX/bbox.js",
-"[MathJax]/extensions/TeX/boldsymbol.js",
-"[MathJax]/extensions/TeX/cancel.js",
-"[MathJax]/extensions/TeX/color.js",
-"[MathJax]/extensions/TeX/enclose.js",
-"[MathJax]/extensions/TeX/extpfeil.js",
-"[MathJax]/extensions/TeX/mathchoice.js",
-"[MathJax]/extensions/TeX/mediawiki-texvc.js",
-"[MathJax]/extensions/TeX/mhchem.js",
-"[MathJax]/extensions/TeX/newcommand.js",
-"[MathJax]/extensions/TeX/unicode.js",
-"[MathJax]/extensions/TeX/verb.js",
+"[MathJax]/extensions/mml2jax.js",
+"[MathJax]/extensions/MathML/mml3.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/fontdata.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/fontdata-extra.js",
 "[MathJax]/jax/output/SVG/fonts/TeX/AMS/Regular/Main.js",
@@ -9929,10 +9941,10 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
 
 /*************************************************************
  *
- *  MathJax/jax/input/TeX/config.js
+ *  MathJax/jax/input/MathML/config.js
  *
- *  Initializes the TeX InputJax (the main definition is in
- *  MathJax/jax/input/TeX/jax.js, which is loaded when needed).
+ *  Initializes the MathML InputJax (the main definition is in
+ *  MathJax/jax/input/MathML/jax.js, which is loaded when needed).
  *
  *  ---------------------------------------------------------------------
  *  
@@ -9951,48 +9963,35 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/toMathML.js");
  *  limitations under the License.
  */
 
-MathJax.InputJax.TeX = MathJax.InputJax({
-  id: "TeX",
+MathJax.InputJax.MathML = MathJax.InputJax({
+  id: "MathML",
   version: "2.7.1",
-  directory: MathJax.InputJax.directory + "/TeX",
-  extensionDir: MathJax.InputJax.extensionDir + "/TeX",
+  directory: MathJax.InputJax.directory + "/MathML",
+  extensionDir: MathJax.InputJax.extensionDir + "/MathML",
+  entityDir: MathJax.InputJax.directory + "/MathML/entities",
   
   config: {
-    TagSide:       "right",
-    TagIndent:     "0.8em",
-    MultLineWidth: "85%",
-    
-    equationNumbers: {
-      autoNumber: "none",  // "AMS" for standard AMS numbering,
-                           //  or "all" for all displayed equations
-      formatNumber: function (n) {return n},
-      formatTag:    function (n) {return '('+n+')'},
-      formatID:     function (n) {return 'mjx-eqn-'+String(n).replace(/[:"'<>&]/g,"")},
-      formatURL:    function (id,base) {return base+'#'+escape(id)},
-      useLabelIds:  true
-    }
-  },
-  
-  resetEquationNumbers: function () {}  // filled in by AMSmath extension
+    useMathMLspacing: false         // false means use TeX spacing, true means MML spacing
+  }
 });
-MathJax.InputJax.TeX.Register("math/tex");
+MathJax.InputJax.MathML.Register("math/mml");
 
-MathJax.InputJax.TeX.loadComplete("config.js");
+MathJax.InputJax.MathML.loadComplete("config.js");
 
 /* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
 /* vim: set ts=2 et sw=2 tw=80: */
 
 /*************************************************************
  *
- *  MathJax/jax/input/TeX/jax.js
+ *  MathJax/jax/input/MathML/jax.js
  *  
- *  Implements the TeX InputJax that reads mathematics in
- *  TeX and LaTeX format and converts it to the MML ElementJax
+ *  Implements the MathML InputJax that reads mathematics in
+ *  MathML format and converts it to the MML ElementJax
  *  internal format.
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2009-2017 The MathJax Consortium
+ *  Copyright (c) 2010-2017 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -10007,2265 +10006,3295 @@ MathJax.InputJax.TeX.loadComplete("config.js");
  *  limitations under the License.
  */
 
-(function (TEX,HUB,AJAX) {
-  var MML, NBSP = "\u00A0"; 
+(function (MATHML,BROWSER) {
+  var MML;
   
   var _ = function (id) {
     return MathJax.Localization._.apply(MathJax.Localization,
-      [["TeX", id]].concat([].slice.call(arguments,1)));
+      [["MathML",id]].concat([].slice.call(arguments,1)))
   };
-  
-  var isArray = MathJax.Object.isArray;
 
-  var STACK = MathJax.Object.Subclass({
-    Init: function (env,inner) {
-      this.global = {isInner: inner};
-      this.data = [STACKITEM.start(this.global)];
-      if (env) {this.data[0].env = env}
-      this.env = this.data[0].env;
-    },
-    Push: function () {
-      var i, m, item, top;
-      for (i = 0, m = arguments.length; i < m; i++) {
-        item = arguments[i]; if (!item) continue;
-        if (item instanceof MML.mbase) {item = STACKITEM.mml(item)}
-        item.global = this.global;
-        top = (this.data.length ? this.Top().checkItem(item) : true);
-        if (top instanceof Array) {this.Pop(); this.Push.apply(this,top)}
-        else if (top instanceof STACKITEM) {this.Pop(); this.Push(top)}
-        else if (top) {
-          this.data.push(item);
-          if (item.env) {
-            if (item.copyEnv !== false) {
-              for (var id in this.env)
-                {if (this.env.hasOwnProperty(id)) {item.env[id] = this.env[id]}}
-            }
-            this.env = item.env;
-          } else {item.env = this.env}
-        }
-      }
-    },
-    Pop: function () {
-      var item = this.data.pop(); if (!item.isOpen) {delete item.env}
-      this.env = (this.data.length ? this.Top().env : {});
-      return item;
-    },
-    Top: function (n) {
-      if (n == null) {n = 1}
-      if (this.data.length < n) {return null}
-      return this.data[this.data.length-n];
-    },
-    Prev: function (noPop) {
-      var top = this.Top();
-      if (noPop) {return top.data[top.data.length-1]}
-            else {return top.Pop()}
-    },
-    toString: function () {return "stack[\n  "+this.data.join("\n  ")+"\n]"}
-  });
-  
-  var STACKITEM = STACK.Item = MathJax.Object.Subclass({
-    type: "base",
-    endError:   /*_()*/ ["ExtraOpenMissingClose","Extra open brace or missing close brace"],
-    closeError: /*_()*/ ["ExtraCloseMissingOpen","Extra close brace or missing open brace"],
-    rightError: /*_()*/ ["MissingLeftExtraRight","Missing \\left or extra \\right"],
-    Init: function () {
-      if (this.isOpen) {this.env = {}}
-      this.data = [];
-      this.Push.apply(this,arguments);
-    },
-    Push: function () {this.data.push.apply(this.data,arguments)},
-    Pop: function () {return this.data.pop()},
-    mmlData: function (inferred,forceRow) {
-      if (inferred == null) {inferred = true}
-      if (this.data.length === 1 && !forceRow) {return this.data[0]}
-      return MML.mrow.apply(MML,this.data).With((inferred ? {inferred: true}: {}));
-    },
-    checkItem: function (item) {
-      if (item.type === "over" && this.isOpen) {item.num = this.mmlData(false); this.data = []}
-      if (item.type === "cell" && this.isOpen) {
-        if (item.linebreak) {return false}
-        TEX.Error(["Misplaced","Misplaced %1",item.name]);
-      }
-      if (item.isClose && this[item.type+"Error"]) {TEX.Error(this[item.type+"Error"])}
-      if (!item.isNotStack) {return true}
-      this.Push(item.data[0]); return false;
-    },
-    With: function (def) {
-      for (var id in def) {if (def.hasOwnProperty(id)) {this[id] = def[id]}}
-      return this;
-    },
-    toString: function () {return this.type+"["+this.data.join("; ")+"]"}
-  });
+  MATHML.Parse = MathJax.Object.Subclass({
 
-  STACKITEM.start = STACKITEM.Subclass({
-    type: "start", isOpen: true,
-    Init: function (global) {
-      this.SUPER(arguments).Init.call(this);
-      this.global = global;
-    },
-    checkItem: function (item) {
-      if (item.type === "stop") {return STACKITEM.mml(this.mmlData())}
-      return this.SUPER(arguments).checkItem.call(this,item);
-    }
-  });
-
-  STACKITEM.stop = STACKITEM.Subclass({
-    type: "stop", isClose: true
-  });
-
-  STACKITEM.open = STACKITEM.Subclass({
-    type: "open", isOpen: true,
-    stopError: /*_()*/ ["ExtraOpenMissingClose","Extra open brace or missing close brace"],
-    checkItem: function (item) {
-      if (item.type === "close") {
-        var mml = this.mmlData();
-        return STACKITEM.mml(MML.TeXAtom(mml)); // TeXAtom make it an ORD to prevent spacing (FIXME: should be another way)
-      }
-      return this.SUPER(arguments).checkItem.call(this,item);
-    }
-  });
-
-  STACKITEM.close = STACKITEM.Subclass({
-    type: "close", isClose: true
-  });
-
-  STACKITEM.prime = STACKITEM.Subclass({
-    type: "prime",
-    checkItem: function (item) {
-      if (this.data[0].type !== "msubsup") 
-        {return [MML.msup(this.data[0],this.data[1]),item]}
-      this.data[0].SetData(this.data[0].sup,this.data[1]);
-      return [this.data[0],item];
-    }
-  });
-  
-  STACKITEM.subsup = STACKITEM.Subclass({
-    type: "subsup",
-    stopError: /*_()*/ ["MissingScript","Missing superscript or subscript argument"],
-    supError:  /*_()*/ ["MissingOpenForSup","Missing open brace for superscript"],
-    subError:  /*_()*/ ["MissingOpenForSub","Missing open brace for subscript"],
-    checkItem: function (item) {
-      if (item.type === "open" || item.type === "left") {return true}
-      if (item.type === "mml") {
-        if (this.primes) {
-          if (this.position !== 2) {this.data[0].SetData(2,this.primes)}
-            else {item.data[0] = MML.mrow(this.primes.With({variantForm:true}),item.data[0])}
-        }
-        this.data[0].SetData(this.position,item.data[0]);
-        if (this.movesupsub != null) {this.data[0].movesupsub = this.movesupsub}
-        return STACKITEM.mml(this.data[0]);
-      }
-      if (this.SUPER(arguments).checkItem.call(this,item))
-        {TEX.Error(this[["","subError","supError"][this.position]])}
-    },
-    Pop: function () {}
-  });
-
-  STACKITEM.over = STACKITEM.Subclass({
-    type: "over", isClose: true, name: "\\over",
-    checkItem: function (item,stack) {
-      if (item.type === "over")
-        {TEX.Error(["AmbiguousUseOf","Ambiguous use of %1",item.name])}
-      if (item.isClose) {
-        var mml = MML.mfrac(this.num,this.mmlData(false));
-        if (this.thickness != null) {mml.linethickness = this.thickness}
-        if (this.open || this.close) {
-          mml.texWithDelims = true;
-          mml = TEX.fixedFence(this.open,mml,this.close);
-        }
-        return [STACKITEM.mml(mml), item];
-      }
-      return this.SUPER(arguments).checkItem.call(this,item);
-    },
-    toString: function () {return "over["+this.num+" / "+this.data.join("; ")+"]"}
-  });
-
-  STACKITEM.left = STACKITEM.Subclass({
-    type: "left", isOpen: true, delim: '(',
-    stopError: /*_()*/ ["ExtraLeftMissingRight", "Extra \\left or missing \\right"],
-    checkItem: function (item) {
-      if (item.type === "right")
-        {return STACKITEM.mml(TEX.fenced(this.delim,this.mmlData(),item.delim))}
-      return this.SUPER(arguments).checkItem.call(this,item);
-    }
-  });
-
-  STACKITEM.right = STACKITEM.Subclass({
-    type: "right", isClose: true, delim: ')'
-  });
-
-  STACKITEM.begin = STACKITEM.Subclass({
-    type: "begin", isOpen: true,
-    checkItem: function (item) {
-      if (item.type === "end") {
-        if (item.name !== this.name)
-          {TEX.Error(["EnvBadEnd","\\begin{%1} ended with \\end{%2}",this.name,item.name])}
-        if (!this.end) {return STACKITEM.mml(this.mmlData())}
-        return this.parse[this.end].call(this.parse,this,this.data);
-      }
-      if (item.type === "stop")
-        {TEX.Error(["EnvMissingEnd","Missing \\end{%1}",this.name])}
-      return this.SUPER(arguments).checkItem.call(this,item);
-    }
-  });
-  
-  STACKITEM.end = STACKITEM.Subclass({
-    type: "end", isClose: true
-  });
-
-  STACKITEM.style = STACKITEM.Subclass({
-    type: "style",
-    checkItem: function (item) {
-      if (!item.isClose) {return this.SUPER(arguments).checkItem.call(this,item)}
-      var mml = MML.mstyle.apply(MML,this.data).With(this.styles);
-      return [STACKITEM.mml(mml),item];
-    }
-  });
-  
-  STACKITEM.position = STACKITEM.Subclass({
-    type: "position",
-    checkItem: function (item) {
-      if (item.isClose) {TEX.Error(["MissingBoxFor","Missing box for %1",this.name])}
-      if (item.isNotStack) {
-        var mml = item.mmlData();
-        switch (this.move) {
-         case 'vertical':
-          mml = MML.mpadded(mml).With({height: this.dh, depth: this.dd, voffset: this.dh});
-          return [STACKITEM.mml(mml)];
-         case 'horizontal':
-          return [STACKITEM.mml(this.left),item,STACKITEM.mml(this.right)];
-        }
-      }
-      return this.SUPER(arguments).checkItem.call(this,item);
-    }
-  });
-  
-  STACKITEM.array = STACKITEM.Subclass({
-    type: "array", isOpen: true, copyEnv: false, arraydef: {},
-    Init: function () {
-      this.table = []; this.row = []; this.frame = []; this.hfill = [];
-      this.SUPER(arguments).Init.apply(this,arguments);
-    },
-    checkItem: function (item) {
-      if (item.isClose && item.type !== "over") {
-        if (item.isEntry) {this.EndEntry(); this.clearEnv(); return false}
-        if (item.isCR)    {this.EndEntry(); this.EndRow(); this.clearEnv(); return false}
-        this.EndTable(); this.clearEnv();
-        var scriptlevel = this.arraydef.scriptlevel; delete this.arraydef.scriptlevel;
-        var mml = MML.mtable.apply(MML,this.table).With(this.arraydef);
-        if (this.frame.length === 4) {
-          mml.frame = (this.frame.dashed ? "dashed" : "solid");
-        } else if (this.frame.length) {
-          mml.hasFrame = true;
-          if (this.arraydef.rowlines) {this.arraydef.rowlines = this.arraydef.rowlines.replace(/none( none)+$/,"none")}
-          mml = MML.menclose(mml).With({notation: this.frame.join(" "), isFrame: true});
-          if ((this.arraydef.columnlines||"none") != "none" ||
-              (this.arraydef.rowlines||"none") != "none") {mml.padding = 0} // HTML-CSS jax implements this
-        }
-        if (scriptlevel) {mml = MML.mstyle(mml).With({scriptlevel: scriptlevel})}
-        if (this.open || this.close) {mml = TEX.fenced(this.open,mml,this.close)}
-        mml = STACKITEM.mml(mml);
-        if (this.requireClose) {
-          if (item.type === 'close') {return mml}
-          TEX.Error(["MissingCloseBrace","Missing close brace"]);
-        }
-        return [mml,item];
-      }
-      return this.SUPER(arguments).checkItem.call(this,item);
-    },
-    EndEntry: function () {
-      var mtd = MML.mtd.apply(MML,this.data);
-      if (this.hfill.length) {
-        if (this.hfill[0] === 0) mtd.columnalign = "right";
-        if (this.hfill[this.hfill.length-1] === this.data.length)
-          mtd.columnalign = (mtd.columnalign ? "center" : "left");
-      }
-      this.row.push(mtd); this.data = []; this.hfill = [];
-    },
-    EndRow:   function () {
-      var mtr = MML.mtr;
-      if (this.isNumbered && this.row.length === 3) {
-        this.row.unshift(this.row.pop());  // move equation number to first position
-        mtr = MML.mlabeledtr;
-      }
-      this.table.push(mtr.apply(MML,this.row)); this.row = [];
-    },
-    EndTable: function () {
-      if (this.data.length || this.row.length) {this.EndEntry(); this.EndRow()}
-      this.checkLines();
-    },
-    checkLines: function () {
-      if (this.arraydef.rowlines) {
-        var lines = this.arraydef.rowlines.split(/ /);
-        if (lines.length === this.table.length) {
-          this.frame.push("bottom"); lines.pop();
-          this.arraydef.rowlines = lines.join(' ');
-        } else if (lines.length < this.table.length-1) {
-          this.arraydef.rowlines += " none";
-        }
-      }
-      if (this.rowspacing) {
-        var rows = this.arraydef.rowspacing.split(/ /);
-        while (rows.length < this.table.length) {rows.push(this.rowspacing+"em")}
-        this.arraydef.rowspacing = rows.join(' ');
-      }
-    },
-    clearEnv: function () {
-      for (var id in this.env) {if (this.env.hasOwnProperty(id)) {delete this.env[id]}}
-    }
-  });
-  
-  STACKITEM.cell = STACKITEM.Subclass({
-    type: "cell", isClose: true
-  });
-
-  STACKITEM.mml = STACKITEM.Subclass({
-    type: "mml", isNotStack: true,
-    Add: function () {this.data.push.apply(this.data,arguments); return this}
-  });
-  
-  STACKITEM.fn = STACKITEM.Subclass({
-    type: "fn",
-    checkItem: function (item) {
-      if (this.data[0]) {
-        if (item.isOpen) {return true}
-        if (item.type !== "fn") {
-          if (item.type !== "mml" || !item.data[0]) {return [this.data[0],item]}
-          if (item.data[0].isa(MML.mspace)) {return [this.data[0],item]}
-          var mml = item.data[0]; if (mml.isEmbellished()) {mml = mml.CoreMO()}
-          if ([0,0,1,1,0,1,1,0,0,0][mml.Get("texClass")]) {return [this.data[0],item]}
-        }
-        return [this.data[0],MML.mo(MML.entity("#x2061")).With({texClass:MML.TEXCLASS.NONE}),item];
-      }
-      return this.SUPER(arguments).checkItem.apply(this,arguments);
-    }
-  });
-  
-  STACKITEM.not = STACKITEM.Subclass({
-    type: "not",
-    checkItem: function (item) {
-      var mml, c;
-      if (item.type === "open" || item.type === "left") {return true}
-      if (item.type === "mml" && item.data[0].type.match(/^(mo|mi|mtext)$/)) {
-        mml = item.data[0], c = mml.data.join("");
-        if (c.length === 1 && !mml.movesupsub) {
-          c = STACKITEM.not.remap[c.charCodeAt(0)];
-          if (c) {mml.SetData(0,MML.chars(String.fromCharCode(c)))}
-            else {mml.Append(MML.chars("\u0338"))}
-          return item;
-        }
-      }
-      //  \mathrel{\rlap{\notChar}}
-      mml = MML.mpadded(MML.mtext("\u29F8")).With({width:0});
-      mml = MML.TeXAtom(mml).With({texClass:MML.TEXCLASS.REL});
-      return [mml,item];
-    }
-  });
-  STACKITEM.not.remap = {
-    0x2190:0x219A, 0x2192:0x219B, 0x2194:0x21AE,
-    0x21D0:0x21CD, 0x21D2:0x21CF, 0x21D4:0x21CE,
-    0x2208:0x2209, 0x220B:0x220C, 0x2223:0x2224, 0x2225:0x2226,
-    0x223C:0x2241, 0x007E:0x2241, 0x2243:0x2244, 0x2245:0x2247,
-    0x2248:0x2249, 0x224D:0x226D, 0x003D:0x2260, 0x2261:0x2262,
-    0x003C:0x226E, 0x003E:0x226F, 0x2264:0x2270, 0x2265:0x2271,
-    0x2272:0x2274, 0x2273:0x2275, 0x2276:0x2278, 0x2277:0x2279,
-    0x227A:0x2280, 0x227B:0x2281, 0x2282:0x2284, 0x2283:0x2285,
-    0x2286:0x2288, 0x2287:0x2289, 0x22A2:0x22AC, 0x22A8:0x22AD,
-    0x22A9:0x22AE, 0x22AB:0x22AF, 0x227C:0x22E0, 0x227D:0x22E1,
-    0x2291:0x22E2, 0x2292:0x22E3, 0x22B2:0x22EA, 0x22B3:0x22EB,
-    0x22B4:0x22EC, 0x22B5:0x22ED, 0x2203:0x2204
-  };
-  
-  STACKITEM.dots = STACKITEM.Subclass({
-    type: "dots",
-    checkItem: function (item) {
-      if (item.type === "open" || item.type === "left") {return true}
-      var dots = this.ldots;
-      if (item.type === "mml" && item.data[0].isEmbellished()) {
-        var tclass = item.data[0].CoreMO().Get("texClass");
-        if (tclass === MML.TEXCLASS.BIN || tclass === MML.TEXCLASS.REL) {dots = this.cdots}
-      }
-      return [dots,item];
-    }
-  });
-  
-
-  var TEXDEF = {
-    //
-    //  Add new definitions without overriding user-defined ones
-    //
-    Add: function (src,dst,nouser) {
-      if (!dst) {dst = this}
-      for (var id in src) {if (src.hasOwnProperty(id)) {
-        if (typeof src[id] === 'object' && !isArray(src[id]) &&
-           (typeof dst[id] === 'object' || typeof dst[id] === 'function')) 
-             {this.Add(src[id],dst[id],src[id],nouser)}
-          else if (!dst[id] || !dst[id].isUser || !nouser) {dst[id] = src[id]}
-      }}
-      return dst;
-    }
-  };
-  var STARTUP = function () {
-    MML = MathJax.ElementJax.mml;
-    HUB.Insert(TEXDEF,{
-  
-      // patterns for letters and numbers
-      letter:  /[a-z]/i,
-      digit:   /[0-9.]/,
-      number:  /^(?:[0-9]+(?:\{,\}[0-9]{3})*(?:\.[0-9]*)*|\.[0-9]+)/,
-    
-      special: {
-        '\\':  'ControlSequence',
-        '{':   'Open',
-        '}':   'Close',
-        '~':   'Tilde',
-        '^':   'Superscript',
-        '_':   'Subscript',
-        ' ':   'Space',
-        "\t":  'Space',
-        "\r":  'Space',
-        "\n":  'Space',
-        "'":   'Prime',
-        '%':   'Comment',
-        '&':   'Entry',
-        '#':   'Hash',
-        '\u00A0': 'Space',
-        '\u2019': 'Prime'
-      },
-      
-      remap: {
-        '-':   '2212',
-        '*':   '2217',
-        '`':   '2018'   // map ` to back quote
-      },
-    
-      mathchar0mi: {
-	// Lower-case greek
-	alpha:        '03B1',
-	beta:         '03B2',
-	gamma:        '03B3',
-	delta:        '03B4',
-	epsilon:      '03F5',
-	zeta:         '03B6',
-	eta:          '03B7',
-	theta:        '03B8',
-	iota:         '03B9',
-	kappa:        '03BA',
-	lambda:       '03BB',
-	mu:           '03BC',
-	nu:           '03BD',
-	xi:           '03BE',
-	omicron:      '03BF', // added for completeness
-	pi:           '03C0',
-	rho:          '03C1',
-	sigma:        '03C3',
-	tau:          '03C4',
-	upsilon:      '03C5',
-	phi:          '03D5',
-	chi:          '03C7',
-	psi:          '03C8',
-	omega:        '03C9',
-	varepsilon:   '03B5',
-	vartheta:     '03D1',
-	varpi:        '03D6',
-	varrho:       '03F1',
-	varsigma:     '03C2',
-	varphi:       '03C6',
-        
-        // Ord symbols
-        S:            ['00A7',{mathvariant: MML.VARIANT.NORMAL}],
-        aleph:        ['2135',{mathvariant: MML.VARIANT.NORMAL}],
-        hbar:         ['210F',{variantForm:true}],
-        imath:        '0131',
-        jmath:        '0237',
-        ell:          '2113',
-        wp:           ['2118',{mathvariant: MML.VARIANT.NORMAL}],
-        Re:           ['211C',{mathvariant: MML.VARIANT.NORMAL}],
-        Im:           ['2111',{mathvariant: MML.VARIANT.NORMAL}],
-        partial:      ['2202',{mathvariant: MML.VARIANT.NORMAL}],
-        infty:        ['221E',{mathvariant: MML.VARIANT.NORMAL}],
-        prime:        ['2032',{mathvariant: MML.VARIANT.NORMAL, variantForm:true}],
-        emptyset:     ['2205',{mathvariant: MML.VARIANT.NORMAL}],
-        nabla:        ['2207',{mathvariant: MML.VARIANT.NORMAL}],
-        top:          ['22A4',{mathvariant: MML.VARIANT.NORMAL}],
-        bot:          ['22A5',{mathvariant: MML.VARIANT.NORMAL}],
-        angle:        ['2220',{mathvariant: MML.VARIANT.NORMAL}],
-        triangle:     ['25B3',{mathvariant: MML.VARIANT.NORMAL}],
-        backslash:    ['2216',{mathvariant: MML.VARIANT.NORMAL, variantForm:true}],
-        forall:       ['2200',{mathvariant: MML.VARIANT.NORMAL}],
-        exists:       ['2203',{mathvariant: MML.VARIANT.NORMAL}],
-        neg:          ['00AC',{mathvariant: MML.VARIANT.NORMAL}],
-        lnot:         ['00AC',{mathvariant: MML.VARIANT.NORMAL}],
-        flat:         ['266D',{mathvariant: MML.VARIANT.NORMAL}],
-        natural:      ['266E',{mathvariant: MML.VARIANT.NORMAL}],
-        sharp:        ['266F',{mathvariant: MML.VARIANT.NORMAL}],
-        clubsuit:     ['2663',{mathvariant: MML.VARIANT.NORMAL}],
-        diamondsuit:  ['2662',{mathvariant: MML.VARIANT.NORMAL}],
-        heartsuit:    ['2661',{mathvariant: MML.VARIANT.NORMAL}],
-        spadesuit:    ['2660',{mathvariant: MML.VARIANT.NORMAL}]
-      },
-        
-      mathchar0mo: {
-        surd:         '221A',
-
-        // big ops
-        coprod:       ['2210',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        bigvee:       ['22C1',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        bigwedge:     ['22C0',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        biguplus:     ['2A04',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        bigcap:       ['22C2',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        bigcup:       ['22C3',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        'int':        ['222B',{texClass: MML.TEXCLASS.OP}],
-        intop:        ['222B',{texClass: MML.TEXCLASS.OP, movesupsub:true, movablelimits:true}],
-        iint:         ['222C',{texClass: MML.TEXCLASS.OP}],
-        iiint:        ['222D',{texClass: MML.TEXCLASS.OP}],
-        prod:         ['220F',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        sum:          ['2211',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        bigotimes:    ['2A02',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        bigoplus:     ['2A01',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        bigodot:      ['2A00',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        oint:         ['222E',{texClass: MML.TEXCLASS.OP}],
-        bigsqcup:     ['2A06',{texClass: MML.TEXCLASS.OP, movesupsub:true}],
-        smallint:     ['222B',{largeop:false}],
-        
-        // binary operations
-        triangleleft:      '25C3',
-        triangleright:     '25B9',
-        bigtriangleup:     '25B3',
-        bigtriangledown:   '25BD',
-        wedge:        '2227',
-        land:         '2227',
-        vee:          '2228',
-        lor:          '2228',
-        cap:          '2229',
-        cup:          '222A',
-        ddagger:      '2021',
-        dagger:       '2020',
-        sqcap:        '2293',
-        sqcup:        '2294',
-        uplus:        '228E',
-        amalg:        '2A3F',
-        diamond:      '22C4',
-        bullet:       '2219',
-        wr:           '2240',
-        div:          '00F7',
-        odot:         ['2299',{largeop: false}],
-        oslash:       ['2298',{largeop: false}],
-        otimes:       ['2297',{largeop: false}],
-        ominus:       ['2296',{largeop: false}],
-        oplus:        ['2295',{largeop: false}],
-        mp:           '2213',
-        pm:           '00B1',
-        circ:         '2218',
-        bigcirc:      '25EF',
-        setminus:     ['2216',{variantForm:true}],
-        cdot:         '22C5',
-        ast:          '2217',
-        times:        '00D7',
-        star:         '22C6',
-        
-        // Relations
-        propto:       '221D',
-        sqsubseteq:   '2291',
-        sqsupseteq:   '2292',
-        parallel:     '2225',
-        mid:          '2223',
-        dashv:        '22A3',
-        vdash:        '22A2',
-        leq:          '2264',
-        le:           '2264',
-        geq:          '2265',
-        ge:           '2265',
-        lt:           '003C',
-        gt:           '003E',
-        succ:         '227B',
-        prec:         '227A',
-        approx:       '2248',
-        succeq:       '2AB0',  // or '227C',
-        preceq:       '2AAF',  // or '227D',
-        supset:       '2283',
-        subset:       '2282',
-        supseteq:     '2287',
-        subseteq:     '2286',
-        'in':         '2208',
-        ni:           '220B',
-        notin:        '2209',
-        owns:         '220B',
-        gg:           '226B',
-        ll:           '226A',
-        sim:          '223C',
-        simeq:        '2243',
-        perp:         '22A5',
-        equiv:        '2261',
-        asymp:        '224D',
-        smile:        '2323',
-        frown:        '2322',
-        ne:           '2260',
-        neq:          '2260',
-        cong:         '2245',
-        doteq:        '2250',
-        bowtie:       '22C8',
-        models:       '22A8',
-        
-        notChar:      '29F8',
-        
-        
-        // Arrows
-        Leftrightarrow:     '21D4',
-        Leftarrow:          '21D0',
-        Rightarrow:         '21D2',
-        leftrightarrow:     '2194',
-        leftarrow:          '2190',
-        gets:               '2190',
-        rightarrow:         '2192',
-        to:                 '2192',
-        mapsto:             '21A6',
-        leftharpoonup:      '21BC',
-        leftharpoondown:    '21BD',
-        rightharpoonup:     '21C0',
-        rightharpoondown:   '21C1',
-        nearrow:            '2197',
-        searrow:            '2198',
-        nwarrow:            '2196',
-        swarrow:            '2199',
-        rightleftharpoons:  '21CC',
-        hookrightarrow:     '21AA',
-        hookleftarrow:      '21A9',
-        longleftarrow:      '27F5',
-        Longleftarrow:      '27F8',
-        longrightarrow:     '27F6',
-        Longrightarrow:     '27F9',
-        Longleftrightarrow: '27FA',
-        longleftrightarrow: '27F7',
-        longmapsto:         '27FC',
-        
-        
-        // Misc.
-        ldots:            '2026',
-        cdots:            '22EF',
-        vdots:            '22EE',
-        ddots:            '22F1',
-        dotsc:            '2026',  // dots with commas
-        dotsb:            '22EF',  // dots with binary ops and relations
-        dotsm:            '22EF',  // dots with multiplication
-        dotsi:            '22EF',  // dots with integrals
-        dotso:            '2026',  // other dots
-        
-        ldotp:            ['002E', {texClass: MML.TEXCLASS.PUNCT}],
-        cdotp:            ['22C5', {texClass: MML.TEXCLASS.PUNCT}],
-        colon:            ['003A', {texClass: MML.TEXCLASS.PUNCT}]
-      },
-      
-      mathchar7: {
-        Gamma:        '0393',
-        Delta:        '0394',
-        Theta:        '0398',
-        Lambda:       '039B',
-        Xi:           '039E',
-        Pi:           '03A0',
-        Sigma:        '03A3',
-        Upsilon:      '03A5',
-        Phi:          '03A6',
-        Psi:          '03A8',
-        Omega:        '03A9',
-        
-        '_':          '005F',
-        '#':          '0023',
-        '$':          '0024',
-        '%':          '0025',
-        '&':          '0026',
-        And:          '0026'
-      },
-      
-      delimiter: {
-        '(':                '(',
-        ')':                ')',
-        '[':                '[',
-        ']':                ']',
-        '<':                '27E8',
-        '>':                '27E9',
-        '\\lt':             '27E8',
-        '\\gt':             '27E9',
-        '/':                '/',
-        '|':                ['|',{texClass:MML.TEXCLASS.ORD}],
-        '.':                '',
-        '\\\\':             '\\',
-        '\\lmoustache':     '23B0',  // non-standard
-        '\\rmoustache':     '23B1',  // non-standard
-        '\\lgroup':         '27EE',  // non-standard
-        '\\rgroup':         '27EF',  // non-standard
-        '\\arrowvert':      '23D0',
-        '\\Arrowvert':      '2016',
-        '\\bracevert':      '23AA',  // non-standard
-        '\\Vert':           ['2016',{texClass:MML.TEXCLASS.ORD}],
-        '\\|':              ['2016',{texClass:MML.TEXCLASS.ORD}],
-        '\\vert':           ['|',{texClass:MML.TEXCLASS.ORD}],
-        '\\uparrow':        '2191',
-        '\\downarrow':      '2193',
-        '\\updownarrow':    '2195',
-        '\\Uparrow':        '21D1',
-        '\\Downarrow':      '21D3',
-        '\\Updownarrow':    '21D5',
-        '\\backslash':      '\\',
-        '\\rangle':         '27E9',
-        '\\langle':         '27E8',
-        '\\rbrace':         '}',
-        '\\lbrace':         '{',
-        '\\}':              '}',
-        '\\{':              '{',
-        '\\rceil':          '2309',
-        '\\lceil':          '2308',
-        '\\rfloor':         '230B',
-        '\\lfloor':         '230A',
-        '\\lbrack':         '[',
-        '\\rbrack':         ']'
-      },
-      
-      macros: {
-        displaystyle:      ['SetStyle','D',true,0],
-        textstyle:         ['SetStyle','T',false,0],
-        scriptstyle:       ['SetStyle','S',false,1],
-        scriptscriptstyle: ['SetStyle','SS',false,2],
-        
-        rm:                ['SetFont',MML.VARIANT.NORMAL],
-        mit:               ['SetFont',MML.VARIANT.ITALIC],
-        oldstyle:          ['SetFont',MML.VARIANT.OLDSTYLE],
-        cal:               ['SetFont',MML.VARIANT.CALIGRAPHIC],
-        it:                ['SetFont',"-tex-mathit"], // needs special handling
-        bf:                ['SetFont',MML.VARIANT.BOLD],
-        bbFont:            ['SetFont',MML.VARIANT.DOUBLESTRUCK],
-        scr:               ['SetFont',MML.VARIANT.SCRIPT],
-        frak:              ['SetFont',MML.VARIANT.FRAKTUR],
-        sf:                ['SetFont',MML.VARIANT.SANSSERIF],
-        tt:                ['SetFont',MML.VARIANT.MONOSPACE],
-
-//      font:
-        
-        tiny:              ['SetSize',0.5],
-        Tiny:              ['SetSize',0.6],  // non-standard
-        scriptsize:        ['SetSize',0.7],
-        small:             ['SetSize',0.85],
-        normalsize:        ['SetSize',1.0],
-        large:             ['SetSize',1.2],
-        Large:             ['SetSize',1.44],
-        LARGE:             ['SetSize',1.73],
-        huge:              ['SetSize',2.07],
-        Huge:              ['SetSize',2.49],
-        
-        arcsin:            ['NamedFn'],
-        arccos:            ['NamedFn'],
-        arctan:            ['NamedFn'],
-        arg:               ['NamedFn'],
-        cos:               ['NamedFn'],
-        cosh:              ['NamedFn'],
-        cot:               ['NamedFn'],
-        coth:              ['NamedFn'],
-        csc:               ['NamedFn'],
-        deg:               ['NamedFn'],
-        det:                'NamedOp',
-        dim:               ['NamedFn'],
-        exp:               ['NamedFn'],
-        gcd:                'NamedOp',
-        hom:               ['NamedFn'],
-        inf:                'NamedOp',
-        ker:               ['NamedFn'],
-        lg:                ['NamedFn'],
-        lim:                'NamedOp',
-        liminf:            ['NamedOp','lim&thinsp;inf'],
-        limsup:            ['NamedOp','lim&thinsp;sup'],
-        ln:                ['NamedFn'],
-        log:               ['NamedFn'],
-        max:                'NamedOp',
-        min:                'NamedOp',
-        Pr:                 'NamedOp',
-        sec:               ['NamedFn'],
-        sin:               ['NamedFn'],
-        sinh:              ['NamedFn'],
-        sup:                'NamedOp',
-        tan:               ['NamedFn'],
-        tanh:              ['NamedFn'],
-        
-        limits:            ['Limits',1],
-        nolimits:          ['Limits',0],
-
-        overline:            ['UnderOver','00AF',null,1],
-        underline:           ['UnderOver','005F'],
-        overbrace:           ['UnderOver','23DE',1],
-        underbrace:          ['UnderOver','23DF',1],
-        overparen:           ['UnderOver','23DC'],
-        underparen:          ['UnderOver','23DD'],
-        overrightarrow:      ['UnderOver','2192'],
-        underrightarrow:     ['UnderOver','2192'],
-        overleftarrow:       ['UnderOver','2190'],
-        underleftarrow:      ['UnderOver','2190'],
-        overleftrightarrow:  ['UnderOver','2194'],
-        underleftrightarrow: ['UnderOver','2194'],
-
-        overset:            'Overset',
-        underset:           'Underset',
-        stackrel:           ['Macro','\\mathrel{\\mathop{#2}\\limits^{#1}}',2],
-          
-        over:               'Over',
-        overwithdelims:     'Over',
-        atop:               'Over',
-        atopwithdelims:     'Over',
-        above:              'Over',
-        abovewithdelims:    'Over',
-        brace:             ['Over','{','}'],
-        brack:             ['Over','[',']'],
-        choose:            ['Over','(',')'],
-        
-        frac:               'Frac',
-        sqrt:               'Sqrt',
-        root:               'Root',
-        uproot:            ['MoveRoot','upRoot'],
-        leftroot:          ['MoveRoot','leftRoot'],
-        
-        left:               'LeftRight',
-        right:              'LeftRight',
-        middle:             'Middle',
-
-        llap:               'Lap',
-        rlap:               'Lap',
-        raise:              'RaiseLower',
-        lower:              'RaiseLower',
-        moveleft:           'MoveLeftRight',
-        moveright:          'MoveLeftRight',
-
-        ',':               ['Spacer',MML.LENGTH.THINMATHSPACE],
-        ':':               ['Spacer',MML.LENGTH.MEDIUMMATHSPACE],  // for LaTeX
-        '>':               ['Spacer',MML.LENGTH.MEDIUMMATHSPACE],
-        ';':               ['Spacer',MML.LENGTH.THICKMATHSPACE],
-        '!':               ['Spacer',MML.LENGTH.NEGATIVETHINMATHSPACE],
-        enspace:           ['Spacer',".5em"],
-        quad:              ['Spacer',"1em"],
-        qquad:             ['Spacer',"2em"],
-        thinspace:         ['Spacer',MML.LENGTH.THINMATHSPACE],
-        negthinspace:      ['Spacer',MML.LENGTH.NEGATIVETHINMATHSPACE],
-    
-        hskip:              'Hskip',
-        hspace:             'Hskip',
-        kern:               'Hskip',
-        mskip:              'Hskip',
-        mspace:             'Hskip',
-        mkern:              'Hskip',
-        Rule:              ['Rule'],
-        Space:             ['Rule','blank'],
-    
-        big:               ['MakeBig',MML.TEXCLASS.ORD,0.85],
-        Big:               ['MakeBig',MML.TEXCLASS.ORD,1.15],
-        bigg:              ['MakeBig',MML.TEXCLASS.ORD,1.45],
-        Bigg:              ['MakeBig',MML.TEXCLASS.ORD,1.75],
-        bigl:              ['MakeBig',MML.TEXCLASS.OPEN,0.85],
-        Bigl:              ['MakeBig',MML.TEXCLASS.OPEN,1.15],
-        biggl:             ['MakeBig',MML.TEXCLASS.OPEN,1.45],
-        Biggl:             ['MakeBig',MML.TEXCLASS.OPEN,1.75],
-        bigr:              ['MakeBig',MML.TEXCLASS.CLOSE,0.85],
-        Bigr:              ['MakeBig',MML.TEXCLASS.CLOSE,1.15],
-        biggr:             ['MakeBig',MML.TEXCLASS.CLOSE,1.45],
-        Biggr:             ['MakeBig',MML.TEXCLASS.CLOSE,1.75],
-        bigm:              ['MakeBig',MML.TEXCLASS.REL,0.85],
-        Bigm:              ['MakeBig',MML.TEXCLASS.REL,1.15],
-        biggm:             ['MakeBig',MML.TEXCLASS.REL,1.45],
-        Biggm:             ['MakeBig',MML.TEXCLASS.REL,1.75],
-
-        mathord:           ['TeXAtom',MML.TEXCLASS.ORD],
-        mathop:            ['TeXAtom',MML.TEXCLASS.OP],
-        mathopen:          ['TeXAtom',MML.TEXCLASS.OPEN],
-        mathclose:         ['TeXAtom',MML.TEXCLASS.CLOSE],
-        mathbin:           ['TeXAtom',MML.TEXCLASS.BIN],
-        mathrel:           ['TeXAtom',MML.TEXCLASS.REL],
-        mathpunct:         ['TeXAtom',MML.TEXCLASS.PUNCT],
-        mathinner:         ['TeXAtom',MML.TEXCLASS.INNER],
-
-        vcenter:           ['TeXAtom',MML.TEXCLASS.VCENTER],
-
-        mathchoice:        ['Extension','mathchoice'],
-        buildrel:           'BuildRel',
-    
-        hbox:               ['HBox',0],
-        text:               'HBox',
-        mbox:               ['HBox',0],
-        fbox:               'FBox',
-
-        strut:              'Strut',
-        mathstrut:         ['Macro','\\vphantom{(}'],
-        phantom:            'Phantom',
-        vphantom:          ['Phantom',1,0],
-        hphantom:          ['Phantom',0,1],
-        smash:              'Smash',
-    
-        acute:             ['Accent', "00B4"],  // or 0301 or 02CA
-        grave:             ['Accent', "0060"],  // or 0300 or 02CB
-        ddot:              ['Accent', "00A8"],  // or 0308
-        tilde:             ['Accent', "007E"],  // or 0303 or 02DC
-        bar:               ['Accent', "00AF"],  // or 0304 or 02C9
-        breve:             ['Accent', "02D8"],  // or 0306
-        check:             ['Accent', "02C7"],  // or 030C
-        hat:               ['Accent', "005E"],  // or 0302 or 02C6
-        vec:               ['Accent', "2192"],  // or 20D7
-        dot:               ['Accent', "02D9"],  // or 0307
-        widetilde:         ['Accent', "007E",1], // or 0303 or 02DC
-        widehat:           ['Accent', "005E",1], // or 0302 or 02C6
-
-        matrix:             'Matrix',
-        array:              'Matrix',
-        pmatrix:           ['Matrix','(',')'],
-        cases:             ['Matrix','{','',"left left",null,".1em",null,true],
-        eqalign:           ['Matrix',null,null,"right left",MML.LENGTH.THICKMATHSPACE,".5em",'D'],
-        displaylines:      ['Matrix',null,null,"center",null,".5em",'D'],
-        cr:                 'Cr',
-        '\\':               'CrLaTeX',
-        newline:            'Cr',
-        hline:             ['HLine','solid'],
-        hdashline:         ['HLine','dashed'],
-//      noalign:            'HandleNoAlign',
-        eqalignno:         ['Matrix',null,null,"right left",MML.LENGTH.THICKMATHSPACE,".5em",'D',null,"right"],
-        leqalignno:        ['Matrix',null,null,"right left",MML.LENGTH.THICKMATHSPACE,".5em",'D',null,"left"],
-        hfill:              'HFill',
-        hfil:               'HFill',   // \hfil treated as \hfill for now
-        hfilll:             'HFill',   // \hfilll treated as \hfill for now
-
-        //  TeX substitution macros
-        bmod:              ['Macro','\\mmlToken{mo}[lspace="thickmathspace" rspace="thickmathspace"]{mod}'],
-        pmod:              ['Macro','\\pod{\\mmlToken{mi}{mod}\\kern 6mu #1}',1],
-        mod:               ['Macro','\\mathchoice{\\kern18mu}{\\kern12mu}{\\kern12mu}{\\kern12mu}\\mmlToken{mi}{mod}\\,\\,#1',1],
-        pod:               ['Macro','\\mathchoice{\\kern18mu}{\\kern8mu}{\\kern8mu}{\\kern8mu}(#1)',1],
-        iff:               ['Macro','\\;\\Longleftrightarrow\\;'],
-        skew:              ['Macro','{{#2{#3\\mkern#1mu}\\mkern-#1mu}{}}',3],
-        mathcal:           ['Macro','{\\cal #1}',1],
-        mathscr:           ['Macro','{\\scr #1}',1],
-        mathrm:            ['Macro','{\\rm #1}',1],
-        mathbf:            ['Macro','{\\bf #1}',1],
-        mathbb:            ['Macro','{\\bbFont #1}',1],
-        Bbb:               ['Macro','{\\bbFont #1}',1],
-        mathit:            ['Macro','{\\it #1}',1],
-        mathfrak:          ['Macro','{\\frak #1}',1],
-        mathsf:            ['Macro','{\\sf #1}',1],
-        mathtt:            ['Macro','{\\tt #1}',1],
-        textrm:            ['Macro','\\mathord{\\rm\\text{#1}}',1],
-        textit:            ['Macro','\\mathord{\\it\\text{#1}}',1],
-        textbf:            ['Macro','\\mathord{\\bf\\text{#1}}',1],
-        textsf:            ['Macro','\\mathord{\\sf\\text{#1}}',1],
-        texttt:            ['Macro','\\mathord{\\tt\\text{#1}}',1],
-        pmb:               ['Macro','\\rlap{#1}\\kern1px{#1}',1],
-        TeX:               ['Macro','T\\kern-.14em\\lower.5ex{E}\\kern-.115em X'],
-        LaTeX:             ['Macro','L\\kern-.325em\\raise.21em{\\scriptstyle{A}}\\kern-.17em\\TeX'],
-        ' ':               ['Macro','\\text{ }'],
-
-        //  Specially handled
-        not:                'Not',
-        dots:               'Dots',
-        space:              'Tilde',
-        '\u00A0':           'Tilde',
-        
-
-        //  LaTeX
-        begin:              'BeginEnd',
-        end:                'BeginEnd',
-
-        newcommand:        ['Extension','newcommand'],
-        renewcommand:      ['Extension','newcommand'],
-        newenvironment:    ['Extension','newcommand'],
-        renewenvironment:  ['Extension','newcommand'],
-        def:               ['Extension','newcommand'],
-        let:               ['Extension','newcommand'],
-        
-        verb:              ['Extension','verb'],
-        
-        boldsymbol:        ['Extension','boldsymbol'],
-        
-        tag:               ['Extension','AMSmath'],
-        notag:             ['Extension','AMSmath'],
-        label:             ['Extension','AMSmath'],
-        ref:               ['Extension','AMSmath'],
-        eqref:             ['Extension','AMSmath'],
-        nonumber:          ['Macro','\\notag'],
-
-        //  Extensions to TeX
-        unicode:           ['Extension','unicode'],
-        color:              'Color',
-        
-        href:              ['Extension','HTML'],
-        'class':           ['Extension','HTML'],
-        style:             ['Extension','HTML'],
-        cssId:             ['Extension','HTML'],
-        bbox:              ['Extension','bbox'],
-    
-        mmlToken:           'MmlToken',
-
-        require:            'Require'
-
-      },
-      
-      environment: {
-        array:        ['AlignedArray'],
-        matrix:       ['Array',null,null,null,'c'],
-        pmatrix:      ['Array',null,'(',')','c'],
-        bmatrix:      ['Array',null,'[',']','c'],
-        Bmatrix:      ['Array',null,'\\{','\\}','c'],
-        vmatrix:      ['Array',null,'\\vert','\\vert','c'],
-        Vmatrix:      ['Array',null,'\\Vert','\\Vert','c'],
-        cases:        ['Array',null,'\\{','.','ll',null,".2em",'T'],
-
-        equation:     [null,'Equation'],
-        'equation*':  [null,'Equation'],
-
-        eqnarray:     ['ExtensionEnv',null,'AMSmath'],
-        'eqnarray*':  ['ExtensionEnv',null,'AMSmath'],
-
-        align:        ['ExtensionEnv',null,'AMSmath'],
-        'align*':     ['ExtensionEnv',null,'AMSmath'],
-        aligned:      ['ExtensionEnv',null,'AMSmath'],
-        multline:     ['ExtensionEnv',null,'AMSmath'],
-        'multline*':  ['ExtensionEnv',null,'AMSmath'],
-        split:        ['ExtensionEnv',null,'AMSmath'],
-        gather:       ['ExtensionEnv',null,'AMSmath'],
-        'gather*':    ['ExtensionEnv',null,'AMSmath'],
-        gathered:     ['ExtensionEnv',null,'AMSmath'],
-        alignat:      ['ExtensionEnv',null,'AMSmath'],
-        'alignat*':   ['ExtensionEnv',null,'AMSmath'],
-        alignedat:    ['ExtensionEnv',null,'AMSmath']
-      },
-      
-      p_height: 1.2 / .85   // cmex10 height plus depth over .85
-
-    });
+    Init: function (string,script) {this.Parse(string,script)},
     
     //
-    //  Add macros defined in the configuration
+    //  Parse the MathML and check for errors
     //
-    if (this.config.Macros) {
-      var MACROS = this.config.Macros;
-      for (var id in MACROS) {if (MACROS.hasOwnProperty(id)) {
-        if (typeof(MACROS[id]) === "string") {TEXDEF.macros[id] = ['Macro',MACROS[id]]}
-        else {TEXDEF.macros[id] = ["Macro"].concat(MACROS[id])}
-        TEXDEF.macros[id].isUser = true;
-      }}
-    }
-  };
-  
-  /************************************************************************/
-  /*
-   *   The TeX Parser
-   */
-
-  var PARSE = MathJax.Object.Subclass({
-    Init: function (string,env) {
-      this.string = string; this.i = 0; this.macroCount = 0;
-      var ENV; if (env) {ENV = {}; for (var id in env) {if (env.hasOwnProperty(id)) {ENV[id] = env[id]}}}
-      this.stack = TEX.Stack(ENV,!!env);
-      this.Parse(); this.Push(STACKITEM.stop());
-    },
-    Parse: function () {
-      var c, n;
-      while (this.i < this.string.length) {
-        c = this.string.charAt(this.i++); n = c.charCodeAt(0);
-        if (n >= 0xD800 && n < 0xDC00) {c += this.string.charAt(this.i++)}
-        if (TEXDEF.special[c]) {this[TEXDEF.special[c]](c)}
-        else if (TEXDEF.letter.test(c)) {this.Variable(c)}
-        else if (TEXDEF.digit.test(c)) {this.Number(c)}
-        else {this.Other(c)}
+    Parse: function (math,script) {
+      var doc;
+      if (typeof math !== "string") {doc = math.parentNode} else {
+        doc = MATHML.ParseXML(this.preProcessMath.call(this,math));
+        if (doc == null) {MATHML.Error(["ErrorParsingMathML","Error parsing MathML"])}
       }
-    },
-    Push: function () {this.stack.Push.apply(this.stack,arguments)},
-    mml: function () {
-      if (this.stack.Top().type !== "mml") {return null}
-      return this.stack.Top().data[0];
-    },
-    mmlToken: function (token) {return token}, // used by boldsymbol extension
-
-    /************************************************************************/
-    /*
-     *   Handle various token classes
-     */
-
-    /*
-     *  Lookup a control-sequence and process it
-     */
-    ControlSequence: function (c) {
-      var name = this.GetCS(), macro = this.csFindMacro(name);
-      if (macro) {
-        if (!isArray(macro)) {macro = [macro]}
-        var fn = macro[0]; if (!(fn instanceof Function)) {fn = this[fn]}
-        fn.apply(this,[c+name].concat(macro.slice(1)));
-      } else if (TEXDEF.mathchar0mi[name])            {this.csMathchar0mi(name,TEXDEF.mathchar0mi[name])}
-        else if (TEXDEF.mathchar0mo[name])            {this.csMathchar0mo(name,TEXDEF.mathchar0mo[name])}
-        else if (TEXDEF.mathchar7[name])              {this.csMathchar7(name,TEXDEF.mathchar7[name])}
-        else if (TEXDEF.delimiter["\\"+name] != null) {this.csDelimiter(name,TEXDEF.delimiter["\\"+name])}
-        else                                          {this.csUndefined(c+name)}
-    },
-    //
-    //  Look up a macro in the macros list
-    //  (overridden in begingroup extension)
-    //
-    csFindMacro: function (name) {return TEXDEF.macros[name]},
-    //
-    //  Handle normal mathchar (as an mi)
-    //
-    csMathchar0mi: function (name,mchar) {
-      var def = {mathvariant: MML.VARIANT.ITALIC};
-      if (isArray(mchar)) {def = mchar[1]; mchar = mchar[0]}
-      this.Push(this.mmlToken(MML.mi(MML.entity("#x"+mchar)).With(def)));
-    },
-    //
-    //  Handle normal mathchar (as an mo)
-    //
-    csMathchar0mo: function (name,mchar) {
-      var def = {stretchy: false};
-      if (isArray(mchar)) {def = mchar[1]; def.stretchy = false; mchar = mchar[0]}
-      this.Push(this.mmlToken(MML.mo(MML.entity("#x"+mchar)).With(def)));
-    },
-    //
-    //  Handle mathchar in current family
-    //
-    csMathchar7: function (name,mchar) {
-      var def = {mathvariant: MML.VARIANT.NORMAL};
-      if (isArray(mchar)) {def = mchar[1]; mchar = mchar[0]}
-      if (this.stack.env.font) {def.mathvariant = this.stack.env.font}
-      this.Push(this.mmlToken(MML.mi(MML.entity("#x"+mchar)).With(def)));
-    },
-    //
-    //  Handle delimiter
-    //
-    csDelimiter: function (name,delim) {
-      var def = {};
-      if (isArray(delim)) {def = delim[1]; delim = delim[0]}
-      if (delim.length === 4) {delim = MML.entity('#x'+delim)} else {delim = MML.chars(delim)}
-      this.Push(this.mmlToken(MML.mo(delim).With({fence: false, stretchy: false}).With(def)));
-    },
-    //
-    //  Handle undefined control sequence
-    //  (overridden in noUndefined extension)
-    //
-    csUndefined: function (name) {
-      TEX.Error(["UndefinedControlSequence","Undefined control sequence %1",name]);
-    },
-
-    /*
-     *  Handle a variable (a single letter)
-     */
-    Variable: function (c) {
-      var def = {}; if (this.stack.env.font) {def.mathvariant = this.stack.env.font}
-      this.Push(this.mmlToken(MML.mi(MML.chars(c)).With(def)));
-    },
-
-    /*
-     *  Determine the extent of a number (pattern may need work)
-     */
-    Number: function (c) {
-      var mml, n = this.string.slice(this.i-1).match(TEXDEF.number);
-      if (n) {mml = MML.mn(n[0].replace(/[{}]/g,"")); this.i += n[0].length - 1}
-        else {mml = MML.mo(MML.chars(c))}
-      if (this.stack.env.font) {mml.mathvariant = this.stack.env.font}
-      this.Push(this.mmlToken(mml));
-    },
-    
-    /*
-     *  Handle { and }
-     */
-    Open: function (c) {this.Push(STACKITEM.open())},
-    Close: function (c) {this.Push(STACKITEM.close())},
-    
-    /*
-     *  Handle tilde and spaces
-     */
-    Tilde: function (c) {this.Push(MML.mtext(MML.chars(NBSP)))},
-    Space: function (c) {},
-    
-    /*
-     *  Handle ^, _, and '
-     */
-    Superscript: function (c) {
-      if (this.GetNext().match(/\d/)) // don't treat numbers as a unit
-        {this.string = this.string.substr(0,this.i+1)+" "+this.string.substr(this.i+1)}
-      var primes, base, top = this.stack.Top();
-      if (top.type === "prime") {base = top.data[0]; primes = top.data[1]; this.stack.Pop()}
-        else {base = this.stack.Prev(); if (!base) {base = MML.mi("")}}
-      if (base.isEmbellishedWrapper) {base = base.data[0].data[0]}
-      var movesupsub = base.movesupsub, position = base.sup;
-      if ((base.type === "msubsup" && base.data[base.sup]) ||
-          (base.type === "munderover" && base.data[base.over] && !base.subsupOK))
-           {TEX.Error(["DoubleExponent","Double exponent: use braces to clarify"])}
-      if (base.type !== "msubsup") {
-        if (movesupsub) {
-          if (base.type !== "munderover" || base.data[base.over]) {
-            if (base.movablelimits && base.isa(MML.mi)) {base = this.mi2mo(base)}
-            base = MML.munderover(base,null,null).With({movesupsub:true})
-          }
-          position = base.over;
-        } else {
-          base = MML.msubsup(base,null,null);
-          position = base.sup;
-        }
+      var err = doc.getElementsByTagName("parsererror")[0];
+      if (err) MATHML.Error(["ParsingError","Error parsing MathML: %1",
+           err.textContent.replace(/This page.*?errors:|XML Parsing Error: |Below is a rendering of the page.*/g,"")]);
+      if (doc.childNodes.length !== 1)
+        {MATHML.Error(["MathMLSingleElement","MathML must be formed by a single element"])}
+      if (doc.firstChild.nodeName.toLowerCase() === "html") {
+        var h1 = doc.getElementsByTagName("h1")[0];
+        if (h1 && h1.textContent === "XML parsing error" && h1.nextSibling)
+          MATHML.Error(["ParsingError","Error parsing MathML: %1",
+              String(h1.nextSibling.nodeValue).replace(/fatal parsing error: /,"")]);
       }
-      this.Push(STACKITEM.subsup(base).With({
-        position: position, primes: primes, movesupsub: movesupsub
-      }));
-    },
-    Subscript: function (c) {
-      if (this.GetNext().match(/\d/)) // don't treat numbers as a unit
-        {this.string = this.string.substr(0,this.i+1)+" "+this.string.substr(this.i+1)}
-      var primes, base, top = this.stack.Top();
-      if (top.type === "prime") {base = top.data[0]; primes = top.data[1]; this.stack.Pop()}
-        else {base = this.stack.Prev(); if (!base) {base = MML.mi("")}}
-      if (base.isEmbellishedWrapper) {base = base.data[0].data[0]}
-      var movesupsub = base.movesupsub, position = base.sub;
-      if ((base.type === "msubsup" && base.data[base.sub]) ||
-          (base.type === "munderover" && base.data[base.under] && !base.subsupOK))
-           {TEX.Error(["DoubleSubscripts","Double subscripts: use braces to clarify"])}
-      if (base.type !== "msubsup") {
-        if (movesupsub) {
-          if (base.type !== "munderover" || base.data[base.under]) {
-            if (base.movablelimits && base.isa(MML.mi)) {base = this.mi2mo(base)}
-            base = MML.munderover(base,null,null).With({movesupsub:true})
-          }
-          position = base.under;
-        } else {
-          base = MML.msubsup(base,null,null);
-          position = base.sub;
-        }
+      if (doc.firstChild.nodeName.toLowerCase().replace(/^[a-z]+:/,"") !== "math") {
+        MATHML.Error(["MathMLRootElement",
+            "MathML must be formed by a <math> element, not %1",
+            "<"+doc.firstChild.nodeName+">"]);
       }
-      this.Push(STACKITEM.subsup(base).With({
-        position: position, primes: primes, movesupsub: movesupsub
-      }));
-    },
-    PRIME: "\u2032", SMARTQUOTE: "\u2019",
-    Prime: function (c) {
-      var base = this.stack.Prev(); if (!base) {base = MML.mi()}
-      if (base.type === "msubsup" && base.data[base.sup]) {
-        TEX.Error(["DoubleExponentPrime",
-                   "Prime causes double exponent: use braces to clarify"]);
-      }
-      var sup = ""; this.i--;
-      do {sup += this.PRIME; this.i++, c = this.GetNext()}
-        while (c === "'" || c === this.SMARTQUOTE);
-      sup = ["","\u2032","\u2033","\u2034","\u2057"][sup.length] || sup;
-      this.Push(STACKITEM.prime(base,this.mmlToken(MML.mo(sup))));
-    },
-    mi2mo: function (mi) {
-      var mo = MML.mo();  mo.Append.apply(mo,mi.data); var id;
-      for (id in mo.defaults)
-        {if (mo.defaults.hasOwnProperty(id) && mi[id] != null) {mo[id] = mi[id]}}
-      for (id in MML.copyAttributes)
-        {if (MML.copyAttributes.hasOwnProperty(id) && mi[id] != null) {mo[id] = mi[id]}}
-      mo.lspace = mo.rspace = "0";  // prevent mo from having space in NativeMML
-      mo.useMMLspacing &= ~(mo.SPACE_ATTR.lspace | mo.SPACE_ATTR.rspace);  // don't count these explicit settings
-      return mo;
+      var data = {math:doc.firstChild, script:script};
+      MATHML.DOMfilterHooks.Execute(data);
+      this.mml = this.MakeMML(data.math);
     },
     
-    /*
-     *  Handle comments
-     */
-    Comment: function (c) {
-      while (this.i < this.string.length && this.string.charAt(this.i) != "\n") {this.i++}
-    },
-    
-    /*
-     *  Handle hash marks outside of definitions
-     */
-    Hash: function (c) {
-      TEX.Error(["CantUseHash1",
-                 "You can't use 'macro parameter character #' in math mode"]);
-    },
-    
-    /*
-     *  Handle other characters (as <mo> elements)
-     */
-    Other: function (c) {
-      var def, mo;
-      if (this.stack.env.font) {def = {mathvariant: this.stack.env.font}}
-      if (TEXDEF.remap[c]) {
-        c = TEXDEF.remap[c];
-        if (isArray(c)) {def = c[1]; c = c[0]}
-        mo = MML.mo(MML.entity('#x'+c)).With(def);
+    //
+    //  Convert the MathML structure to the MathJax Element jax structure
+    //
+    MakeMML: function (node) {
+      var CLASS = String(node.getAttribute("class")||""); // make sure CLASS is a string
+      var mml, type = node.nodeName.toLowerCase().replace(/^[a-z]+:/,"");
+      var match = (CLASS.match(/(^| )MJX-TeXAtom-([^ ]*)/));
+      if (match) {
+        mml = this.TeXAtom(match[2],match[2] === "OP" && !CLASS.match(/MJX-fixedlimits/));
+      } else if (!(MML[type] && MML[type].isa && MML[type].isa(MML.mbase))) {
+        MathJax.Hub.signal.Post(["MathML Jax - unknown node type",type]);
+        return MML.Error(_("UnknownNodeType","Unknown node type: %1",type));
       } else {
-        mo = MML.mo(c).With(def);
+        mml = MML[type]();
       }
-      if (mo.autoDefault("stretchy",true)) {mo.stretchy = false}
-      if (mo.autoDefault("texClass",true) == "") {mo = MML.TeXAtom(mo)}
-      this.Push(this.mmlToken(mo));
-    },
-    
-    /************************************************************************/
-    /*
-     *   Macros
-     */
-    
-    SetFont: function (name,font) {this.stack.env.font = font},
-    SetStyle: function (name,texStyle,style,level) {
-      this.stack.env.style = texStyle; this.stack.env.level = level;
-      this.Push(STACKITEM.style().With({styles: {displaystyle: style, scriptlevel: level}}));
-    },
-    SetSize: function (name,size) {
-      this.stack.env.size = size;
-      this.Push(STACKITEM.style().With({styles: {mathsize: size+"em"}})); // convert to absolute?
-    },
-
-    Color: function (name) {
-      var color = this.GetArgument(name);
-      var old = this.stack.env.color; this.stack.env.color = color;
-      var math = this.ParseArg(name);
-      if (old) {this.stack.env.color} else {delete this.stack.env.color}
-      this.Push(MML.mstyle(math).With({mathcolor: color}));
-    },
-    
-    Spacer: function (name,space) {
-      this.Push(MML.mspace().With({width: space, mathsize: MML.SIZE.NORMAL, scriptlevel:0}));
-    },
-    
-    LeftRight: function (name) {
-      this.Push(STACKITEM[name.substr(1)]().With({delim: this.GetDelimiter(name)}));
-    },
-    
-    Middle: function (name) {
-      var delim = this.GetDelimiter(name);
-      this.Push(MML.TeXAtom().With({texClass:MML.TEXCLASS.CLOSE}));
-      if (this.stack.Top().type !== "left")
-        {TEX.Error(["MisplacedMiddle","%1 must be within \\left and \\right",name])}
-      this.Push(MML.mo(delim).With({stretchy:true}));
-      this.Push(MML.TeXAtom().With({texClass:MML.TEXCLASS.OPEN}));
-    },
-    
-    NamedFn: function (name,id) {
-      if (!id) {id = name.substr(1)};
-      var mml = MML.mi(id).With({texClass: MML.TEXCLASS.OP});
-      this.Push(STACKITEM.fn(this.mmlToken(mml)));
-    },
-    NamedOp: function (name,id) {
-      if (!id) {id = name.substr(1)};
-      id = id.replace(/&thinsp;/,"\u2006");
-      var mml = MML.mo(id).With({
-        movablelimits: true,
-        movesupsub: true,
-        form: MML.FORM.PREFIX,
-        texClass: MML.TEXCLASS.OP
-      });
-      mml.useMMLspacing &= ~mml.SPACE_ATTR.form;  // don't count this explicit form setting
-      this.Push(this.mmlToken(mml));
-    },
-    Limits: function (name,limits) {
-      var op = this.stack.Prev("nopop");
-      if (!op || (op.Get("texClass") !== MML.TEXCLASS.OP && op.movesupsub == null))
-        {TEX.Error(["MisplacedLimits","%1 is allowed only on operators",name])}
-      var top = this.stack.Top();
-      if (op.type === "munderover" && !limits) {
-        op = top.data[top.data.length-1] = MML.msubsup.apply(MML.subsup,op.data);
-      } else if (op.type === "msubsup" && limits) {
-        op = top.data[top.data.length-1] = MML.munderover.apply(MML.underover,op.data);
-      }
-      op.movesupsub = (limits ? true : false);
-      op.Core().movablelimits = false;
-      if (op.movablelimits) op.movablelimits = false;
-    },
-    
-    Over: function (name,open,close) {
-      var mml = STACKITEM.over().With({name: name});
-      if (open || close) {
-        mml.open = open; mml.close = close;
-      } else if (name.match(/withdelims$/)) {
-        mml.open  = this.GetDelimiter(name);
-        mml.close = this.GetDelimiter(name);
-      }
-      if (name.match(/^\\above/)) {mml.thickness = this.GetDimen(name)}
-      else if (name.match(/^\\atop/) || open || close) {mml.thickness = 0}
-      this.Push(mml);
-    },
-
-    Frac: function (name) {
-      var num = this.ParseArg(name);
-      var den = this.ParseArg(name);
-      this.Push(MML.mfrac(num,den));
-    },
-
-    Sqrt: function (name) {
-      var n = this.GetBrackets(name), arg = this.GetArgument(name);
-      if (arg === "\\frac") {arg += "{"+this.GetArgument(arg)+"}{"+this.GetArgument(arg)+"}"}
-      var mml = TEX.Parse(arg,this.stack.env).mml();
-      if (!n) {mml = MML.msqrt.apply(MML,mml.array())}
-         else {mml = MML.mroot(mml,this.parseRoot(n))}
-      this.Push(mml);
-    },
-    Root: function (name) {
-      var n = this.GetUpTo(name,"\\of");
-      var arg = this.ParseArg(name);
-      this.Push(MML.mroot(arg,this.parseRoot(n)));
-    },
-    parseRoot: function (n) {
-      var env = this.stack.env, inRoot = env.inRoot; env.inRoot = true;
-      var parser = TEX.Parse(n,env); n = parser.mml(); var global = parser.stack.global;
-      if (global.leftRoot || global.upRoot) {
-        n = MML.mpadded(n);
-        if (global.leftRoot) {n.width = global.leftRoot}
-        if (global.upRoot) {n.voffset = global.upRoot; n.height = global.upRoot}
-      }
-      env.inRoot = inRoot;
-      return n;
-    },
-    MoveRoot: function (name,id) {
-      if (!this.stack.env.inRoot)
-        {TEX.Error(["MisplacedMoveRoot","%1 can appear only within a root",name])}
-      if (this.stack.global[id])
-        {TEX.Error(["MultipleMoveRoot","Multiple use of %1",name])}
-      var n = this.GetArgument(name);
-      if (!n.match(/-?[0-9]+/))
-        {TEX.Error(["IntegerArg","The argument to %1 must be an integer",name])}
-      n = (n/15)+"em";
-      if (n.substr(0,1) !== "-") {n = "+"+n}
-      this.stack.global[id] = n;
-    },
-    
-    Accent: function (name,accent,stretchy) {
-      var c = this.ParseArg(name);
-      var def = {accent: true}; if (this.stack.env.font) {def.mathvariant = this.stack.env.font}
-      var mml = this.mmlToken(MML.mo(MML.entity("#x"+accent)).With(def));
-      mml.stretchy = (stretchy ? true : false);
-      var mo = (c.isEmbellished() ? c.CoreMO() : c);
-      if (mo.isa(MML.mo)) mo.movablelimits = false;
-      this.Push(MML.TeXAtom(MML.munderover(c,null,mml).With({accent: true})));
-    },
-    
-    UnderOver: function (name,c,stack,noaccent) {
-      var pos = {o: "over", u: "under"}[name.charAt(1)];
-      var base = this.ParseArg(name);
-      if (base.Get("movablelimits")) {base.movablelimits = false}
-      if (base.isa(MML.munderover) && base.isEmbellished()) {
-        base.Core().With({lspace:0,rspace:0}); // get spacing right for NativeMML
-        base = MML.mrow(MML.mo().With({rspace:0}),base);  // add an empty <mi> so it's not embellished any more
-      }
-      var mml = MML.munderover(base,null,null);
-      mml.SetData(
-        mml[pos], 
-        this.mmlToken(MML.mo(MML.entity("#x"+c)).With({stretchy:true, accent:!noaccent}))
-      );
-      if (stack) {mml = MML.TeXAtom(mml).With({texClass:MML.TEXCLASS.OP, movesupsub:true})}
-      this.Push(mml.With({subsupOK:true}));
-    },
-    
-    Overset: function (name) {
-      var top = this.ParseArg(name), base = this.ParseArg(name);
-      if (base.movablelimits) base.movablelimits = false;
-      this.Push(MML.mover(base,top));
-    },
-    Underset: function (name) {
-      var bot = this.ParseArg(name), base = this.ParseArg(name);
-      if (base.movablelimits) base.movablelimits = false;
-      this.Push(MML.munder(base,bot));
-    },
-    
-    TeXAtom: function (name,mclass) {
-      var def = {texClass: mclass}, mml;
-      if (mclass == MML.TEXCLASS.OP) {
-        def.movesupsub = def.movablelimits = true;
-        var arg = this.GetArgument(name);
-        var match = arg.match(/^\s*\\rm\s+([a-zA-Z0-9 ]+)$/);
-        if (match) {
-          def.mathvariant = MML.VARIANT.NORMAL;
-          mml = STACKITEM.fn(this.mmlToken(MML.mi(match[1]).With(def)));
-        } else {
-          mml = STACKITEM.fn(MML.TeXAtom(TEX.Parse(arg,this.stack.env).mml()).With(def));
-        }
-      } else {mml = MML.TeXAtom(this.ParseArg(name)).With(def)}
-      this.Push(mml);
-    },
-    
-    MmlToken: function (name) {
-      var type = this.GetArgument(name),
-          attr = this.GetBrackets(name,"").replace(/^\s+/,""),
-          data = this.GetArgument(name),
-          def = {attrNames:[]}, match;
-      if (!MML[type] || !MML[type].prototype.isToken)
-        {TEX.Error(["NotMathMLToken","%1 is not a token element",type])}
-      while (attr !== "") {
-        match = attr.match(/^([a-z]+)\s*=\s*('[^']*'|"[^"]*"|[^ ,]*)\s*,?\s*/i);
-        if (!match)
-          {TEX.Error(["InvalidMathMLAttr","Invalid MathML attribute: %1",attr])}
-        if (MML[type].prototype.defaults[match[1]] == null && !this.MmlTokenAllow[match[1]]) {
-          TEX.Error(["UnknownAttrForElement",
-                     "%1 is not a recognized attribute for %2",
-                     match[1],type]);
-        }
-        var value = this.MmlFilterAttribute(match[1],match[2].replace(/^(['"])(.*)\1$/,"$2"));
-        if (value) {
-          if (value.toLowerCase() === "true") {value = true}
-            else if (value.toLowerCase() === "false") {value = false}
-          def[match[1]] = value;
-          def.attrNames.push(match[1]);
-        }
-        attr = attr.substr(match[0].length);
-      }
-      this.Push(this.mmlToken(MML[type](data).With(def)));
-    },
-    MmlFilterAttribute: function (name,value) {return value},
-    MmlTokenAllow: {
-      fontfamily:1, fontsize:1, fontweight:1, fontstyle:1,
-      color:1, background:1,
-      id:1, "class":1, href:1, style:1
-    },
-    
-    Strut: function (name) {
-      this.Push(MML.mpadded(MML.mrow()).With({height: "8.6pt", depth: "3pt", width: 0}));
-    },
-    
-    Phantom: function (name,v,h) {
-      var box = MML.mphantom(this.ParseArg(name));
-      if (v || h) {
-        box = MML.mpadded(box);
-        if (h) {box.height = box.depth = 0}
-        if (v) {box.width = 0}
-      }
-      this.Push(MML.TeXAtom(box));
-    },
-    
-    Smash: function (name) {
-      var bt = this.trimSpaces(this.GetBrackets(name,""));
-      var smash = MML.mpadded(this.ParseArg(name));
-      switch (bt) {
-        case "b": smash.depth = 0; break;
-        case "t": smash.height = 0; break;
-        default: smash.height = smash.depth = 0;
-      }
-      this.Push(MML.TeXAtom(smash));
-    },
-    
-    Lap: function (name) {
-      var mml = MML.mpadded(this.ParseArg(name)).With({width: 0});
-      if (name === "\\llap") {mml.lspace = "-1width"}
-      this.Push(MML.TeXAtom(mml));
-    },
-    
-    RaiseLower: function (name) {
-      var h = this.GetDimen(name);
-      var item = STACKITEM.position().With({name: name, move: 'vertical'});
-      if (h.charAt(0) === '-') {h = h.slice(1); name = {raise: "\\lower", lower: "\\raise"}[name.substr(1)]}
-      if (name === "\\lower") {item.dh = '-'+h; item.dd = '+'+h} else {item.dh = '+'+h; item.dd = '-'+h}
-      this.Push(item);
-    },
-    
-    MoveLeftRight: function (name) {
-      var h = this.GetDimen(name);
-      var nh = (h.charAt(0) === '-' ? h.slice(1) : '-'+h);
-      if (name === "\\moveleft") {var tmp = h; h = nh; nh = tmp}
-      this.Push(STACKITEM.position().With({
-        name: name, move: 'horizontal',
-        left:  MML.mspace().With({width: h, mathsize: MML.SIZE.NORMAL}),
-        right: MML.mspace().With({width: nh, mathsize: MML.SIZE.NORMAL})
-      }));
-    },
-    
-    Hskip: function (name) {
-      this.Push(MML.mspace().With({width: this.GetDimen(name), mathsize: MML.SIZE.NORMAL}));
-    },
-    
-    Rule: function (name,style) {
-      var w = this.GetDimen(name),
-          h = this.GetDimen(name),
-          d = this.GetDimen(name);
-      var mml, def = {width:w, height:h, depth:d};
-      if (style !== 'blank') {
-        if (parseFloat(w) && parseFloat(h)+parseFloat(d))
-          {def.mathbackground = (this.stack.env.color || "black")}
-        mml = MML.mpadded(MML.mrow()).With(def);
-      } else {
-        mml = MML.mspace().With(def);
-      }
-      this.Push(mml);
-    },
-    
-    MakeBig: function (name,mclass,size) {
-      size *= TEXDEF.p_height;
-      size = String(size).replace(/(\.\d\d\d).+/,'$1')+"em";
-      var delim = this.GetDelimiter(name,true);
-      this.Push(MML.TeXAtom(MML.mo(delim).With({
-        minsize: size, maxsize: size,
-        fence: true, stretchy: true, symmetric: true
-      })).With({texClass: mclass}));
-    },
-    
-    BuildRel: function (name) {
-      var top = this.ParseUpTo(name,"\\over");
-      var bot = this.ParseArg(name);
-      this.Push(MML.TeXAtom(MML.munderover(bot,null,top)).With({texClass: MML.TEXCLASS.REL}));
-    },
-    
-    HBox: function (name,style) {
-      this.Push.apply(this,this.InternalMath(this.GetArgument(name),style));
-    },
-    
-    FBox: function (name) {
-      this.Push(MML.menclose.apply(MML,this.InternalMath(this.GetArgument(name))).With({notation:"box"}));
-    },
-    
-    Not: function (name) {
-      this.Push(STACKITEM.not());
-    },
-    
-    Dots: function (name) {
-      this.Push(STACKITEM.dots().With({
-        ldots: this.mmlToken(MML.mo(MML.entity("#x2026")).With({stretchy:false})),
-        cdots: this.mmlToken(MML.mo(MML.entity("#x22EF")).With({stretchy:false}))
-      }));
-    },
-    
-    Require: function (name) {
-      var file = this.GetArgument(name)
-        .replace(/.*\//,"")            // remove any leading path
-        .replace(/[^a-z0-9_.-]/ig,""); // remove illegal characters
-      this.Extension(null,file);
-    },
-    
-    Extension: function (name,file,array) {
-      if (name && !typeof(name) === "string") {name = name.name}
-      file = TEX.extensionDir+"/"+file;
-      if (!file.match(/\.js$/)) {file += ".js"}
-      if (!AJAX.loaded[AJAX.fileURL(file)]) {
-        if (name != null) {delete TEXDEF[array || 'macros'][name.replace(/^\\/,"")]}
-        HUB.RestartAfter(AJAX.Require(file));
-      }
-    },
-    
-    Macro: function (name,macro,argcount,def) {
-      if (argcount) {
-        var args = [];
-        if (def != null) {
-          var optional = this.GetBrackets(name);
-          args.push(optional == null ? def : optional);
-        }
-        for (var i = args.length; i < argcount; i++) {args.push(this.GetArgument(name))}
-        macro = this.SubstituteArgs(args,macro);
-      }
-      this.string = this.AddArgs(macro,this.string.slice(this.i));
-      this.i = 0;
-      if (++this.macroCount > TEX.config.MAXMACROS) {
-        TEX.Error(["MaxMacroSub1",
-                   "MathJax maximum macro substitution count exceeded; " +
-                   "is there a recursive macro call?"]);
-      }
-    },
-    
-    Matrix: function (name,open,close,align,spacing,vspacing,style,cases,numbered) {
-      var c = this.GetNext();
-      if (c === "")
-        {TEX.Error(["MissingArgFor","Missing argument for %1",name])}
-      if (c === "{") {this.i++} else {this.string = c+"}"+this.string.slice(this.i+1); this.i = 0}
-      var array = STACKITEM.array().With({
-        requireClose: true,
-        arraydef: {
-          rowspacing: (vspacing||"4pt"),
-          columnspacing: (spacing||"1em")
-        }
-      });
-      if (cases)         {array.isCases = true}
-      if (numbered)      {array.isNumbered = true; array.arraydef.side = numbered}
-      if (open || close) {array.open = open; array.close = close}
-      if (style === "D") {array.arraydef.displaystyle = true}
-      if (align != null) {array.arraydef.columnalign = align}
-      this.Push(array);
-    },
-    
-    Entry: function (name) {
-      this.Push(STACKITEM.cell().With({isEntry: true, name: name}));
-      if (this.stack.Top().isCases) {
-        var string = this.string;
-        var braces = 0, i = this.i, m = string.length;
-        while (i < m) {
-          var c = string.charAt(i);
-          if (c === "{") {braces++; i++}
-          else if (c === "}") {if (braces === 0) {m = 0} else {braces--; i++}}
-          else if (c === "&" && braces === 0) {
-            TEX.Error(["ExtraAlignTab","Extra alignment tab in \\cases text"]);
-          } else if (c === "\\") {
-            if (string.substr(i).match(/^((\\cr)[^a-zA-Z]|\\\\)/)) {m = 0} else {i += 2}
-          } else {i++}
-        }
-        var text = string.substr(this.i,i-this.i);
-        if (!text.match(/^\s*\\text[^a-zA-Z]/)) {
-          this.Push.apply(this,this.InternalMath(text,0));
-          this.i = i;
-        }
-      }
-    },
-    
-    Cr: function (name) {
-      this.Push(STACKITEM.cell().With({isCR: true, name: name}));
-    },
-    
-    CrLaTeX: function (name) {
-      var n;
-      if (this.string.charAt(this.i) === "[") {
-        n = this.GetBrackets(name,"").replace(/ /g,"").replace(/,/,".");
-        if (n && !this.matchDimen(n)) {
-          TEX.Error(["BracketMustBeDimension",
-                     "Bracket argument to %1 must be a dimension",name]);
-        }
-      }
-      this.Push(STACKITEM.cell().With({isCR: true, name: name, linebreak: true}));
-      var top = this.stack.Top();
-      if (top.isa(STACKITEM.array)) {
-        if (n && top.arraydef.rowspacing) {
-          var rows = top.arraydef.rowspacing.split(/ /);
-          if (!top.rowspacing) {top.rowspacing = this.dimen2em(rows[0])}
-          while (rows.length < top.table.length) {rows.push(this.Em(top.rowspacing))}
-          rows[top.table.length-1] = this.Em(Math.max(0,top.rowspacing+this.dimen2em(n)));
-          top.arraydef.rowspacing = rows.join(' ');
-        }
-      } else {
-        if (n) {this.Push(MML.mspace().With({depth:n}))}
-        this.Push(MML.mspace().With({linebreak:MML.LINEBREAK.NEWLINE}));
-      }
-    },
-    emPerInch: 7.2,
-    pxPerInch: 72,
-    matchDimen: function (dim) {
-      return dim.match(/^(-?(?:\.\d+|\d+(?:\.\d*)?))(px|pt|em|ex|mu|pc|in|mm|cm)$/);
-    },
-    dimen2em: function (dim) {
-      var match = this.matchDimen(dim);
-      var m = parseFloat(match[1]||"1"), unit = match[2];
-      if (unit === "em") {return m}
-      if (unit === "ex") {return m * .43}
-      if (unit === "pt") {return m / 10}                    // 10 pt to an em
-      if (unit === "pc") {return m * 1.2}                   // 12 pt to a pc
-      if (unit === "px") {return m * this.emPerInch / this.pxPerInch}
-      if (unit === "in") {return m * this.emPerInch}
-      if (unit === "cm") {return m * this.emPerInch / 2.54} // 2.54 cm to an inch
-      if (unit === "mm") {return m * this.emPerInch / 25.4} // 10 mm to a cm
-      if (unit === "mu") {return m / 18}
-      return 0;
-    },
-    Em: function (m) {
-      if (Math.abs(m) < .0006) {return "0em"}
-      return m.toFixed(3).replace(/\.?0+$/,"") + "em";
-    },
-    
-    HLine: function (name,style) {
-      if (style == null) {style = "solid"}
-      var top = this.stack.Top();
-      if (!top.isa(STACKITEM.array) || top.data.length)
-        {TEX.Error(["Misplaced","Misplaced %1",name])}
-      if (top.table.length == 0) {
-        top.frame.push("top");
-      } else {
-        var lines = (top.arraydef.rowlines ? top.arraydef.rowlines.split(/ /) : []);
-        while (lines.length < top.table.length) {lines.push("none")}
-        lines[top.table.length-1] = style;
-        top.arraydef.rowlines = lines.join(' ');
-      }
-    },
-    
-    HFill: function (name) {
-      var top = this.stack.Top();
-      if (top.isa(STACKITEM.array)) top.hfill.push(top.data.length);
-        else TEX.Error(["UnsupportedHFill","Unsupported use of %1",name]);
-    },
-    
-
-    
-   /************************************************************************/
-   /*
-    *   LaTeX environments
-    */
-
-    BeginEnd: function (name) {
-      var env = this.GetArgument(name), isEnd = false;
-      if (env.match(/^\\end\\/)) {isEnd = true; env = env.substr(5)} // special \end{} for \newenvironment environments
-      if (env.match(/\\/i)) {TEX.Error(["InvalidEnv","Invalid environment name '%1'",env])}
-      var cmd = this.envFindName(env);
-      if (!cmd) {TEX.Error(["UnknownEnv","Unknown environment '%1'",env])}
-      if (!isArray(cmd)) {cmd = [cmd]}
-      var end = (isArray(cmd[1]) ? cmd[1][0] : cmd[1]);
-      var mml = STACKITEM.begin().With({name: env, end: end, parse:this});
-      if (name === "\\end") {
-        if (!isEnd && isArray(cmd[1]) && this[cmd[1][1]]) {
-          mml = this[cmd[1][1]].apply(this,[mml].concat(cmd.slice(2)));
-        } else {
-          mml = STACKITEM.end().With({name: env});
-        }
-      } else {
-        if (++this.macroCount > TEX.config.MAXMACROS) {
-          TEX.Error(["MaxMacroSub2",
-                     "MathJax maximum substitution count exceeded; " +
-                     "is there a recursive latex environment?"]);
-        }
-        if (cmd[0] && this[cmd[0]]) {mml = this[cmd[0]].apply(this,[mml].concat(cmd.slice(2)))}
-      }
-      this.Push(mml);
-    },
-    envFindName: function (name) {return TEXDEF.environment[name]},
-    
-    Equation: function (begin,row) {return row},
-    
-    ExtensionEnv: function (begin,file) {this.Extension(begin.name,file,"environment")},
-    
-    Array: function (begin,open,close,align,spacing,vspacing,style,raggedHeight) {
-      if (!align) {align = this.GetArgument("\\begin{"+begin.name+"}")}
-      var lines = ("c"+align).replace(/[^clr|:]/g,'').replace(/[^|:]([|:])+/g,'$1');
-      align = align.replace(/[^clr]/g,'').split('').join(' ');
-      align = align.replace(/l/g,'left').replace(/r/g,'right').replace(/c/g,'center');
-      var array = STACKITEM.array().With({
-        arraydef: {
-          columnalign: align,
-          columnspacing: (spacing||"1em"),
-          rowspacing: (vspacing||"4pt")
-        }
-      });
-      if (lines.match(/[|:]/)) {
-        if (lines.charAt(0).match(/[|:]/)) {array.frame.push("left"); array.frame.dashed = lines.charAt(0) === ":"}
-        if (lines.charAt(lines.length-1).match(/[|:]/)) {array.frame.push("right")}
-        lines = lines.substr(1,lines.length-2);
-        array.arraydef.columnlines =
-          lines.split('').join(' ').replace(/[^|: ]/g,'none').replace(/\|/g,'solid').replace(/:/g,'dashed');
-      }
-      if (open)  {array.open  = this.convertDelimiter(open)}
-      if (close) {array.close = this.convertDelimiter(close)}
-      if (style === "D") {array.arraydef.displaystyle = true}
-         else if (style) {array.arraydef.displaystyle = false}
-      if (style === "S") {array.arraydef.scriptlevel = 1} // FIXME: should use mstyle?
-      if (raggedHeight)  {array.arraydef.useHeight = false}
-      this.Push(begin);
-      return array;
-    },
-    
-    AlignedArray: function (begin) {
-      var align = this.GetBrackets("\\begin{"+begin.name+"}");
-      return this.setArrayAlign(this.Array.apply(this,arguments),align);
-    },
-    setArrayAlign: function (array,align) {
-      align = this.trimSpaces(align||"");
-      if (align === "t") {array.arraydef.align = "baseline 1"}
-      else if (align === "b") {array.arraydef.align = "baseline -1"}
-      else if (align === "c") {array.arraydef.align = "center"}
-      else if (align) {array.arraydef.align = align} // FIXME: should be an error?
-      return array;
-    },
-    
-    /************************************************************************/
-    /*
-     *   String handling routines
-     */
-
-    /*
-     *  Convert delimiter to character
-     */
-    convertDelimiter: function (c) {
-      if (c) {c = TEXDEF.delimiter[c]}
-      if (c == null) {return null}
-      if (isArray(c)) {c = c[0]}
-      if (c.length === 4) {c = String.fromCharCode(parseInt(c,16))}
-      return c;
-    },
-
-    /*
-     *  Trim spaces from a string
-     */
-    trimSpaces: function (text) {
-      if (typeof(text) != 'string') {return text}
-      var TEXT = text.replace(/^\s+|\s+$/g,'');
-      if (TEXT.match(/\\$/) && text.match(/ $/)) TEXT += " ";
-      return TEXT;
-    },
-
-    /*
-     *   Check if the next character is a space
-     */
-    nextIsSpace: function () {
-      return this.string.charAt(this.i).match(/\s/);
-    },
-    
-    /*
-     *  Get the next non-space character
-     */
-    GetNext: function () {
-      while (this.nextIsSpace()) {this.i++}
-      return this.string.charAt(this.i);
-    },
-  
-    /*
-     *  Get and return a control-sequence name
-     */
-    GetCS: function () {
-      var CS = this.string.slice(this.i).match(/^([a-z]+|.) ?/i);
-      if (CS) {this.i += CS[1].length; return CS[1]} else {this.i++; return " "}
-    },
-
-    /*
-     *  Get and return a TeX argument (either a single character or control sequence,
-     *  or the contents of the next set of braces).
-     */
-    GetArgument: function (name,noneOK) {
-      switch (this.GetNext()) {
-       case "":
-        if (!noneOK) {TEX.Error(["MissingArgFor","Missing argument for %1",name])}
-        return null;
-       case '}':
-        if (!noneOK) {
-          TEX.Error(["ExtraCloseMissingOpen",
-                     "Extra close brace or missing open brace"]);
-        }
-        return null;
-       case '\\':
-        this.i++; return "\\"+this.GetCS();
-       case '{':
-        var j = ++this.i, parens = 1;
-        while (this.i < this.string.length) {
-          switch (this.string.charAt(this.i++)) {
-           case '\\':  this.i++; break;
-           case '{':   parens++; break;
-           case '}':
-            if (--parens == 0) {return this.string.slice(j,this.i-1)}
-            break;
-          }
-        }
-        TEX.Error(["MissingCloseBrace","Missing close brace"]);
-        break;
-      }        
-      return this.string.charAt(this.i++);
-    },
-    
-    /*
-     *  Get an optional LaTeX argument in brackets
-     */
-    GetBrackets: function (name,def) {
-      if (this.GetNext() != '[') {return def};
-      var j = ++this.i, parens = 0;
-      while (this.i < this.string.length) {
-        switch (this.string.charAt(this.i++)) {
-         case '{':   parens++; break;
-         case '\\':  this.i++; break;
-         case '}':
-          if (parens-- <= 0) {
-            TEX.Error(["ExtraCloseLooking",
-                       "Extra close brace while looking for %1","']'"]);
-          }
-          break;   
-         case ']':
-          if (parens == 0) {return this.string.slice(j,this.i-1)}
-          break;
-        }
-      }
-      TEX.Error(["MissingCloseBracket",
-                 "Couldn't find closing ']' for argument to %1",name]);
-    },
-  
-    /*
-     *  Get the name of a delimiter (check it in the delimiter list).
-     */
-    GetDelimiter: function (name,braceOK) {
-      while (this.nextIsSpace()) {this.i++}
-      var c = this.string.charAt(this.i); this.i++;
-      if (this.i <= this.string.length) {
-        if (c == "\\") {c += this.GetCS(name)}
-        else if (c === "{" && braceOK) {this.i--; c = this.GetArgument(name)}
-        if (TEXDEF.delimiter[c] != null) {return this.convertDelimiter(c)}
-      }
-      TEX.Error(["MissingOrUnrecognizedDelim",
-                 "Missing or unrecognized delimiter for %1",name]);
-    },
-
-    /*
-     *  Get a dimension (including its units).
-     */
-    GetDimen: function (name) {
-      var dimen;
-      if (this.nextIsSpace()) {this.i++}
-      if (this.string.charAt(this.i) == '{') {
-        dimen = this.GetArgument(name);
-        if (dimen.match(/^\s*([-+]?([.,]\d+|\d+([.,]\d*)?))\s*(pt|em|ex|mu|px|mm|cm|in|pc)\s*$/))
-          {return dimen.replace(/ /g,"").replace(/,/,".")}
-      } else {
-        dimen = this.string.slice(this.i);
-        var match = dimen.match(/^\s*(([-+]?([.,]\d+|\d+([.,]\d*)?))\s*(pt|em|ex|mu|px|mm|cm|in|pc)) ?/);
-        if (match) {
-          this.i += match[0].length;
-          return match[1].replace(/ /g,"").replace(/,/,".");
-        }
-      }
-      TEX.Error(["MissingDimOrUnits",
-                 "Missing dimension or its units for %1",name]);
-    },
-    
-    /*
-     *  Get everything up to the given control sequence (token)
-     */
-    GetUpTo: function (name,token) {
-      while (this.nextIsSpace()) {this.i++}
-      var j = this.i, k, c, parens = 0;
-      while (this.i < this.string.length) {
-        k = this.i; c = this.string.charAt(this.i++);
-        switch (c) {
-         case '\\':  c += this.GetCS(); break;
-         case '{':   parens++; break;
-         case '}':
-          if (parens == 0) {
-            TEX.Error(["ExtraCloseLooking",
-                       "Extra close brace while looking for %1",token])
-          }
-          parens--;
-          break;
-        }
-        if (parens == 0 && c == token) {return this.string.slice(j,k)}
-      }
-      TEX.Error(["TokenNotFoundForCommand",
-                 "Couldn't find %1 for %2",token,name]);
-    },
-
-    /*
-     *  Parse various substrings
-     */
-    ParseArg: function (name) {return TEX.Parse(this.GetArgument(name),this.stack.env).mml()},
-    ParseUpTo: function (name,token) {return TEX.Parse(this.GetUpTo(name,token),this.stack.env).mml()},
-    
-    /*
-     *  Break up a string into text and math blocks
-     */
-    InternalMath: function (text,level) {
-      var def = (this.stack.env.font ? {mathvariant: this.stack.env.font} : {});
-      var mml = [], i = 0, k = 0, c, match = '', braces = 0;
-      if (text.match(/\\?[${}\\]|\\\(|\\(eq)?ref\s*\{/)) {
-        while (i < text.length) {
-          c = text.charAt(i++);
-          if (c === '$') {
-            if (match === '$' && braces === 0) {
-              mml.push(MML.TeXAtom(TEX.Parse(text.slice(k,i-1),{}).mml()));
-              match = ''; k = i;
-            } else if (match === '') {
-              if (k < i-1) mml.push(this.InternalText(text.slice(k,i-1),def));
-              match = '$'; k = i;
-            }
-          } else if (c === '{' && match !== '') {
-            braces++;
-          } else if (c === '}') {
-            if (match === '}' && braces === 0) {
-              mml.push(MML.TeXAtom(TEX.Parse(text.slice(k,i),{}).mml().With(def)));
-              match = ''; k = i;
-            } else if (match !== '') {
-              if (braces) braces--;
-            }
-          } else if (c === '\\') {
-            if (match === '' && text.substr(i).match(/^(eq)?ref\s*\{/)) {
-              var len = RegExp["$&"].length;
-              if (k < i-1) mml.push(this.InternalText(text.slice(k,i-1),def));
-              match = '}'; k = i-1; i += len;
-            } else {
-              c = text.charAt(i++);
-              if (c === '(' && match === '') {
-                if (k < i-2) mml.push(this.InternalText(text.slice(k,i-2),def));
-                match = ')'; k = i;
-              } else if (c === ')' && match === ')' && braces === 0) {
-                mml.push(MML.TeXAtom(TEX.Parse(text.slice(k,i-2),{}).mml()));
-                match = ''; k = i;
-              } else if (c.match(/[${}\\]/) && match === '')  {
-                i--; text = text.substr(0,i-1) + text.substr(i); // remove \ from \$, \{, \}, or \\
-              }
-            }
-          }
-        }
-        if (match !== '') TEX.Error(["MathNotTerminated","Math not terminated in text box"]);
-      }
-      if (k < text.length) mml.push(this.InternalText(text.slice(k),def));
-      if (level != null) {
-        mml = [MML.mstyle.apply(MML,mml).With({displaystyle:false,scriptlevel:level})];
-      } else if (mml.length > 1) {
-        mml = [MML.mrow.apply(MML,mml)];
-      }
+      this.AddAttributes(mml,node); this.CheckClass(mml,mml["class"]);
+      this.AddChildren(mml,node);
+      if (MATHML.config.useMathMLspacing) {mml.useMMLspacing = 0x08}
       return mml;
     },
-    InternalText: function (text,def) {
-      text = text.replace(/^\s+/,NBSP).replace(/\s+$/,NBSP);
-      return MML.mtext(MML.chars(text)).With(def);
+    TeXAtom: function (mclass,movablelimits) {
+      var mml = MML.TeXAtom().With({texClass:MML.TEXCLASS[mclass]});
+      if (movablelimits) {mml.movesupsub = mml.movablelimits = true}
+      return mml;
+    },
+    CheckClass: function (mml,CLASS) {
+      CLASS = (CLASS||"").split(/ /); var NCLASS = [];
+      for (var i = 0, m = CLASS.length; i < m; i++) {
+        if (CLASS[i].substr(0,4) === "MJX-") {
+          if (CLASS[i] === "MJX-arrow") {
+            // This class was used in former versions of MathJax to attach an
+            // arrow to the updiagonalstrike notation. For backward
+            // compatibility, let's continue to accept this case. See issue 481.
+            if (!mml.notation.match("/"+MML.NOTATION.UPDIAGONALARROW+"/"))
+                mml.notation += " "+MML.NOTATION.UPDIAGONALARROW;
+          } else if (CLASS[i] === "MJX-variant") {
+            mml.variantForm = true;
+            //
+            //  Variant forms come from AMSsymbols, and it sets up the
+            //  character mappings, so load that if needed.
+            //
+            if (!MathJax.Extension["TeX/AMSsymbols"])
+              {MathJax.Hub.RestartAfter(MathJax.Ajax.Require("[MathJax]/extensions/TeX/AMSsymbols.js"))}
+          } else if (CLASS[i].substr(0,11) !== "MJX-TeXAtom") {
+            mml.mathvariant = CLASS[i].substr(3);
+            //
+            //  Caligraphic and oldstyle bold are set up in the boldsymbol
+            //  extension, so load it if it isn't already loaded.
+            //  
+            if (mml.mathvariant === "-tex-caligraphic-bold" ||
+                mml.mathvariant === "-tex-oldstyle-bold") {
+              if (!MathJax.Extension["TeX/boldsymbol"])
+                {MathJax.Hub.RestartAfter(MathJax.Ajax.Require("[MathJax]/extensions/TeX/boldsymbol.js"))}
+            }
+          }
+        } else {NCLASS.push(CLASS[i])}
+      }
+      if (NCLASS.length) {mml["class"] = NCLASS.join(" ")} else {delete mml["class"]}
+    },
+    
+    //
+    //  Add the attributes to the mml node
+    //
+    AddAttributes: function (mml,node) {
+      mml.attr = {}; mml.attrNames = [];
+      for (var i = 0, m = node.attributes.length; i < m; i++) {
+        var name = node.attributes[i].name;
+        if (name == "xlink:href") {name = "href"}
+        if (name.match(/:/)) continue;
+        if (name.match(/^_moz-math-((column|row)(align|line)|font-style)$/)) continue;
+        var value = node.attributes[i].value;
+        value = this.filterAttribute(name,value);
+        var defaults = (mml.type === "mstyle" ? MML.math.prototype.defaults : mml.defaults);
+        if (value != null) {
+          var val = value.toLowerCase();
+          if (val === "true" || val === "false") {
+            if (typeof (defaults[name]) === "boolean" || defaults[name] === MML.INHERIT ||
+               mml.type === "math" || mml.type === "mstyle" ||
+               (defaults[name] === MML.AUTO && 
+               (mml.defaultDef == null || typeof(mml.defaultDef[name]) === "boolean"))) {
+              value = (val === "true");
+            }
+          }
+          if (defaults[name] != null || MML.copyAttributes[name])
+            {mml[name] = value} else {mml.attr[name] = value}
+          mml.attrNames.push(name);
+        }
+      }
+    },
+    filterAttribute: function (name,value) {return value}, // safe mode overrides this
+    
+    //
+    //  Create the children for the mml node
+    //
+    AddChildren: function (mml,node) {
+      for (var i = 0, m = node.childNodes.length; i < m; i++) {
+        var child = node.childNodes[i];
+        if (child.nodeName === "#comment") continue;
+        if (child.nodeName === "#text") {
+          if ((mml.isToken || mml.isChars) && !mml.mmlSelfClosing) {
+            var text = child.nodeValue;
+            if (mml.isToken) {
+              text = text.replace(/&([a-z][a-z0-9]*);/ig,this.replaceEntity);
+              text = this.trimSpace(text);
+            }
+            mml.Append(MML.chars(text));
+          } else if (child.nodeValue.match(/\S/)) {
+            MATHML.Error(["UnexpectedTextNode",
+              "Unexpected text node: %1","'"+child.nodeValue+"'"]);
+          }
+        } else if (mml.type === "annotation-xml") {
+          mml.Append(MML.xml(child));
+        } else {
+          var cmml = this.MakeMML(child); mml.Append(cmml);
+          if (cmml.mmlSelfClosing && cmml.data.length)
+            {mml.Append.apply(mml,cmml.data); cmml.data = []}
+        }
+      }
+      if (mml.type === "mrow" && mml.data.length >= 2) {
+        var first = mml.data[0], last = mml.data[mml.data.length-1];
+        if (first.type === "mo" && first.Get("fence") &&
+            last.type === "mo" && last.Get("fence")) {
+          if (first.data[0]) {mml.open = first.data.join("")}
+          if (last.data[0]) {mml.close = last.data.join("")}
+        }
+      }
+    },
+    
+    //
+    // Clean Up the <math> source to prepare for XML parsing
+    //
+    preProcessMath: function (math) {
+      if (math.match(/^<[a-z]+:/i) && !math.match(/^<[^<>]* xmlns:/)) {
+        math = math.replace(/^<([a-z]+)(:math)/i,'<$1$2 xmlns:$1="http://www.w3.org/1998/Math/MathML"')
+      }
+      // HTML5 removes xmlns: namespaces, so put them back for XML
+      var match = math.match(/^(<math( ('.*?'|".*?"|[^>])+)>)/i);
+      if (match && match[2].match(/ (?!xmlns=)[a-z]+=\"http:/i)) {
+	math = match[1].replace(/ (?!xmlns=)([a-z]+=(['"])http:.*?\2)/ig," xmlns:$1 $1") +
+               math.substr(match[0].length);
+      }
+      if (math.match(/^<math/i) && !math.match(/^<[^<>]* xmlns=/)) {
+        // append the MathML namespace
+        math = math.replace(/^<(math)/i,'<math xmlns="http://www.w3.org/1998/Math/MathML"')
+      }
+      math = math.replace(/^\s*(?:\/\/)?<!(--)?\[CDATA\[((.|\n)*)(\/\/)?\]\]\1>\s*$/,"$2");
+      return math.replace(/&([a-z][a-z0-9]*);/ig,this.replaceEntity);
     },
 
-    /*
-     *  Replace macro paramters with their values
-     */
-    SubstituteArgs: function (args,string) {
-      var text = ''; var newstring = ''; var c; var i = 0;
-      while (i < string.length) {
-        c = string.charAt(i++);
-        if (c === "\\") {text += c + string.charAt(i++)}
-        else if (c === '#') {
-          c = string.charAt(i++);
-          if (c === '#') {text += c} else {
-            if (!c.match(/[1-9]/) || c > args.length) {
-              TEX.Error(["IllegalMacroParam",
-                         "Illegal macro parameter reference"]);
-            }
-            newstring = this.AddArgs(this.AddArgs(newstring,text),args[c-1]);
-            text = '';
-          }
-        } else {text += c}
-      }
-      return this.AddArgs(newstring,text);
+    //
+    //  Remove attribute whitespace
+    //
+    trimSpace: function (string) {
+      return string.replace(/[\t\n\r]/g," ")    // whitespace to spaces
+                   .replace(/^ +/,"")           // initial whitespace
+                   .replace(/ +$/,"")           // trailing whitespace
+                   .replace(/  +/g," ");        // internal multiple whitespace
     },
     
-    /*
-     *  Make sure that macros are followed by a space if their names
-     *  could accidentally be continued into the following text.
-     */
-    AddArgs: function (s1,s2) {
-      if (s2.match(/^[a-z]/i) && s1.match(/(^|[^\\])(\\\\)*\\[a-z]+$/i)) {s1 += ' '}
-      if (s1.length + s2.length > TEX.config.MAXBUFFER) {
-        TEX.Error(["MaxBufferSize",
-                   "MathJax internal buffer size exceeded; is there a recursive macro call?"]);
+    //
+    //  Replace a named entity by its value
+    //  (look up from external files if necessary)
+    //
+    replaceEntity: function (match,entity) {
+      if (entity.match(/^(lt|amp|quot)$/)) {return match} // these mess up attribute parsing
+      if (MATHML.Parse.Entity[entity]) {return MATHML.Parse.Entity[entity]}
+      var file = entity.charAt(0).toLowerCase();
+      var font = entity.match(/^[a-zA-Z](fr|scr|opf)$/);
+      if (font) {file = font[1]}
+      if (!MATHML.Parse.loaded[file]) {
+        MATHML.Parse.loaded[file] = true;
+        MathJax.Hub.RestartAfter(MathJax.Ajax.Require(MATHML.entityDir+"/"+file+".js"));
       }
-      return s1+s2;
+      return match;
     }
-    
+  }, {
+    loaded: []    // the entity files that are loaded
   });
   
   /************************************************************************/
 
-  TEX.Augment({
-    Stack: STACK, Parse: PARSE, Definitions: TEXDEF, Startup: STARTUP,
+  MATHML.Augment({
+    sourceMenuTitle: /*_(MathMenu)*/ ["OriginalMathML","Original MathML"],
     
-    config: {
-      MAXMACROS: 10000,    // maximum number of macro substitutions per equation
-      MAXBUFFER: 5*1024    // maximum size of TeX string to process
-    },
-    
-    sourceMenuTitle: /*_(MathMenu)*/ ["TeXCommands","TeX Commands"],
-    annotationEncoding: "application/x-tex",
+    prefilterHooks:    MathJax.Callback.Hooks(true),   // hooks to run on MathML string before processing MathML
+    DOMfilterHooks:    MathJax.Callback.Hooks(true),   // hooks to run on MathML DOM before processing
+    postfilterHooks:   MathJax.Callback.Hooks(true),   // hooks to run on internal jax format after processing MathML
 
-    prefilterHooks: MathJax.Callback.Hooks(true),    // hooks to run before processing TeX
-    postfilterHooks: MathJax.Callback.Hooks(true),   // hooks to run after processing TeX
-    
-    //
-    //  Check if AMSmath extension must be loaded and push
-    //    it on the extensions array, if needed
-    //
-    Config: function () {
-      this.SUPER(arguments).Config.apply(this,arguments);
-      if (this.config.equationNumbers.autoNumber !== "none") {
-        if (!this.config.extensions) {this.config.extensions = []}
-        this.config.extensions.push("AMSmath.js");
-      }
-    },
-
-    //
-    //  Convert TeX to ElementJax
-    //
     Translate: function (script) {
-      var mml, isError = false, math = MathJax.HTML.getScript(script);
-      var display = (script.type.replace(/\n/g," ").match(/(;|\s|\n)mode\s*=\s*display(;|\s|\n|$)/) != null);
-      var data = {math:math, display:display, script:script};
+      if (!this.ParseXML) {this.ParseXML = this.createParser()}
+      var mml, math, data = {script:script};
+      if (script.firstChild &&
+          script.firstChild.nodeName.toLowerCase().replace(/^[a-z]+:/,"") === "math") {
+        data.math = script.firstChild;
+      } else {
+        math = MathJax.HTML.getScript(script);
+        if (BROWSER.isMSIE) {math = math.replace(/(&nbsp;)+$/,"")}
+        data.math = math;
+      }
       var callback = this.prefilterHooks.Execute(data); if (callback) return callback;
       math = data.math;
       try {
-        mml = TEX.Parse(math).mml();
+        mml = MATHML.Parse(math,script).mml;
       } catch(err) {
-        if (!err.texError) {throw err}
-        mml = this.formatError(err,math,display,script);
-        isError = true;
+        if (!err.mathmlError) {throw err}
+        mml = this.formatError(err,math,script);
       }
-      if (mml.isa(MML.mtable) && mml.displaystyle === "inherit") mml.displaystyle = display; // for tagged equations
-      if (mml.inferred) {mml = MML.apply(MathJax.ElementJax,mml.data)} else {mml = MML(mml)}
-      if (display) {mml.root.display = "block"}
-      if (isError) {mml.texError = true}
-      data.math = mml; 
+      data.math = MML(mml);
       return this.postfilterHooks.Execute(data) || data.math;
     },
-    prefilterMath: function (math,displaystyle,script) {
-      return math;
-    },
-    postfilterMath: function (math,displaystyle,script) {
-      this.combineRelations(math.root);
-      return math;
-    },
-    formatError: function (err,math,display,script) {
+    prefilterMath: function (math,script) {return math},
+    prefilterMathML: function (math,script) {return math},
+    formatError: function (err,math,script) {
       var message = err.message.replace(/\n.*/,"");
-      HUB.signal.Post(["TeX Jax - parse error",message,math,display,script]);
+      MathJax.Hub.signal.Post(["MathML Jax - parse error",message,math,script]);
       return MML.Error(message);
     },
-
-    //
-    //  Produce an error and stop processing this equation
-    //
     Error: function (message) {
       //
       //  Translate message if it is ["id","message",args]
       //
-      if (isArray(message)) {message = _.apply(_,message)}
-      throw HUB.Insert(Error(message),{texError: true});
+      if (MathJax.Object.isArray(message)) {message = _.apply(_,message)}
+      throw MathJax.Hub.Insert(Error(message),{mathmlError: true});
     },
-    
     //
-    //  Add a user-defined macro to the macro list
+    //  Parsers for various forms (DOMParser, Windows ActiveX object, other)
     //
-    Macro: function (name,def,argn) {
-      TEXDEF.macros[name] = ['Macro'].concat([].slice.call(arguments,1));
-      TEXDEF.macros[name].isUser = true;
+    parseDOM: function (string) {return this.parser.parseFromString(string,"text/xml")},
+    parseMS: function (string) {return (this.parser.loadXML(string) ? this.parser : null)},
+    parseDIV: function (string) {
+      this.div.innerHTML = 
+        "<div>"+string.replace(/<([a-z]+)([^>]*)\/>/g,"<$1$2></$1>")+"</div>";
+      var doc = this.div.firstChild;
+      this.div.innerHTML = "";
+      return doc;
     },
-    
-    /*
-     *  Create an mrow that has stretchy delimiters at either end, as needed
-     */
-    fenced: function (open,mml,close) {
-      var mrow = MML.mrow().With({open:open, close:close, texClass:MML.TEXCLASS.INNER});
-      mrow.Append(
-        MML.mo(open).With({fence:true, stretchy:true, symmetric:true, texClass:MML.TEXCLASS.OPEN}),
-        mml,
-        MML.mo(close).With({fence:true, stretchy:true, symmetric:true, texClass:MML.TEXCLASS.CLOSE})
-      );
-      return mrow;
-    },
-    /*
-     *  Create an mrow that has \mathchoice using \bigg and \big for the delimiters
-     */
-    fixedFence: function (open,mml,close) {
-      var mrow = MML.mrow().With({open:open, close:close, texClass:MML.TEXCLASS.ORD});
-      if (open) {mrow.Append(this.mathPalette(open,"l"))}
-      if (mml.type === "mrow") {mrow.Append.apply(mrow,mml.data)} else {mrow.Append(mml)}
-      if (close) {mrow.Append(this.mathPalette(close,"r"))}
-      return mrow;
-    },
-    mathPalette: function (fence,side) {
-      if (fence === '{' || fence === '}') {fence = "\\"+fence}
-      var D = '{\\bigg'+side+' '+fence+'}', T = '{\\big'+side+' '+fence+'}';
-      return TEX.Parse('\\mathchoice'+D+T+T+T,{}).mml();
-    },
-    
-    //
-    //  Combine adjacent <mo> elements that are relations
-    //    (since MathML treats the spacing very differently)
-    //
-    combineRelations: function (mml) {
-      var i, m, m1, m2;
-      for (i = 0, m = mml.data.length; i < m; i++) {
-        if (mml.data[i]) {
-          if (mml.isa(MML.mrow)) {
-            while (i+1 < m && (m1 = mml.data[i]) && (m2 = mml.data[i+1]) &&
-                   m1.isa(MML.mo) && m2.isa(MML.mo) &&
-                   m1.Get("texClass") === MML.TEXCLASS.REL &&
-                   m2.Get("texClass") === MML.TEXCLASS.REL) {
-              if (m1.variantForm == m2.variantForm &&
-                  m1.Get("mathvariant") == m2.Get("mathvariant") && m1.style == m2.style &&
-                  m1["class"] == m2["class"] && !m1.id && !m2.id) {
-                m1.Append.apply(m1,m2.data);
-                mml.data.splice(i+1,1); m--;
-              } else {
-                m1.rspace = m2.lspace = "0pt"; i++;
-              }
-            }
-          }
-          if (!mml.data[i].isToken) {this.combineRelations(mml.data[i])}
-        }
+    parseError: function (string) {return null},
+    createMSParser: function() {
+      var parser = null;
+      var xml = ["MSXML2.DOMDocument.6.0","MSXML2.DOMDocument.5.0",
+                 "MSXML2.DOMDocument.4.0","MSXML2.DOMDocument.3.0",
+                 "MSXML2.DOMDocument.2.0","Microsoft.XMLDOM"];
+      for (var i = 0, m = xml.length; i < m && !parser; i++) {
+        try {
+          parser = new ActiveXObject(xml[i])
+        } catch (err) {}
       }
+      return parser;
+    },
+    //
+    //  Create the parser using a DOMParser, or other fallback method
+    //
+    createParser: function () {
+      if (window.DOMParser) {
+        this.parser = new DOMParser();
+        return(this.parseDOM);
+      } else if (window.ActiveXObject) {
+        this.parser = this.createMSParser();
+        if (!this.parser) {
+          MathJax.Localization.Try(this.parserCreationError); 
+          return(this.parseError);
+        }
+        this.parser.async = false;
+        return(this.parseMS);
+      }
+      this.div = MathJax.Hub.Insert(document.createElement("div"),{
+           style:{visibility:"hidden", overflow:"hidden", height:"1px",
+                  position:"absolute", top:0}
+      });
+      if (!document.body.firstChild) {document.body.appendChild(this.div)}
+        else {document.body.insertBefore(this.div,document.body.firstChild)}
+      return(this.parseDIV);
+    },
+    parserCreationError: function () {
+      alert(_("CantCreateXMLParser",
+        "MathJax can't create an XML parser for MathML.  Check that\n"+
+        "the 'Script ActiveX controls marked safe for scripting' security\n"+
+        "setting is enabled (use the Internet Options item in the Tools\n"+
+        "menu, and select the Security panel, then press the Custom Level\n"+
+        "button to check this).\n\n"+
+        "MathML equations will not be able to be processed by MathJax."));
+    },
+    //
+    //  Initialize the parser object (whichever type is used)
+    //
+    Startup: function () {
+      MML = MathJax.ElementJax.mml;
+      MML.mspace.Augment({mmlSelfClosing: true});
+      MML.none.Augment({mmlSelfClosing: true});
+      MML.mprescripts.Augment({mmlSelfClosing:true});
+      MML.maligngroup.Augment({mmlSelfClosing:true});
+      MML.malignmark.Augment({mmlSelfClosing:true});
     }
   });
-
-  //
-  //  Add the default filters
-  //
-  TEX.prefilterHooks.Add(function (data) {
-    data.math = TEX.prefilterMath(data.math,data.display,data.script);
-  });
-  TEX.postfilterHooks.Add(function (data) {
-    data.math = TEX.postfilterMath(data.math,data.display,data.script);
-  });
-
-  TEX.loadComplete("jax.js");
   
-})(MathJax.InputJax.TeX,MathJax.Hub,MathJax.Ajax);
+  //
+  //  Add the default pre-filter (for backward compatibility)
+  //
+  MATHML.prefilterHooks.Add(function (data) {
+    data.math = (typeof(data.math) === "string" ?
+      MATHML.prefilterMath(data.math,data.script) :
+      MATHML.prefilterMathML(data.math,data.script));
+  });
+
+  MATHML.Parse.Entity = {
+    ApplyFunction: '\u2061',
+    Backslash: '\u2216',
+    Because: '\u2235',
+    Breve: '\u02D8',
+    Cap: '\u22D2',
+    CenterDot: '\u00B7',
+    CircleDot: '\u2299',
+    CircleMinus: '\u2296',
+    CirclePlus: '\u2295',
+    CircleTimes: '\u2297',
+    Congruent: '\u2261',
+    ContourIntegral: '\u222E',
+    Coproduct: '\u2210',
+    Cross: '\u2A2F',
+    Cup: '\u22D3',
+    CupCap: '\u224D',
+    Dagger: '\u2021',
+    Del: '\u2207',
+    Delta: '\u0394',
+    Diamond: '\u22C4',
+    DifferentialD: '\u2146',
+    DotEqual: '\u2250',
+    DoubleDot: '\u00A8',
+    DoubleRightTee: '\u22A8',
+    DoubleVerticalBar: '\u2225',
+    DownArrow: '\u2193',
+    DownLeftVector: '\u21BD',
+    DownRightVector: '\u21C1',
+    DownTee: '\u22A4',
+    Downarrow: '\u21D3',
+    Element: '\u2208',
+    EqualTilde: '\u2242',
+    Equilibrium: '\u21CC',
+    Exists: '\u2203',
+    ExponentialE: '\u2147',
+    FilledVerySmallSquare: '\u25AA',
+    ForAll: '\u2200',
+    Gamma: '\u0393',
+    Gg: '\u22D9',
+    GreaterEqual: '\u2265',
+    GreaterEqualLess: '\u22DB',
+    GreaterFullEqual: '\u2267',
+    GreaterLess: '\u2277',
+    GreaterSlantEqual: '\u2A7E',
+    GreaterTilde: '\u2273',
+    Hacek: '\u02C7',
+    Hat: '\u005E',
+    HumpDownHump: '\u224E',
+    HumpEqual: '\u224F',
+    Im: '\u2111',
+    ImaginaryI: '\u2148',
+    Integral: '\u222B',
+    Intersection: '\u22C2',
+    InvisibleComma: '\u2063',
+    InvisibleTimes: '\u2062',
+    Lambda: '\u039B',
+    Larr: '\u219E',
+    LeftAngleBracket: '\u27E8',
+    LeftArrow: '\u2190',
+    LeftArrowRightArrow: '\u21C6',
+    LeftCeiling: '\u2308',
+    LeftDownVector: '\u21C3',
+    LeftFloor: '\u230A',
+    LeftRightArrow: '\u2194',
+    LeftTee: '\u22A3',
+    LeftTriangle: '\u22B2',
+    LeftTriangleEqual: '\u22B4',
+    LeftUpVector: '\u21BF',
+    LeftVector: '\u21BC',
+    Leftarrow: '\u21D0',
+    Leftrightarrow: '\u21D4',
+    LessEqualGreater: '\u22DA',
+    LessFullEqual: '\u2266',
+    LessGreater: '\u2276',
+    LessSlantEqual: '\u2A7D',
+    LessTilde: '\u2272',
+    Ll: '\u22D8',
+    Lleftarrow: '\u21DA',
+    LongLeftArrow: '\u27F5',
+    LongLeftRightArrow: '\u27F7',
+    LongRightArrow: '\u27F6',
+    Longleftarrow: '\u27F8',
+    Longleftrightarrow: '\u27FA',
+    Longrightarrow: '\u27F9',
+    Lsh: '\u21B0',
+    MinusPlus: '\u2213',
+    NestedGreaterGreater: '\u226B',
+    NestedLessLess: '\u226A',
+    NotDoubleVerticalBar: '\u2226',
+    NotElement: '\u2209',
+    NotEqual: '\u2260',
+    NotExists: '\u2204',
+    NotGreater: '\u226F',
+    NotGreaterEqual: '\u2271',
+    NotLeftTriangle: '\u22EA',
+    NotLeftTriangleEqual: '\u22EC',
+    NotLess: '\u226E',
+    NotLessEqual: '\u2270',
+    NotPrecedes: '\u2280',
+    NotPrecedesSlantEqual: '\u22E0',
+    NotRightTriangle: '\u22EB',
+    NotRightTriangleEqual: '\u22ED',
+    NotSubsetEqual: '\u2288',
+    NotSucceeds: '\u2281',
+    NotSucceedsSlantEqual: '\u22E1',
+    NotSupersetEqual: '\u2289',
+    NotTilde: '\u2241',
+    NotVerticalBar: '\u2224',
+    Omega: '\u03A9',
+    OverBar: '\u203E',
+    OverBrace: '\u23DE',
+    PartialD: '\u2202',
+    Phi: '\u03A6',
+    Pi: '\u03A0',
+    PlusMinus: '\u00B1',
+    Precedes: '\u227A',
+    PrecedesEqual: '\u2AAF',
+    PrecedesSlantEqual: '\u227C',
+    PrecedesTilde: '\u227E',
+    Product: '\u220F',
+    Proportional: '\u221D',
+    Psi: '\u03A8',
+    Rarr: '\u21A0',
+    Re: '\u211C',
+    ReverseEquilibrium: '\u21CB',
+    RightAngleBracket: '\u27E9',
+    RightArrow: '\u2192',
+    RightArrowLeftArrow: '\u21C4',
+    RightCeiling: '\u2309',
+    RightDownVector: '\u21C2',
+    RightFloor: '\u230B',
+    RightTee: '\u22A2',
+    RightTeeArrow: '\u21A6',
+    RightTriangle: '\u22B3',
+    RightTriangleEqual: '\u22B5',
+    RightUpVector: '\u21BE',
+    RightVector: '\u21C0',
+    Rightarrow: '\u21D2',
+    Rrightarrow: '\u21DB',
+    Rsh: '\u21B1',
+    Sigma: '\u03A3',
+    SmallCircle: '\u2218',
+    Sqrt: '\u221A',
+    Square: '\u25A1',
+    SquareIntersection: '\u2293',
+    SquareSubset: '\u228F',
+    SquareSubsetEqual: '\u2291',
+    SquareSuperset: '\u2290',
+    SquareSupersetEqual: '\u2292',
+    SquareUnion: '\u2294',
+    Star: '\u22C6',
+    Subset: '\u22D0',
+    SubsetEqual: '\u2286',
+    Succeeds: '\u227B',
+    SucceedsEqual: '\u2AB0',
+    SucceedsSlantEqual: '\u227D',
+    SucceedsTilde: '\u227F',
+    SuchThat: '\u220B',
+    Sum: '\u2211',
+    Superset: '\u2283',
+    SupersetEqual: '\u2287',
+    Supset: '\u22D1',
+    Therefore: '\u2234',
+    Theta: '\u0398',
+    Tilde: '\u223C',
+    TildeEqual: '\u2243',
+    TildeFullEqual: '\u2245',
+    TildeTilde: '\u2248',
+    UnderBar: '\u005F',
+    UnderBrace: '\u23DF',
+    Union: '\u22C3',
+    UnionPlus: '\u228E',
+    UpArrow: '\u2191',
+    UpDownArrow: '\u2195',
+    UpTee: '\u22A5',
+    Uparrow: '\u21D1',
+    Updownarrow: '\u21D5',
+    Upsilon: '\u03A5',
+    Vdash: '\u22A9',
+    Vee: '\u22C1',
+    VerticalBar: '\u2223',
+    VerticalTilde: '\u2240',
+    Vvdash: '\u22AA',
+    Wedge: '\u22C0',
+    Xi: '\u039E',
+    acute: '\u00B4',
+    aleph: '\u2135',
+    alpha: '\u03B1',
+    amalg: '\u2A3F',
+    and: '\u2227',
+    ang: '\u2220',
+    angmsd: '\u2221',
+    angsph: '\u2222',
+    ape: '\u224A',
+    backprime: '\u2035',
+    backsim: '\u223D',
+    backsimeq: '\u22CD',
+    beta: '\u03B2',
+    beth: '\u2136',
+    between: '\u226C',
+    bigcirc: '\u25EF',
+    bigodot: '\u2A00',
+    bigoplus: '\u2A01',
+    bigotimes: '\u2A02',
+    bigsqcup: '\u2A06',
+    bigstar: '\u2605',
+    bigtriangledown: '\u25BD',
+    bigtriangleup: '\u25B3',
+    biguplus: '\u2A04',
+    blacklozenge: '\u29EB',
+    blacktriangle: '\u25B4',
+    blacktriangledown: '\u25BE',
+    blacktriangleleft: '\u25C2',
+    bowtie: '\u22C8',
+    boxdl: '\u2510',
+    boxdr: '\u250C',
+    boxminus: '\u229F',
+    boxplus: '\u229E',
+    boxtimes: '\u22A0',
+    boxul: '\u2518',
+    boxur: '\u2514',
+    bsol: '\u005C',
+    bull: '\u2022',
+    cap: '\u2229',
+    check: '\u2713',
+    chi: '\u03C7',
+    circ: '\u02C6',
+    circeq: '\u2257',
+    circlearrowleft: '\u21BA',
+    circlearrowright: '\u21BB',
+    circledR: '\u00AE',
+    circledS: '\u24C8',
+    circledast: '\u229B',
+    circledcirc: '\u229A',
+    circleddash: '\u229D',
+    clubs: '\u2663',
+    colon: '\u003A',
+    comp: '\u2201',
+    ctdot: '\u22EF',
+    cuepr: '\u22DE',
+    cuesc: '\u22DF',
+    cularr: '\u21B6',
+    cup: '\u222A',
+    curarr: '\u21B7',
+    curlyvee: '\u22CE',
+    curlywedge: '\u22CF',
+    dagger: '\u2020',
+    daleth: '\u2138',
+    ddarr: '\u21CA',
+    deg: '\u00B0',
+    delta: '\u03B4',
+    digamma: '\u03DD',
+    div: '\u00F7',
+    divideontimes: '\u22C7',
+    dot: '\u02D9',
+    doteqdot: '\u2251',
+    dotplus: '\u2214',
+    dotsquare: '\u22A1',
+    dtdot: '\u22F1',
+    ecir: '\u2256',
+    efDot: '\u2252',
+    egs: '\u2A96',
+    ell: '\u2113',
+    els: '\u2A95',
+    empty: '\u2205',
+    epsi: '\u03B5',
+    epsiv: '\u03F5',
+    erDot: '\u2253',
+    eta: '\u03B7',
+    eth: '\u00F0',
+    flat: '\u266D',
+    fork: '\u22D4',
+    frown: '\u2322',
+    gEl: '\u2A8C',
+    gamma: '\u03B3',
+    gap: '\u2A86',
+    gimel: '\u2137',
+    gnE: '\u2269',
+    gnap: '\u2A8A',
+    gne: '\u2A88',
+    gnsim: '\u22E7',
+    gt: '\u003E',
+    gtdot: '\u22D7',
+    harrw: '\u21AD',
+    hbar: '\u210F',
+    hellip: '\u2026',
+    hookleftarrow: '\u21A9',
+    hookrightarrow: '\u21AA',
+    imath: '\u0131',
+    infin: '\u221E',
+    intcal: '\u22BA',
+    iota: '\u03B9',
+    jmath: '\u0237',
+    kappa: '\u03BA',
+    kappav: '\u03F0',
+    lEg: '\u2A8B',
+    lambda: '\u03BB',
+    lap: '\u2A85',
+    larrlp: '\u21AB',
+    larrtl: '\u21A2',
+    lbrace: '\u007B',
+    lbrack: '\u005B',
+    le: '\u2264',
+    leftleftarrows: '\u21C7',
+    leftthreetimes: '\u22CB',
+    lessdot: '\u22D6',
+    lmoust: '\u23B0',
+    lnE: '\u2268',
+    lnap: '\u2A89',
+    lne: '\u2A87',
+    lnsim: '\u22E6',
+    longmapsto: '\u27FC',
+    looparrowright: '\u21AC',
+    lowast: '\u2217',
+    loz: '\u25CA',
+    lt: '\u003C',
+    ltimes: '\u22C9',
+    ltri: '\u25C3',
+    macr: '\u00AF',
+    malt: '\u2720',
+    mho: '\u2127',
+    mu: '\u03BC',
+    multimap: '\u22B8',
+    nLeftarrow: '\u21CD',
+    nLeftrightarrow: '\u21CE',
+    nRightarrow: '\u21CF',
+    nVDash: '\u22AF',
+    nVdash: '\u22AE',
+    natur: '\u266E',
+    nearr: '\u2197',
+    nharr: '\u21AE',
+    nlarr: '\u219A',
+    not: '\u00AC',
+    nrarr: '\u219B',
+    nu: '\u03BD',
+    nvDash: '\u22AD',
+    nvdash: '\u22AC',
+    nwarr: '\u2196',
+    omega: '\u03C9',
+    omicron: '\u03BF',
+    or: '\u2228',
+    osol: '\u2298',
+    period: '\u002E',
+    phi: '\u03C6',
+    phiv: '\u03D5',
+    pi: '\u03C0',
+    piv: '\u03D6',
+    prap: '\u2AB7',
+    precnapprox: '\u2AB9',
+    precneqq: '\u2AB5',
+    precnsim: '\u22E8',
+    prime: '\u2032',
+    psi: '\u03C8',
+    rarrtl: '\u21A3',
+    rbrace: '\u007D',
+    rbrack: '\u005D',
+    rho: '\u03C1',
+    rhov: '\u03F1',
+    rightrightarrows: '\u21C9',
+    rightthreetimes: '\u22CC',
+    ring: '\u02DA',
+    rmoust: '\u23B1',
+    rtimes: '\u22CA',
+    rtri: '\u25B9',
+    scap: '\u2AB8',
+    scnE: '\u2AB6',
+    scnap: '\u2ABA',
+    scnsim: '\u22E9',
+    sdot: '\u22C5',
+    searr: '\u2198',
+    sect: '\u00A7',
+    sharp: '\u266F',
+    sigma: '\u03C3',
+    sigmav: '\u03C2',
+    simne: '\u2246',
+    smile: '\u2323',
+    spades: '\u2660',
+    sub: '\u2282',
+    subE: '\u2AC5',
+    subnE: '\u2ACB',
+    subne: '\u228A',
+    supE: '\u2AC6',
+    supnE: '\u2ACC',
+    supne: '\u228B',
+    swarr: '\u2199',
+    tau: '\u03C4',
+    theta: '\u03B8',
+    thetav: '\u03D1',
+    tilde: '\u02DC',
+    times: '\u00D7',
+    triangle: '\u25B5',
+    triangleq: '\u225C',
+    upsi: '\u03C5',
+    upuparrows: '\u21C8',
+    veebar: '\u22BB',
+    vellip: '\u22EE',
+    weierp: '\u2118',
+    xi: '\u03BE',
+    yen: '\u00A5',
+    zeta: '\u03B6',
+    zigrarr: '\u21DD'
+  };
+  
+  MATHML.loadComplete("jax.js");
+  
+})(MathJax.InputJax.MathML,MathJax.Hub.Browser);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/scr.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'Ascr': '\uD835\uDC9C',
+    'Bscr': '\u212C',
+    'Cscr': '\uD835\uDC9E',
+    'Dscr': '\uD835\uDC9F',
+    'Escr': '\u2130',
+    'Fscr': '\u2131',
+    'Gscr': '\uD835\uDCA2',
+    'Hscr': '\u210B',
+    'Iscr': '\u2110',
+    'Jscr': '\uD835\uDCA5',
+    'Kscr': '\uD835\uDCA6',
+    'Lscr': '\u2112',
+    'Mscr': '\u2133',
+    'Nscr': '\uD835\uDCA9',
+    'Oscr': '\uD835\uDCAA',
+    'Pscr': '\uD835\uDCAB',
+    'Qscr': '\uD835\uDCAC',
+    'Rscr': '\u211B',
+    'Sscr': '\uD835\uDCAE',
+    'Tscr': '\uD835\uDCAF',
+    'Uscr': '\uD835\uDCB0',
+    'Vscr': '\uD835\uDCB1',
+    'Wscr': '\uD835\uDCB2',
+    'Xscr': '\uD835\uDCB3',
+    'Yscr': '\uD835\uDCB4',
+    'Zscr': '\uD835\uDCB5',
+    'ascr': '\uD835\uDCB6',
+    'bscr': '\uD835\uDCB7',
+    'cscr': '\uD835\uDCB8',
+    'dscr': '\uD835\uDCB9',
+    'escr': '\u212F',
+    'fscr': '\uD835\uDCBB',
+    'gscr': '\u210A',
+    'hscr': '\uD835\uDCBD',
+    'iscr': '\uD835\uDCBE',
+    'jscr': '\uD835\uDCBF',
+    'kscr': '\uD835\uDCC0',
+    'lscr': '\uD835\uDCC1',
+    'mscr': '\uD835\uDCC2',
+    'nscr': '\uD835\uDCC3',
+    'oscr': '\u2134',
+    'pscr': '\uD835\uDCC5',
+    'qscr': '\uD835\uDCC6',
+    'rscr': '\uD835\uDCC7',
+    'sscr': '\uD835\uDCC8',
+    'tscr': '\uD835\uDCC9',
+    'uscr': '\uD835\uDCCA',
+    'vscr': '\uD835\uDCCB',
+    'wscr': '\uD835\uDCCC',
+    'xscr': '\uD835\uDCCD',
+    'yscr': '\uD835\uDCCE',
+    'zscr': '\uD835\uDCCF'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/scr.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/opf.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'Aopf': '\uD835\uDD38',
+    'Bopf': '\uD835\uDD39',
+    'Copf': '\u2102',
+    'Dopf': '\uD835\uDD3B',
+    'Eopf': '\uD835\uDD3C',
+    'Fopf': '\uD835\uDD3D',
+    'Gopf': '\uD835\uDD3E',
+    'Hopf': '\u210D',
+    'Iopf': '\uD835\uDD40',
+    'Jopf': '\uD835\uDD41',
+    'Kopf': '\uD835\uDD42',
+    'Lopf': '\uD835\uDD43',
+    'Mopf': '\uD835\uDD44',
+    'Nopf': '\u2115',
+    'Oopf': '\uD835\uDD46',
+    'Popf': '\u2119',
+    'Qopf': '\u211A',
+    'Ropf': '\u211D',
+    'Sopf': '\uD835\uDD4A',
+    'Topf': '\uD835\uDD4B',
+    'Uopf': '\uD835\uDD4C',
+    'Vopf': '\uD835\uDD4D',
+    'Wopf': '\uD835\uDD4E',
+    'Xopf': '\uD835\uDD4F',
+    'Yopf': '\uD835\uDD50',
+    'Zopf': '\u2124',
+    'aopf': '\uD835\uDD52',
+    'bopf': '\uD835\uDD53',
+    'copf': '\uD835\uDD54',
+    'dopf': '\uD835\uDD55',
+    'eopf': '\uD835\uDD56',
+    'fopf': '\uD835\uDD57',
+    'gopf': '\uD835\uDD58',
+    'hopf': '\uD835\uDD59',
+    'iopf': '\uD835\uDD5A',
+    'jopf': '\uD835\uDD5B',
+    'kopf': '\uD835\uDD5C',
+    'lopf': '\uD835\uDD5D',
+    'mopf': '\uD835\uDD5E',
+    'nopf': '\uD835\uDD5F',
+    'oopf': '\uD835\uDD60',
+    'popf': '\uD835\uDD61',
+    'qopf': '\uD835\uDD62',
+    'ropf': '\uD835\uDD63',
+    'sopf': '\uD835\uDD64',
+    'topf': '\uD835\uDD65',
+    'uopf': '\uD835\uDD66',
+    'vopf': '\uD835\uDD67',
+    'wopf': '\uD835\uDD68',
+    'xopf': '\uD835\uDD69',
+    'yopf': '\uD835\uDD6A',
+    'zopf': '\uD835\uDD6B'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/opf.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/z.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'ZHcy': '\u0416',
+    'Zacute': '\u0179',
+    'Zcaron': '\u017D',
+    'Zcy': '\u0417',
+    'Zdot': '\u017B',
+    'ZeroWidthSpace': '\u200B',
+    'Zeta': '\u0396',
+    'zacute': '\u017A',
+    'zcaron': '\u017E',
+    'zcy': '\u0437',
+    'zdot': '\u017C',
+    'zeetrf': '\u2128',
+    'zhcy': '\u0436',
+    'zwj': '\u200D',
+    'zwnj': '\u200C'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/z.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/g.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'GJcy': '\u0403',
+    'GT': '\u003E',
+    'Gammad': '\u03DC',
+    'Gbreve': '\u011E',
+    'Gcedil': '\u0122',
+    'Gcirc': '\u011C',
+    'Gcy': '\u0413',
+    'Gdot': '\u0120',
+    'GreaterGreater': '\u2AA2',
+    'Gt': '\u226B',
+    'gE': '\u2267',
+    'gacute': '\u01F5',
+    'gammad': '\u03DD',
+    'gbreve': '\u011F',
+    'gcirc': '\u011D',
+    'gcy': '\u0433',
+    'gdot': '\u0121',
+    'ge': '\u2265',
+    'gel': '\u22DB',
+    'geq': '\u2265',
+    'geqq': '\u2267',
+    'geqslant': '\u2A7E',
+    'ges': '\u2A7E',
+    'gescc': '\u2AA9',
+    'gesdot': '\u2A80',
+    'gesdoto': '\u2A82',
+    'gesdotol': '\u2A84',
+    'gesl': '\u22DB\uFE00',
+    'gesles': '\u2A94',
+    'gg': '\u226B',
+    'ggg': '\u22D9',
+    'gjcy': '\u0453',
+    'gl': '\u2277',
+    'glE': '\u2A92',
+    'gla': '\u2AA5',
+    'glj': '\u2AA4',
+    'gnapprox': '\u2A8A',
+    'gneq': '\u2A88',
+    'gneqq': '\u2269',
+    'grave': '\u0060',
+    'gsim': '\u2273',
+    'gsime': '\u2A8E',
+    'gsiml': '\u2A90',
+    'gtcc': '\u2AA7',
+    'gtcir': '\u2A7A',
+    'gtlPar': '\u2995',
+    'gtquest': '\u2A7C',
+    'gtrapprox': '\u2A86',
+    'gtrarr': '\u2978',
+    'gtrdot': '\u22D7',
+    'gtreqless': '\u22DB',
+    'gtreqqless': '\u2A8C',
+    'gtrless': '\u2277',
+    'gtrsim': '\u2273',
+    'gvertneqq': '\u2269\uFE00',
+    'gvnE': '\u2269\uFE00'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/g.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/r.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'RBarr': '\u2910',
+    'REG': '\u00AE',
+    'Racute': '\u0154',
+    'Rang': '\u27EB',
+    'Rarrtl': '\u2916',
+    'Rcaron': '\u0158',
+    'Rcedil': '\u0156',
+    'Rcy': '\u0420',
+    'ReverseElement': '\u220B',
+    'ReverseUpEquilibrium': '\u296F',
+    'Rho': '\u03A1',
+    'RightArrowBar': '\u21E5',
+    'RightDoubleBracket': '\u27E7',
+    'RightDownTeeVector': '\u295D',
+    'RightDownVectorBar': '\u2955',
+    'RightTeeVector': '\u295B',
+    'RightTriangleBar': '\u29D0',
+    'RightUpDownVector': '\u294F',
+    'RightUpTeeVector': '\u295C',
+    'RightUpVectorBar': '\u2954',
+    'RightVectorBar': '\u2953',
+    'RoundImplies': '\u2970',
+    'RuleDelayed': '\u29F4',
+    'rAarr': '\u21DB',
+    'rArr': '\u21D2',
+    'rAtail': '\u291C',
+    'rBarr': '\u290F',
+    'rHar': '\u2964',
+    'race': '\u223D\u0331',
+    'racute': '\u0155',
+    'radic': '\u221A',
+    'raemptyv': '\u29B3',
+    'rang': '\u27E9',
+    'rangd': '\u2992',
+    'range': '\u29A5',
+    'rangle': '\u27E9',
+    'raquo': '\u00BB',
+    'rarr': '\u2192',
+    'rarrap': '\u2975',
+    'rarrb': '\u21E5',
+    'rarrbfs': '\u2920',
+    'rarrc': '\u2933',
+    'rarrfs': '\u291E',
+    'rarrhk': '\u21AA',
+    'rarrlp': '\u21AC',
+    'rarrpl': '\u2945',
+    'rarrsim': '\u2974',
+    'rarrw': '\u219D',
+    'ratail': '\u291A',
+    'ratio': '\u2236',
+    'rationals': '\u211A',
+    'rbarr': '\u290D',
+    'rbbrk': '\u2773',
+    'rbrke': '\u298C',
+    'rbrksld': '\u298E',
+    'rbrkslu': '\u2990',
+    'rcaron': '\u0159',
+    'rcedil': '\u0157',
+    'rceil': '\u2309',
+    'rcub': '\u007D',
+    'rcy': '\u0440',
+    'rdca': '\u2937',
+    'rdldhar': '\u2969',
+    'rdquo': '\u201D',
+    'rdquor': '\u201D',
+    'rdsh': '\u21B3',
+    'real': '\u211C',
+    'realine': '\u211B',
+    'realpart': '\u211C',
+    'reals': '\u211D',
+    'rect': '\u25AD',
+    'reg': '\u00AE',
+    'rfisht': '\u297D',
+    'rfloor': '\u230B',
+    'rhard': '\u21C1',
+    'rharu': '\u21C0',
+    'rharul': '\u296C',
+    'rightarrow': '\u2192',
+    'rightarrowtail': '\u21A3',
+    'rightharpoondown': '\u21C1',
+    'rightharpoonup': '\u21C0',
+    'rightleftarrows': '\u21C4',
+    'rightleftharpoons': '\u21CC',
+    'rightsquigarrow': '\u219D',
+    'risingdotseq': '\u2253',
+    'rlarr': '\u21C4',
+    'rlhar': '\u21CC',
+    'rlm': '\u200F',
+    'rmoustache': '\u23B1',
+    'rnmid': '\u2AEE',
+    'roang': '\u27ED',
+    'roarr': '\u21FE',
+    'robrk': '\u27E7',
+    'ropar': '\u2986',
+    'roplus': '\u2A2E',
+    'rotimes': '\u2A35',
+    'rpar': '\u0029',
+    'rpargt': '\u2994',
+    'rppolint': '\u2A12',
+    'rrarr': '\u21C9',
+    'rsaquo': '\u203A',
+    'rsh': '\u21B1',
+    'rsqb': '\u005D',
+    'rsquo': '\u2019',
+    'rsquor': '\u2019',
+    'rthree': '\u22CC',
+    'rtrie': '\u22B5',
+    'rtrif': '\u25B8',
+    'rtriltri': '\u29CE',
+    'ruluhar': '\u2968',
+    'rx': '\u211E'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/r.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/p.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'Pcy': '\u041F',
+    'Poincareplane': '\u210C',
+    'Pr': '\u2ABB',
+    'Prime': '\u2033',
+    'Proportion': '\u2237',
+    'par': '\u2225',
+    'para': '\u00B6',
+    'parallel': '\u2225',
+    'parsim': '\u2AF3',
+    'parsl': '\u2AFD',
+    'part': '\u2202',
+    'pcy': '\u043F',
+    'percnt': '\u0025',
+    'permil': '\u2030',
+    'perp': '\u22A5',
+    'pertenk': '\u2031',
+    'phmmat': '\u2133',
+    'phone': '\u260E',
+    'pitchfork': '\u22D4',
+    'planck': '\u210F',
+    'planckh': '\u210E',
+    'plankv': '\u210F',
+    'plus': '\u002B',
+    'plusacir': '\u2A23',
+    'plusb': '\u229E',
+    'pluscir': '\u2A22',
+    'plusdo': '\u2214',
+    'plusdu': '\u2A25',
+    'pluse': '\u2A72',
+    'plusmn': '\u00B1',
+    'plussim': '\u2A26',
+    'plustwo': '\u2A27',
+    'pm': '\u00B1',
+    'pointint': '\u2A15',
+    'pound': '\u00A3',
+    'pr': '\u227A',
+    'prE': '\u2AB3',
+    'prcue': '\u227C',
+    'pre': '\u2AAF',
+    'prec': '\u227A',
+    'precapprox': '\u2AB7',
+    'preccurlyeq': '\u227C',
+    'preceq': '\u2AAF',
+    'precsim': '\u227E',
+    'primes': '\u2119',
+    'prnE': '\u2AB5',
+    'prnap': '\u2AB9',
+    'prnsim': '\u22E8',
+    'prod': '\u220F',
+    'profalar': '\u232E',
+    'profline': '\u2312',
+    'profsurf': '\u2313',
+    'prop': '\u221D',
+    'propto': '\u221D',
+    'prsim': '\u227E',
+    'prurel': '\u22B0',
+    'puncsp': '\u2008'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/p.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/m.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'Map': '\u2905',
+    'Mcy': '\u041C',
+    'MediumSpace': '\u205F',
+    'Mellintrf': '\u2133',
+    'Mu': '\u039C',
+    'mDDot': '\u223A',
+    'male': '\u2642',
+    'maltese': '\u2720',
+    'map': '\u21A6',
+    'mapsto': '\u21A6',
+    'mapstodown': '\u21A7',
+    'mapstoleft': '\u21A4',
+    'mapstoup': '\u21A5',
+    'marker': '\u25AE',
+    'mcomma': '\u2A29',
+    'mcy': '\u043C',
+    'mdash': '\u2014',
+    'measuredangle': '\u2221',
+    'micro': '\u00B5',
+    'mid': '\u2223',
+    'midast': '\u002A',
+    'midcir': '\u2AF0',
+    'middot': '\u00B7',
+    'minus': '\u2212',
+    'minusb': '\u229F',
+    'minusd': '\u2238',
+    'minusdu': '\u2A2A',
+    'mlcp': '\u2ADB',
+    'mldr': '\u2026',
+    'mnplus': '\u2213',
+    'models': '\u22A7',
+    'mp': '\u2213',
+    'mstpos': '\u223E',
+    'mumap': '\u22B8'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/m.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/q.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'QUOT': '\u0022',
+    'qint': '\u2A0C',
+    'qprime': '\u2057',
+    'quaternions': '\u210D',
+    'quatint': '\u2A16',
+    'quest': '\u003F',
+    'questeq': '\u225F',
+    'quot': '\u0022'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/q.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/t.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'THORN': '\u00DE',
+    'TRADE': '\u2122',
+    'TSHcy': '\u040B',
+    'TScy': '\u0426',
+    'Tab': '\u0009',
+    'Tau': '\u03A4',
+    'Tcaron': '\u0164',
+    'Tcedil': '\u0162',
+    'Tcy': '\u0422',
+    'ThickSpace': '\u205F\u200A',
+    'ThinSpace': '\u2009',
+    'TripleDot': '\u20DB',
+    'Tstrok': '\u0166',
+    'target': '\u2316',
+    'tbrk': '\u23B4',
+    'tcaron': '\u0165',
+    'tcedil': '\u0163',
+    'tcy': '\u0442',
+    'tdot': '\u20DB',
+    'telrec': '\u2315',
+    'there4': '\u2234',
+    'therefore': '\u2234',
+    'thetasym': '\u03D1',
+    'thickapprox': '\u2248',
+    'thicksim': '\u223C',
+    'thinsp': '\u2009',
+    'thkap': '\u2248',
+    'thksim': '\u223C',
+    'thorn': '\u00FE',
+    'timesb': '\u22A0',
+    'timesbar': '\u2A31',
+    'timesd': '\u2A30',
+    'tint': '\u222D',
+    'toea': '\u2928',
+    'top': '\u22A4',
+    'topbot': '\u2336',
+    'topcir': '\u2AF1',
+    'topfork': '\u2ADA',
+    'tosa': '\u2929',
+    'tprime': '\u2034',
+    'trade': '\u2122',
+    'triangledown': '\u25BF',
+    'triangleleft': '\u25C3',
+    'trianglelefteq': '\u22B4',
+    'triangleright': '\u25B9',
+    'trianglerighteq': '\u22B5',
+    'tridot': '\u25EC',
+    'trie': '\u225C',
+    'triminus': '\u2A3A',
+    'triplus': '\u2A39',
+    'trisb': '\u29CD',
+    'tritime': '\u2A3B',
+    'trpezium': '\u23E2',
+    'tscy': '\u0446',
+    'tshcy': '\u045B',
+    'tstrok': '\u0167',
+    'twixt': '\u226C',
+    'twoheadleftarrow': '\u219E',
+    'twoheadrightarrow': '\u21A0'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/t.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/w.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'Wcirc': '\u0174',
+    'wcirc': '\u0175',
+    'wedbar': '\u2A5F',
+    'wedge': '\u2227',
+    'wedgeq': '\u2259',
+    'wp': '\u2118',
+    'wr': '\u2240',
+    'wreath': '\u2240'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/w.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/f.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'Fcy': '\u0424',
+    'FilledSmallSquare': '\u25FC',
+    'Fouriertrf': '\u2131',
+    'fallingdotseq': '\u2252',
+    'fcy': '\u0444',
+    'female': '\u2640',
+    'ffilig': '\uFB03',
+    'fflig': '\uFB00',
+    'ffllig': '\uFB04',
+    'filig': '\uFB01',
+    'fjlig': '\u0066\u006A',
+    'fllig': '\uFB02',
+    'fltns': '\u25B1',
+    'fnof': '\u0192',
+    'forall': '\u2200',
+    'forkv': '\u2AD9',
+    'fpartint': '\u2A0D',
+    'frac12': '\u00BD',
+    'frac13': '\u2153',
+    'frac14': '\u00BC',
+    'frac15': '\u2155',
+    'frac16': '\u2159',
+    'frac18': '\u215B',
+    'frac23': '\u2154',
+    'frac25': '\u2156',
+    'frac34': '\u00BE',
+    'frac35': '\u2157',
+    'frac38': '\u215C',
+    'frac45': '\u2158',
+    'frac56': '\u215A',
+    'frac58': '\u215D',
+    'frac78': '\u215E',
+    'frasl': '\u2044'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/f.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/v.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'VDash': '\u22AB',
+    'Vbar': '\u2AEB',
+    'Vcy': '\u0412',
+    'Vdashl': '\u2AE6',
+    'Verbar': '\u2016',
+    'Vert': '\u2016',
+    'VerticalLine': '\u007C',
+    'VerticalSeparator': '\u2758',
+    'VeryThinSpace': '\u200A',
+    'vArr': '\u21D5',
+    'vBar': '\u2AE8',
+    'vBarv': '\u2AE9',
+    'vDash': '\u22A8',
+    'vangrt': '\u299C',
+    'varepsilon': '\u03F5',
+    'varkappa': '\u03F0',
+    'varnothing': '\u2205',
+    'varphi': '\u03D5',
+    'varpi': '\u03D6',
+    'varpropto': '\u221D',
+    'varr': '\u2195',
+    'varrho': '\u03F1',
+    'varsigma': '\u03C2',
+    'varsubsetneq': '\u228A\uFE00',
+    'varsubsetneqq': '\u2ACB\uFE00',
+    'varsupsetneq': '\u228B\uFE00',
+    'varsupsetneqq': '\u2ACC\uFE00',
+    'vartheta': '\u03D1',
+    'vartriangleleft': '\u22B2',
+    'vartriangleright': '\u22B3',
+    'vcy': '\u0432',
+    'vdash': '\u22A2',
+    'vee': '\u2228',
+    'veeeq': '\u225A',
+    'verbar': '\u007C',
+    'vert': '\u007C',
+    'vltri': '\u22B2',
+    'vnsub': '\u2282\u20D2',
+    'vnsup': '\u2283\u20D2',
+    'vprop': '\u221D',
+    'vrtri': '\u22B3',
+    'vsubnE': '\u2ACB\uFE00',
+    'vsubne': '\u228A\uFE00',
+    'vsupnE': '\u2ACC\uFE00',
+    'vsupne': '\u228B\uFE00',
+    'vzigzag': '\u299A'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/v.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/e.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'ENG': '\u014A',
+    'ETH': '\u00D0',
+    'Eacute': '\u00C9',
+    'Ecaron': '\u011A',
+    'Ecirc': '\u00CA',
+    'Ecy': '\u042D',
+    'Edot': '\u0116',
+    'Egrave': '\u00C8',
+    'Emacr': '\u0112',
+    'EmptySmallSquare': '\u25FB',
+    'EmptyVerySmallSquare': '\u25AB',
+    'Eogon': '\u0118',
+    'Epsilon': '\u0395',
+    'Equal': '\u2A75',
+    'Esim': '\u2A73',
+    'Eta': '\u0397',
+    'Euml': '\u00CB',
+    'eDDot': '\u2A77',
+    'eDot': '\u2251',
+    'eacute': '\u00E9',
+    'easter': '\u2A6E',
+    'ecaron': '\u011B',
+    'ecirc': '\u00EA',
+    'ecolon': '\u2255',
+    'ecy': '\u044D',
+    'edot': '\u0117',
+    'ee': '\u2147',
+    'eg': '\u2A9A',
+    'egrave': '\u00E8',
+    'egsdot': '\u2A98',
+    'el': '\u2A99',
+    'elinters': '\u23E7',
+    'elsdot': '\u2A97',
+    'emacr': '\u0113',
+    'emptyset': '\u2205',
+    'emptyv': '\u2205',
+    'emsp': '\u2003',
+    'emsp13': '\u2004',
+    'emsp14': '\u2005',
+    'eng': '\u014B',
+    'ensp': '\u2002',
+    'eogon': '\u0119',
+    'epar': '\u22D5',
+    'eparsl': '\u29E3',
+    'eplus': '\u2A71',
+    'epsilon': '\u03B5',
+    'eqcirc': '\u2256',
+    'eqcolon': '\u2255',
+    'eqsim': '\u2242',
+    'eqslantgtr': '\u2A96',
+    'eqslantless': '\u2A95',
+    'equals': '\u003D',
+    'equest': '\u225F',
+    'equiv': '\u2261',
+    'equivDD': '\u2A78',
+    'eqvparsl': '\u29E5',
+    'erarr': '\u2971',
+    'esdot': '\u2250',
+    'esim': '\u2242',
+    'euml': '\u00EB',
+    'euro': '\u20AC',
+    'excl': '\u0021',
+    'exist': '\u2203',
+    'expectation': '\u2130',
+    'exponentiale': '\u2147'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/e.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/k.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'KHcy': '\u0425',
+    'KJcy': '\u040C',
+    'Kappa': '\u039A',
+    'Kcedil': '\u0136',
+    'Kcy': '\u041A',
+    'kcedil': '\u0137',
+    'kcy': '\u043A',
+    'kgreen': '\u0138',
+    'khcy': '\u0445',
+    'kjcy': '\u045C'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/k.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/x.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'xcap': '\u22C2',
+    'xcirc': '\u25EF',
+    'xcup': '\u22C3',
+    'xdtri': '\u25BD',
+    'xhArr': '\u27FA',
+    'xharr': '\u27F7',
+    'xlArr': '\u27F8',
+    'xlarr': '\u27F5',
+    'xmap': '\u27FC',
+    'xnis': '\u22FB',
+    'xodot': '\u2A00',
+    'xoplus': '\u2A01',
+    'xotime': '\u2A02',
+    'xrArr': '\u27F9',
+    'xrarr': '\u27F6',
+    'xsqcup': '\u2A06',
+    'xuplus': '\u2A04',
+    'xutri': '\u25B3',
+    'xvee': '\u22C1',
+    'xwedge': '\u22C0'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/x.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/c.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'CHcy': '\u0427',
+    'COPY': '\u00A9',
+    'Cacute': '\u0106',
+    'CapitalDifferentialD': '\u2145',
+    'Cayleys': '\u212D',
+    'Ccaron': '\u010C',
+    'Ccedil': '\u00C7',
+    'Ccirc': '\u0108',
+    'Cconint': '\u2230',
+    'Cdot': '\u010A',
+    'Cedilla': '\u00B8',
+    'Chi': '\u03A7',
+    'ClockwiseContourIntegral': '\u2232',
+    'CloseCurlyDoubleQuote': '\u201D',
+    'CloseCurlyQuote': '\u2019',
+    'Colon': '\u2237',
+    'Colone': '\u2A74',
+    'Conint': '\u222F',
+    'CounterClockwiseContourIntegral': '\u2233',
+    'cacute': '\u0107',
+    'capand': '\u2A44',
+    'capbrcup': '\u2A49',
+    'capcap': '\u2A4B',
+    'capcup': '\u2A47',
+    'capdot': '\u2A40',
+    'caps': '\u2229\uFE00',
+    'caret': '\u2041',
+    'caron': '\u02C7',
+    'ccaps': '\u2A4D',
+    'ccaron': '\u010D',
+    'ccedil': '\u00E7',
+    'ccirc': '\u0109',
+    'ccups': '\u2A4C',
+    'ccupssm': '\u2A50',
+    'cdot': '\u010B',
+    'cedil': '\u00B8',
+    'cemptyv': '\u29B2',
+    'cent': '\u00A2',
+    'centerdot': '\u00B7',
+    'chcy': '\u0447',
+    'checkmark': '\u2713',
+    'cir': '\u25CB',
+    'cirE': '\u29C3',
+    'cire': '\u2257',
+    'cirfnint': '\u2A10',
+    'cirmid': '\u2AEF',
+    'cirscir': '\u29C2',
+    'clubsuit': '\u2663',
+    'colone': '\u2254',
+    'coloneq': '\u2254',
+    'comma': '\u002C',
+    'commat': '\u0040',
+    'compfn': '\u2218',
+    'complement': '\u2201',
+    'complexes': '\u2102',
+    'cong': '\u2245',
+    'congdot': '\u2A6D',
+    'conint': '\u222E',
+    'coprod': '\u2210',
+    'copy': '\u00A9',
+    'copysr': '\u2117',
+    'crarr': '\u21B5',
+    'cross': '\u2717',
+    'csub': '\u2ACF',
+    'csube': '\u2AD1',
+    'csup': '\u2AD0',
+    'csupe': '\u2AD2',
+    'cudarrl': '\u2938',
+    'cudarrr': '\u2935',
+    'cularrp': '\u293D',
+    'cupbrcap': '\u2A48',
+    'cupcap': '\u2A46',
+    'cupcup': '\u2A4A',
+    'cupdot': '\u228D',
+    'cupor': '\u2A45',
+    'cups': '\u222A\uFE00',
+    'curarrm': '\u293C',
+    'curlyeqprec': '\u22DE',
+    'curlyeqsucc': '\u22DF',
+    'curren': '\u00A4',
+    'curvearrowleft': '\u21B6',
+    'curvearrowright': '\u21B7',
+    'cuvee': '\u22CE',
+    'cuwed': '\u22CF',
+    'cwconint': '\u2232',
+    'cwint': '\u2231',
+    'cylcty': '\u232D'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/c.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/n.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'NJcy': '\u040A',
+    'Nacute': '\u0143',
+    'Ncaron': '\u0147',
+    'Ncedil': '\u0145',
+    'Ncy': '\u041D',
+    'NegativeMediumSpace': '\u200B',
+    'NegativeThickSpace': '\u200B',
+    'NegativeThinSpace': '\u200B',
+    'NegativeVeryThinSpace': '\u200B',
+    'NewLine': '\u000A',
+    'NoBreak': '\u2060',
+    'NonBreakingSpace': '\u00A0',
+    'Not': '\u2AEC',
+    'NotCongruent': '\u2262',
+    'NotCupCap': '\u226D',
+    'NotEqualTilde': '\u2242\u0338',
+    'NotGreaterFullEqual': '\u2267\u0338',
+    'NotGreaterGreater': '\u226B\u0338',
+    'NotGreaterLess': '\u2279',
+    'NotGreaterSlantEqual': '\u2A7E\u0338',
+    'NotGreaterTilde': '\u2275',
+    'NotHumpDownHump': '\u224E\u0338',
+    'NotHumpEqual': '\u224F\u0338',
+    'NotLeftTriangleBar': '\u29CF\u0338',
+    'NotLessGreater': '\u2278',
+    'NotLessLess': '\u226A\u0338',
+    'NotLessSlantEqual': '\u2A7D\u0338',
+    'NotLessTilde': '\u2274',
+    'NotNestedGreaterGreater': '\u2AA2\u0338',
+    'NotNestedLessLess': '\u2AA1\u0338',
+    'NotPrecedesEqual': '\u2AAF\u0338',
+    'NotReverseElement': '\u220C',
+    'NotRightTriangleBar': '\u29D0\u0338',
+    'NotSquareSubset': '\u228F\u0338',
+    'NotSquareSubsetEqual': '\u22E2',
+    'NotSquareSuperset': '\u2290\u0338',
+    'NotSquareSupersetEqual': '\u22E3',
+    'NotSubset': '\u2282\u20D2',
+    'NotSucceedsEqual': '\u2AB0\u0338',
+    'NotSucceedsTilde': '\u227F\u0338',
+    'NotSuperset': '\u2283\u20D2',
+    'NotTildeEqual': '\u2244',
+    'NotTildeFullEqual': '\u2247',
+    'NotTildeTilde': '\u2249',
+    'Ntilde': '\u00D1',
+    'Nu': '\u039D',
+    'nGg': '\u22D9\u0338',
+    'nGt': '\u226B\u20D2',
+    'nGtv': '\u226B\u0338',
+    'nLl': '\u22D8\u0338',
+    'nLt': '\u226A\u20D2',
+    'nLtv': '\u226A\u0338',
+    'nabla': '\u2207',
+    'nacute': '\u0144',
+    'nang': '\u2220\u20D2',
+    'nap': '\u2249',
+    'napE': '\u2A70\u0338',
+    'napid': '\u224B\u0338',
+    'napos': '\u0149',
+    'napprox': '\u2249',
+    'natural': '\u266E',
+    'naturals': '\u2115',
+    'nbsp': '\u00A0',
+    'nbump': '\u224E\u0338',
+    'nbumpe': '\u224F\u0338',
+    'ncap': '\u2A43',
+    'ncaron': '\u0148',
+    'ncedil': '\u0146',
+    'ncong': '\u2247',
+    'ncongdot': '\u2A6D\u0338',
+    'ncup': '\u2A42',
+    'ncy': '\u043D',
+    'ndash': '\u2013',
+    'ne': '\u2260',
+    'neArr': '\u21D7',
+    'nearhk': '\u2924',
+    'nearrow': '\u2197',
+    'nedot': '\u2250\u0338',
+    'nequiv': '\u2262',
+    'nesear': '\u2928',
+    'nesim': '\u2242\u0338',
+    'nexist': '\u2204',
+    'nexists': '\u2204',
+    'ngE': '\u2267\u0338',
+    'nge': '\u2271',
+    'ngeq': '\u2271',
+    'ngeqq': '\u2267\u0338',
+    'ngeqslant': '\u2A7E\u0338',
+    'nges': '\u2A7E\u0338',
+    'ngsim': '\u2275',
+    'ngt': '\u226F',
+    'ngtr': '\u226F',
+    'nhArr': '\u21CE',
+    'nhpar': '\u2AF2',
+    'ni': '\u220B',
+    'nis': '\u22FC',
+    'nisd': '\u22FA',
+    'niv': '\u220B',
+    'njcy': '\u045A',
+    'nlArr': '\u21CD',
+    'nlE': '\u2266\u0338',
+    'nldr': '\u2025',
+    'nle': '\u2270',
+    'nleftarrow': '\u219A',
+    'nleftrightarrow': '\u21AE',
+    'nleq': '\u2270',
+    'nleqq': '\u2266\u0338',
+    'nleqslant': '\u2A7D\u0338',
+    'nles': '\u2A7D\u0338',
+    'nless': '\u226E',
+    'nlsim': '\u2274',
+    'nlt': '\u226E',
+    'nltri': '\u22EA',
+    'nltrie': '\u22EC',
+    'nmid': '\u2224',
+    'notin': '\u2209',
+    'notinE': '\u22F9\u0338',
+    'notindot': '\u22F5\u0338',
+    'notinva': '\u2209',
+    'notinvb': '\u22F7',
+    'notinvc': '\u22F6',
+    'notni': '\u220C',
+    'notniva': '\u220C',
+    'notnivb': '\u22FE',
+    'notnivc': '\u22FD',
+    'npar': '\u2226',
+    'nparallel': '\u2226',
+    'nparsl': '\u2AFD\u20E5',
+    'npart': '\u2202\u0338',
+    'npolint': '\u2A14',
+    'npr': '\u2280',
+    'nprcue': '\u22E0',
+    'npre': '\u2AAF\u0338',
+    'nprec': '\u2280',
+    'npreceq': '\u2AAF\u0338',
+    'nrArr': '\u21CF',
+    'nrarrc': '\u2933\u0338',
+    'nrarrw': '\u219D\u0338',
+    'nrightarrow': '\u219B',
+    'nrtri': '\u22EB',
+    'nrtrie': '\u22ED',
+    'nsc': '\u2281',
+    'nsccue': '\u22E1',
+    'nsce': '\u2AB0\u0338',
+    'nshortmid': '\u2224',
+    'nshortparallel': '\u2226',
+    'nsim': '\u2241',
+    'nsime': '\u2244',
+    'nsimeq': '\u2244',
+    'nsmid': '\u2224',
+    'nspar': '\u2226',
+    'nsqsube': '\u22E2',
+    'nsqsupe': '\u22E3',
+    'nsub': '\u2284',
+    'nsubE': '\u2AC5\u0338',
+    'nsube': '\u2288',
+    'nsubset': '\u2282\u20D2',
+    'nsubseteq': '\u2288',
+    'nsubseteqq': '\u2AC5\u0338',
+    'nsucc': '\u2281',
+    'nsucceq': '\u2AB0\u0338',
+    'nsup': '\u2285',
+    'nsupE': '\u2AC6\u0338',
+    'nsupe': '\u2289',
+    'nsupset': '\u2283\u20D2',
+    'nsupseteq': '\u2289',
+    'nsupseteqq': '\u2AC6\u0338',
+    'ntgl': '\u2279',
+    'ntilde': '\u00F1',
+    'ntlg': '\u2278',
+    'ntriangleleft': '\u22EA',
+    'ntrianglelefteq': '\u22EC',
+    'ntriangleright': '\u22EB',
+    'ntrianglerighteq': '\u22ED',
+    'num': '\u0023',
+    'numero': '\u2116',
+    'numsp': '\u2007',
+    'nvHarr': '\u2904',
+    'nvap': '\u224D\u20D2',
+    'nvge': '\u2265\u20D2',
+    'nvgt': '\u003E\u20D2',
+    'nvinfin': '\u29DE',
+    'nvlArr': '\u2902',
+    'nvle': '\u2264\u20D2',
+    'nvlt': '\u003C\u20D2',
+    'nvltrie': '\u22B4\u20D2',
+    'nvrArr': '\u2903',
+    'nvrtrie': '\u22B5\u20D2',
+    'nvsim': '\u223C\u20D2',
+    'nwArr': '\u21D6',
+    'nwarhk': '\u2923',
+    'nwarrow': '\u2196',
+    'nwnear': '\u2927'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/n.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/a.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'AElig': '\u00C6',
+    'AMP': '\u0026',
+    'Aacute': '\u00C1',
+    'Abreve': '\u0102',
+    'Acirc': '\u00C2',
+    'Acy': '\u0410',
+    'Agrave': '\u00C0',
+    'Alpha': '\u0391',
+    'Amacr': '\u0100',
+    'And': '\u2A53',
+    'Aogon': '\u0104',
+    'Aring': '\u00C5',
+    'Assign': '\u2254',
+    'Atilde': '\u00C3',
+    'Auml': '\u00C4',
+    'aacute': '\u00E1',
+    'abreve': '\u0103',
+    'ac': '\u223E',
+    'acE': '\u223E\u0333',
+    'acd': '\u223F',
+    'acirc': '\u00E2',
+    'acy': '\u0430',
+    'aelig': '\u00E6',
+    'af': '\u2061',
+    'agrave': '\u00E0',
+    'alefsym': '\u2135',
+    'amacr': '\u0101',
+    'amp': '\u0026',
+    'andand': '\u2A55',
+    'andd': '\u2A5C',
+    'andslope': '\u2A58',
+    'andv': '\u2A5A',
+    'ange': '\u29A4',
+    'angle': '\u2220',
+    'angmsdaa': '\u29A8',
+    'angmsdab': '\u29A9',
+    'angmsdac': '\u29AA',
+    'angmsdad': '\u29AB',
+    'angmsdae': '\u29AC',
+    'angmsdaf': '\u29AD',
+    'angmsdag': '\u29AE',
+    'angmsdah': '\u29AF',
+    'angrt': '\u221F',
+    'angrtvb': '\u22BE',
+    'angrtvbd': '\u299D',
+    'angst': '\u00C5',
+    'angzarr': '\u237C',
+    'aogon': '\u0105',
+    'ap': '\u2248',
+    'apE': '\u2A70',
+    'apacir': '\u2A6F',
+    'apid': '\u224B',
+    'apos': '\u0027',
+    'approx': '\u2248',
+    'approxeq': '\u224A',
+    'aring': '\u00E5',
+    'ast': '\u002A',
+    'asymp': '\u2248',
+    'asympeq': '\u224D',
+    'atilde': '\u00E3',
+    'auml': '\u00E4',
+    'awconint': '\u2233',
+    'awint': '\u2A11'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/a.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/j.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'Jcirc': '\u0134',
+    'Jcy': '\u0419',
+    'Jsercy': '\u0408',
+    'Jukcy': '\u0404',
+    'jcirc': '\u0135',
+    'jcy': '\u0439',
+    'jsercy': '\u0458',
+    'jukcy': '\u0454'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/j.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/u.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'Uacute': '\u00DA',
+    'Uarr': '\u219F',
+    'Uarrocir': '\u2949',
+    'Ubrcy': '\u040E',
+    'Ubreve': '\u016C',
+    'Ucirc': '\u00DB',
+    'Ucy': '\u0423',
+    'Udblac': '\u0170',
+    'Ugrave': '\u00D9',
+    'Umacr': '\u016A',
+    'UnderBracket': '\u23B5',
+    'UnderParenthesis': '\u23DD',
+    'Uogon': '\u0172',
+    'UpArrowBar': '\u2912',
+    'UpArrowDownArrow': '\u21C5',
+    'UpEquilibrium': '\u296E',
+    'UpTeeArrow': '\u21A5',
+    'UpperLeftArrow': '\u2196',
+    'UpperRightArrow': '\u2197',
+    'Upsi': '\u03D2',
+    'Uring': '\u016E',
+    'Utilde': '\u0168',
+    'Uuml': '\u00DC',
+    'uArr': '\u21D1',
+    'uHar': '\u2963',
+    'uacute': '\u00FA',
+    'uarr': '\u2191',
+    'ubrcy': '\u045E',
+    'ubreve': '\u016D',
+    'ucirc': '\u00FB',
+    'ucy': '\u0443',
+    'udarr': '\u21C5',
+    'udblac': '\u0171',
+    'udhar': '\u296E',
+    'ufisht': '\u297E',
+    'ugrave': '\u00F9',
+    'uharl': '\u21BF',
+    'uharr': '\u21BE',
+    'uhblk': '\u2580',
+    'ulcorn': '\u231C',
+    'ulcorner': '\u231C',
+    'ulcrop': '\u230F',
+    'ultri': '\u25F8',
+    'umacr': '\u016B',
+    'uml': '\u00A8',
+    'uogon': '\u0173',
+    'uparrow': '\u2191',
+    'updownarrow': '\u2195',
+    'upharpoonleft': '\u21BF',
+    'upharpoonright': '\u21BE',
+    'uplus': '\u228E',
+    'upsih': '\u03D2',
+    'upsilon': '\u03C5',
+    'urcorn': '\u231D',
+    'urcorner': '\u231D',
+    'urcrop': '\u230E',
+    'uring': '\u016F',
+    'urtri': '\u25F9',
+    'utdot': '\u22F0',
+    'utilde': '\u0169',
+    'utri': '\u25B5',
+    'utrif': '\u25B4',
+    'uuarr': '\u21C8',
+    'uuml': '\u00FC',
+    'uwangle': '\u29A7'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/u.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/b.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'Barv': '\u2AE7',
+    'Barwed': '\u2306',
+    'Bcy': '\u0411',
+    'Bernoullis': '\u212C',
+    'Beta': '\u0392',
+    'Bumpeq': '\u224E',
+    'bNot': '\u2AED',
+    'backcong': '\u224C',
+    'backepsilon': '\u03F6',
+    'barvee': '\u22BD',
+    'barwed': '\u2305',
+    'barwedge': '\u2305',
+    'bbrk': '\u23B5',
+    'bbrktbrk': '\u23B6',
+    'bcong': '\u224C',
+    'bcy': '\u0431',
+    'bdquo': '\u201E',
+    'becaus': '\u2235',
+    'because': '\u2235',
+    'bemptyv': '\u29B0',
+    'bepsi': '\u03F6',
+    'bernou': '\u212C',
+    'bigcap': '\u22C2',
+    'bigcup': '\u22C3',
+    'bigvee': '\u22C1',
+    'bigwedge': '\u22C0',
+    'bkarow': '\u290D',
+    'blacksquare': '\u25AA',
+    'blacktriangleright': '\u25B8',
+    'blank': '\u2423',
+    'blk12': '\u2592',
+    'blk14': '\u2591',
+    'blk34': '\u2593',
+    'block': '\u2588',
+    'bne': '\u003D\u20E5',
+    'bnequiv': '\u2261\u20E5',
+    'bnot': '\u2310',
+    'bot': '\u22A5',
+    'bottom': '\u22A5',
+    'boxDL': '\u2557',
+    'boxDR': '\u2554',
+    'boxDl': '\u2556',
+    'boxDr': '\u2553',
+    'boxH': '\u2550',
+    'boxHD': '\u2566',
+    'boxHU': '\u2569',
+    'boxHd': '\u2564',
+    'boxHu': '\u2567',
+    'boxUL': '\u255D',
+    'boxUR': '\u255A',
+    'boxUl': '\u255C',
+    'boxUr': '\u2559',
+    'boxV': '\u2551',
+    'boxVH': '\u256C',
+    'boxVL': '\u2563',
+    'boxVR': '\u2560',
+    'boxVh': '\u256B',
+    'boxVl': '\u2562',
+    'boxVr': '\u255F',
+    'boxbox': '\u29C9',
+    'boxdL': '\u2555',
+    'boxdR': '\u2552',
+    'boxh': '\u2500',
+    'boxhD': '\u2565',
+    'boxhU': '\u2568',
+    'boxhd': '\u252C',
+    'boxhu': '\u2534',
+    'boxuL': '\u255B',
+    'boxuR': '\u2558',
+    'boxv': '\u2502',
+    'boxvH': '\u256A',
+    'boxvL': '\u2561',
+    'boxvR': '\u255E',
+    'boxvh': '\u253C',
+    'boxvl': '\u2524',
+    'boxvr': '\u251C',
+    'bprime': '\u2035',
+    'breve': '\u02D8',
+    'brvbar': '\u00A6',
+    'bsemi': '\u204F',
+    'bsim': '\u223D',
+    'bsime': '\u22CD',
+    'bsolb': '\u29C5',
+    'bsolhsub': '\u27C8',
+    'bullet': '\u2022',
+    'bump': '\u224E',
+    'bumpE': '\u2AAE',
+    'bumpe': '\u224F',
+    'bumpeq': '\u224F'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/b.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/i.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'IEcy': '\u0415',
+    'IJlig': '\u0132',
+    'IOcy': '\u0401',
+    'Iacute': '\u00CD',
+    'Icirc': '\u00CE',
+    'Icy': '\u0418',
+    'Idot': '\u0130',
+    'Igrave': '\u00CC',
+    'Imacr': '\u012A',
+    'Implies': '\u21D2',
+    'Int': '\u222C',
+    'Iogon': '\u012E',
+    'Iota': '\u0399',
+    'Itilde': '\u0128',
+    'Iukcy': '\u0406',
+    'Iuml': '\u00CF',
+    'iacute': '\u00ED',
+    'ic': '\u2063',
+    'icirc': '\u00EE',
+    'icy': '\u0438',
+    'iecy': '\u0435',
+    'iexcl': '\u00A1',
+    'iff': '\u21D4',
+    'igrave': '\u00EC',
+    'ii': '\u2148',
+    'iiiint': '\u2A0C',
+    'iiint': '\u222D',
+    'iinfin': '\u29DC',
+    'iiota': '\u2129',
+    'ijlig': '\u0133',
+    'imacr': '\u012B',
+    'image': '\u2111',
+    'imagline': '\u2110',
+    'imagpart': '\u2111',
+    'imof': '\u22B7',
+    'imped': '\u01B5',
+    'in': '\u2208',
+    'incare': '\u2105',
+    'infintie': '\u29DD',
+    'inodot': '\u0131',
+    'int': '\u222B',
+    'integers': '\u2124',
+    'intercal': '\u22BA',
+    'intlarhk': '\u2A17',
+    'intprod': '\u2A3C',
+    'iocy': '\u0451',
+    'iogon': '\u012F',
+    'iprod': '\u2A3C',
+    'iquest': '\u00BF',
+    'isin': '\u2208',
+    'isinE': '\u22F9',
+    'isindot': '\u22F5',
+    'isins': '\u22F4',
+    'isinsv': '\u22F3',
+    'isinv': '\u2208',
+    'it': '\u2062',
+    'itilde': '\u0129',
+    'iukcy': '\u0456',
+    'iuml': '\u00EF'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/i.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/l.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'LJcy': '\u0409',
+    'LT': '\u003C',
+    'Lacute': '\u0139',
+    'Lang': '\u27EA',
+    'Laplacetrf': '\u2112',
+    'Lcaron': '\u013D',
+    'Lcedil': '\u013B',
+    'Lcy': '\u041B',
+    'LeftArrowBar': '\u21E4',
+    'LeftDoubleBracket': '\u27E6',
+    'LeftDownTeeVector': '\u2961',
+    'LeftDownVectorBar': '\u2959',
+    'LeftRightVector': '\u294E',
+    'LeftTeeArrow': '\u21A4',
+    'LeftTeeVector': '\u295A',
+    'LeftTriangleBar': '\u29CF',
+    'LeftUpDownVector': '\u2951',
+    'LeftUpTeeVector': '\u2960',
+    'LeftUpVectorBar': '\u2958',
+    'LeftVectorBar': '\u2952',
+    'LessLess': '\u2AA1',
+    'Lmidot': '\u013F',
+    'LowerLeftArrow': '\u2199',
+    'LowerRightArrow': '\u2198',
+    'Lstrok': '\u0141',
+    'Lt': '\u226A',
+    'lAarr': '\u21DA',
+    'lArr': '\u21D0',
+    'lAtail': '\u291B',
+    'lBarr': '\u290E',
+    'lE': '\u2266',
+    'lHar': '\u2962',
+    'lacute': '\u013A',
+    'laemptyv': '\u29B4',
+    'lagran': '\u2112',
+    'lang': '\u27E8',
+    'langd': '\u2991',
+    'langle': '\u27E8',
+    'laquo': '\u00AB',
+    'larr': '\u2190',
+    'larrb': '\u21E4',
+    'larrbfs': '\u291F',
+    'larrfs': '\u291D',
+    'larrhk': '\u21A9',
+    'larrpl': '\u2939',
+    'larrsim': '\u2973',
+    'lat': '\u2AAB',
+    'latail': '\u2919',
+    'late': '\u2AAD',
+    'lates': '\u2AAD\uFE00',
+    'lbarr': '\u290C',
+    'lbbrk': '\u2772',
+    'lbrke': '\u298B',
+    'lbrksld': '\u298F',
+    'lbrkslu': '\u298D',
+    'lcaron': '\u013E',
+    'lcedil': '\u013C',
+    'lceil': '\u2308',
+    'lcub': '\u007B',
+    'lcy': '\u043B',
+    'ldca': '\u2936',
+    'ldquo': '\u201C',
+    'ldquor': '\u201E',
+    'ldrdhar': '\u2967',
+    'ldrushar': '\u294B',
+    'ldsh': '\u21B2',
+    'leftarrow': '\u2190',
+    'leftarrowtail': '\u21A2',
+    'leftharpoondown': '\u21BD',
+    'leftharpoonup': '\u21BC',
+    'leftrightarrow': '\u2194',
+    'leftrightarrows': '\u21C6',
+    'leftrightharpoons': '\u21CB',
+    'leftrightsquigarrow': '\u21AD',
+    'leg': '\u22DA',
+    'leq': '\u2264',
+    'leqq': '\u2266',
+    'leqslant': '\u2A7D',
+    'les': '\u2A7D',
+    'lescc': '\u2AA8',
+    'lesdot': '\u2A7F',
+    'lesdoto': '\u2A81',
+    'lesdotor': '\u2A83',
+    'lesg': '\u22DA\uFE00',
+    'lesges': '\u2A93',
+    'lessapprox': '\u2A85',
+    'lesseqgtr': '\u22DA',
+    'lesseqqgtr': '\u2A8B',
+    'lessgtr': '\u2276',
+    'lesssim': '\u2272',
+    'lfisht': '\u297C',
+    'lfloor': '\u230A',
+    'lg': '\u2276',
+    'lgE': '\u2A91',
+    'lhard': '\u21BD',
+    'lharu': '\u21BC',
+    'lharul': '\u296A',
+    'lhblk': '\u2584',
+    'ljcy': '\u0459',
+    'll': '\u226A',
+    'llarr': '\u21C7',
+    'llcorner': '\u231E',
+    'llhard': '\u296B',
+    'lltri': '\u25FA',
+    'lmidot': '\u0140',
+    'lmoustache': '\u23B0',
+    'lnapprox': '\u2A89',
+    'lneq': '\u2A87',
+    'lneqq': '\u2268',
+    'loang': '\u27EC',
+    'loarr': '\u21FD',
+    'lobrk': '\u27E6',
+    'longleftarrow': '\u27F5',
+    'longleftrightarrow': '\u27F7',
+    'longrightarrow': '\u27F6',
+    'looparrowleft': '\u21AB',
+    'lopar': '\u2985',
+    'loplus': '\u2A2D',
+    'lotimes': '\u2A34',
+    'lowbar': '\u005F',
+    'lozenge': '\u25CA',
+    'lozf': '\u29EB',
+    'lpar': '\u0028',
+    'lparlt': '\u2993',
+    'lrarr': '\u21C6',
+    'lrcorner': '\u231F',
+    'lrhar': '\u21CB',
+    'lrhard': '\u296D',
+    'lrm': '\u200E',
+    'lrtri': '\u22BF',
+    'lsaquo': '\u2039',
+    'lsh': '\u21B0',
+    'lsim': '\u2272',
+    'lsime': '\u2A8D',
+    'lsimg': '\u2A8F',
+    'lsqb': '\u005B',
+    'lsquo': '\u2018',
+    'lsquor': '\u201A',
+    'lstrok': '\u0142',
+    'ltcc': '\u2AA6',
+    'ltcir': '\u2A79',
+    'ltdot': '\u22D6',
+    'lthree': '\u22CB',
+    'ltlarr': '\u2976',
+    'ltquest': '\u2A7B',
+    'ltrPar': '\u2996',
+    'ltrie': '\u22B4',
+    'ltrif': '\u25C2',
+    'lurdshar': '\u294A',
+    'luruhar': '\u2966',
+    'lvertneqq': '\u2268\uFE00',
+    'lvnE': '\u2268\uFE00'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/l.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/y.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'YAcy': '\u042F',
+    'YIcy': '\u0407',
+    'YUcy': '\u042E',
+    'Yacute': '\u00DD',
+    'Ycirc': '\u0176',
+    'Ycy': '\u042B',
+    'Yuml': '\u0178',
+    'yacute': '\u00FD',
+    'yacy': '\u044F',
+    'ycirc': '\u0177',
+    'ycy': '\u044B',
+    'yicy': '\u0457',
+    'yucy': '\u044E',
+    'yuml': '\u00FF'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/y.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/fr.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'Afr': '\uD835\uDD04',
+    'Bfr': '\uD835\uDD05',
+    'Cfr': '\u212D',
+    'Dfr': '\uD835\uDD07',
+    'Efr': '\uD835\uDD08',
+    'Ffr': '\uD835\uDD09',
+    'Gfr': '\uD835\uDD0A',
+    'Hfr': '\u210C',
+    'Ifr': '\u2111',
+    'Jfr': '\uD835\uDD0D',
+    'Kfr': '\uD835\uDD0E',
+    'Lfr': '\uD835\uDD0F',
+    'Mfr': '\uD835\uDD10',
+    'Nfr': '\uD835\uDD11',
+    'Ofr': '\uD835\uDD12',
+    'Pfr': '\uD835\uDD13',
+    'Qfr': '\uD835\uDD14',
+    'Rfr': '\u211C',
+    'Sfr': '\uD835\uDD16',
+    'Tfr': '\uD835\uDD17',
+    'Ufr': '\uD835\uDD18',
+    'Vfr': '\uD835\uDD19',
+    'Wfr': '\uD835\uDD1A',
+    'Xfr': '\uD835\uDD1B',
+    'Yfr': '\uD835\uDD1C',
+    'Zfr': '\u2128',
+    'afr': '\uD835\uDD1E',
+    'bfr': '\uD835\uDD1F',
+    'cfr': '\uD835\uDD20',
+    'dfr': '\uD835\uDD21',
+    'efr': '\uD835\uDD22',
+    'ffr': '\uD835\uDD23',
+    'gfr': '\uD835\uDD24',
+    'hfr': '\uD835\uDD25',
+    'ifr': '\uD835\uDD26',
+    'jfr': '\uD835\uDD27',
+    'kfr': '\uD835\uDD28',
+    'lfr': '\uD835\uDD29',
+    'mfr': '\uD835\uDD2A',
+    'nfr': '\uD835\uDD2B',
+    'ofr': '\uD835\uDD2C',
+    'pfr': '\uD835\uDD2D',
+    'qfr': '\uD835\uDD2E',
+    'rfr': '\uD835\uDD2F',
+    'sfr': '\uD835\uDD30',
+    'tfr': '\uD835\uDD31',
+    'ufr': '\uD835\uDD32',
+    'vfr': '\uD835\uDD33',
+    'wfr': '\uD835\uDD34',
+    'xfr': '\uD835\uDD35',
+    'yfr': '\uD835\uDD36',
+    'zfr': '\uD835\uDD37'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/fr.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/o.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'OElig': '\u0152',
+    'Oacute': '\u00D3',
+    'Ocirc': '\u00D4',
+    'Ocy': '\u041E',
+    'Odblac': '\u0150',
+    'Ograve': '\u00D2',
+    'Omacr': '\u014C',
+    'Omicron': '\u039F',
+    'OpenCurlyDoubleQuote': '\u201C',
+    'OpenCurlyQuote': '\u2018',
+    'Or': '\u2A54',
+    'Oslash': '\u00D8',
+    'Otilde': '\u00D5',
+    'Otimes': '\u2A37',
+    'Ouml': '\u00D6',
+    'OverBracket': '\u23B4',
+    'OverParenthesis': '\u23DC',
+    'oS': '\u24C8',
+    'oacute': '\u00F3',
+    'oast': '\u229B',
+    'ocir': '\u229A',
+    'ocirc': '\u00F4',
+    'ocy': '\u043E',
+    'odash': '\u229D',
+    'odblac': '\u0151',
+    'odiv': '\u2A38',
+    'odot': '\u2299',
+    'odsold': '\u29BC',
+    'oelig': '\u0153',
+    'ofcir': '\u29BF',
+    'ogon': '\u02DB',
+    'ograve': '\u00F2',
+    'ogt': '\u29C1',
+    'ohbar': '\u29B5',
+    'ohm': '\u03A9',
+    'oint': '\u222E',
+    'olarr': '\u21BA',
+    'olcir': '\u29BE',
+    'olcross': '\u29BB',
+    'oline': '\u203E',
+    'olt': '\u29C0',
+    'omacr': '\u014D',
+    'omid': '\u29B6',
+    'ominus': '\u2296',
+    'opar': '\u29B7',
+    'operp': '\u29B9',
+    'oplus': '\u2295',
+    'orarr': '\u21BB',
+    'ord': '\u2A5D',
+    'order': '\u2134',
+    'orderof': '\u2134',
+    'ordf': '\u00AA',
+    'ordm': '\u00BA',
+    'origof': '\u22B6',
+    'oror': '\u2A56',
+    'orslope': '\u2A57',
+    'orv': '\u2A5B',
+    'oslash': '\u00F8',
+    'otilde': '\u00F5',
+    'otimes': '\u2297',
+    'otimesas': '\u2A36',
+    'ouml': '\u00F6',
+    'ovbar': '\u233D'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/o.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/s.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'SHCHcy': '\u0429',
+    'SHcy': '\u0428',
+    'SOFTcy': '\u042C',
+    'Sacute': '\u015A',
+    'Sc': '\u2ABC',
+    'Scaron': '\u0160',
+    'Scedil': '\u015E',
+    'Scirc': '\u015C',
+    'Scy': '\u0421',
+    'ShortDownArrow': '\u2193',
+    'ShortLeftArrow': '\u2190',
+    'ShortRightArrow': '\u2192',
+    'ShortUpArrow': '\u2191',
+    'Sub': '\u22D0',
+    'Sup': '\u22D1',
+    'sacute': '\u015B',
+    'sbquo': '\u201A',
+    'sc': '\u227B',
+    'scE': '\u2AB4',
+    'scaron': '\u0161',
+    'sccue': '\u227D',
+    'sce': '\u2AB0',
+    'scedil': '\u015F',
+    'scirc': '\u015D',
+    'scpolint': '\u2A13',
+    'scsim': '\u227F',
+    'scy': '\u0441',
+    'sdotb': '\u22A1',
+    'sdote': '\u2A66',
+    'seArr': '\u21D8',
+    'searhk': '\u2925',
+    'searrow': '\u2198',
+    'semi': '\u003B',
+    'seswar': '\u2929',
+    'setminus': '\u2216',
+    'setmn': '\u2216',
+    'sext': '\u2736',
+    'sfrown': '\u2322',
+    'shchcy': '\u0449',
+    'shcy': '\u0448',
+    'shortmid': '\u2223',
+    'shortparallel': '\u2225',
+    'shy': '\u00AD',
+    'sigmaf': '\u03C2',
+    'sim': '\u223C',
+    'simdot': '\u2A6A',
+    'sime': '\u2243',
+    'simeq': '\u2243',
+    'simg': '\u2A9E',
+    'simgE': '\u2AA0',
+    'siml': '\u2A9D',
+    'simlE': '\u2A9F',
+    'simplus': '\u2A24',
+    'simrarr': '\u2972',
+    'slarr': '\u2190',
+    'smallsetminus': '\u2216',
+    'smashp': '\u2A33',
+    'smeparsl': '\u29E4',
+    'smid': '\u2223',
+    'smt': '\u2AAA',
+    'smte': '\u2AAC',
+    'smtes': '\u2AAC\uFE00',
+    'softcy': '\u044C',
+    'sol': '\u002F',
+    'solb': '\u29C4',
+    'solbar': '\u233F',
+    'spadesuit': '\u2660',
+    'spar': '\u2225',
+    'sqcap': '\u2293',
+    'sqcaps': '\u2293\uFE00',
+    'sqcup': '\u2294',
+    'sqcups': '\u2294\uFE00',
+    'sqsub': '\u228F',
+    'sqsube': '\u2291',
+    'sqsubset': '\u228F',
+    'sqsubseteq': '\u2291',
+    'sqsup': '\u2290',
+    'sqsupe': '\u2292',
+    'sqsupset': '\u2290',
+    'sqsupseteq': '\u2292',
+    'squ': '\u25A1',
+    'square': '\u25A1',
+    'squarf': '\u25AA',
+    'squf': '\u25AA',
+    'srarr': '\u2192',
+    'ssetmn': '\u2216',
+    'ssmile': '\u2323',
+    'sstarf': '\u22C6',
+    'star': '\u2606',
+    'starf': '\u2605',
+    'straightepsilon': '\u03F5',
+    'straightphi': '\u03D5',
+    'strns': '\u00AF',
+    'subdot': '\u2ABD',
+    'sube': '\u2286',
+    'subedot': '\u2AC3',
+    'submult': '\u2AC1',
+    'subplus': '\u2ABF',
+    'subrarr': '\u2979',
+    'subset': '\u2282',
+    'subseteq': '\u2286',
+    'subseteqq': '\u2AC5',
+    'subsetneq': '\u228A',
+    'subsetneqq': '\u2ACB',
+    'subsim': '\u2AC7',
+    'subsub': '\u2AD5',
+    'subsup': '\u2AD3',
+    'succ': '\u227B',
+    'succapprox': '\u2AB8',
+    'succcurlyeq': '\u227D',
+    'succeq': '\u2AB0',
+    'succnapprox': '\u2ABA',
+    'succneqq': '\u2AB6',
+    'succnsim': '\u22E9',
+    'succsim': '\u227F',
+    'sum': '\u2211',
+    'sung': '\u266A',
+    'sup': '\u2283',
+    'sup1': '\u00B9',
+    'sup2': '\u00B2',
+    'sup3': '\u00B3',
+    'supdot': '\u2ABE',
+    'supdsub': '\u2AD8',
+    'supe': '\u2287',
+    'supedot': '\u2AC4',
+    'suphsol': '\u27C9',
+    'suphsub': '\u2AD7',
+    'suplarr': '\u297B',
+    'supmult': '\u2AC2',
+    'supplus': '\u2AC0',
+    'supset': '\u2283',
+    'supseteq': '\u2287',
+    'supseteqq': '\u2AC6',
+    'supsetneq': '\u228B',
+    'supsetneqq': '\u2ACC',
+    'supsim': '\u2AC8',
+    'supsub': '\u2AD4',
+    'supsup': '\u2AD6',
+    'swArr': '\u21D9',
+    'swarhk': '\u2926',
+    'swarrow': '\u2199',
+    'swnwar': '\u292A',
+    'szlig': '\u00DF'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/s.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/d.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'DD': '\u2145',
+    'DDotrahd': '\u2911',
+    'DJcy': '\u0402',
+    'DScy': '\u0405',
+    'DZcy': '\u040F',
+    'Darr': '\u21A1',
+    'Dashv': '\u2AE4',
+    'Dcaron': '\u010E',
+    'Dcy': '\u0414',
+    'DiacriticalAcute': '\u00B4',
+    'DiacriticalDot': '\u02D9',
+    'DiacriticalDoubleAcute': '\u02DD',
+    'DiacriticalGrave': '\u0060',
+    'DiacriticalTilde': '\u02DC',
+    'Dot': '\u00A8',
+    'DotDot': '\u20DC',
+    'DoubleContourIntegral': '\u222F',
+    'DoubleDownArrow': '\u21D3',
+    'DoubleLeftArrow': '\u21D0',
+    'DoubleLeftRightArrow': '\u21D4',
+    'DoubleLeftTee': '\u2AE4',
+    'DoubleLongLeftArrow': '\u27F8',
+    'DoubleLongLeftRightArrow': '\u27FA',
+    'DoubleLongRightArrow': '\u27F9',
+    'DoubleRightArrow': '\u21D2',
+    'DoubleUpArrow': '\u21D1',
+    'DoubleUpDownArrow': '\u21D5',
+    'DownArrowBar': '\u2913',
+    'DownArrowUpArrow': '\u21F5',
+    'DownBreve': '\u0311',
+    'DownLeftRightVector': '\u2950',
+    'DownLeftTeeVector': '\u295E',
+    'DownLeftVectorBar': '\u2956',
+    'DownRightTeeVector': '\u295F',
+    'DownRightVectorBar': '\u2957',
+    'DownTeeArrow': '\u21A7',
+    'Dstrok': '\u0110',
+    'dArr': '\u21D3',
+    'dHar': '\u2965',
+    'darr': '\u2193',
+    'dash': '\u2010',
+    'dashv': '\u22A3',
+    'dbkarow': '\u290F',
+    'dblac': '\u02DD',
+    'dcaron': '\u010F',
+    'dcy': '\u0434',
+    'dd': '\u2146',
+    'ddagger': '\u2021',
+    'ddotseq': '\u2A77',
+    'demptyv': '\u29B1',
+    'dfisht': '\u297F',
+    'dharl': '\u21C3',
+    'dharr': '\u21C2',
+    'diam': '\u22C4',
+    'diamond': '\u22C4',
+    'diamondsuit': '\u2666',
+    'diams': '\u2666',
+    'die': '\u00A8',
+    'disin': '\u22F2',
+    'divide': '\u00F7',
+    'divonx': '\u22C7',
+    'djcy': '\u0452',
+    'dlcorn': '\u231E',
+    'dlcrop': '\u230D',
+    'dollar': '\u0024',
+    'doteq': '\u2250',
+    'dotminus': '\u2238',
+    'doublebarwedge': '\u2306',
+    'downarrow': '\u2193',
+    'downdownarrows': '\u21CA',
+    'downharpoonleft': '\u21C3',
+    'downharpoonright': '\u21C2',
+    'drbkarow': '\u2910',
+    'drcorn': '\u231F',
+    'drcrop': '\u230C',
+    'dscy': '\u0455',
+    'dsol': '\u29F6',
+    'dstrok': '\u0111',
+    'dtri': '\u25BF',
+    'dtrif': '\u25BE',
+    'duarr': '\u21F5',
+    'duhar': '\u296F',
+    'dwangle': '\u29A6',
+    'dzcy': '\u045F',
+    'dzigrarr': '\u27FF'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/d.js");
+
+})(MathJax.InputJax.MathML);
+
+/*************************************************************
+ *
+ *  MathJax/jax/output/HTML-CSS/entities/h.js
+ *
+ *  Copyright (c) 2010-2017 The MathJax Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+(function (MATHML) {
+  MathJax.Hub.Insert(MATHML.Parse.Entity,{
+    'HARDcy': '\u042A',
+    'Hcirc': '\u0124',
+    'HilbertSpace': '\u210B',
+    'HorizontalLine': '\u2500',
+    'Hstrok': '\u0126',
+    'hArr': '\u21D4',
+    'hairsp': '\u200A',
+    'half': '\u00BD',
+    'hamilt': '\u210B',
+    'hardcy': '\u044A',
+    'harr': '\u2194',
+    'harrcir': '\u2948',
+    'hcirc': '\u0125',
+    'hearts': '\u2665',
+    'heartsuit': '\u2665',
+    'hercon': '\u22B9',
+    'hksearow': '\u2925',
+    'hkswarow': '\u2926',
+    'hoarr': '\u21FF',
+    'homtht': '\u223B',
+    'horbar': '\u2015',
+    'hslash': '\u210F',
+    'hstrok': '\u0127',
+    'hybull': '\u2043',
+    'hyphen': '\u2010'
+  });
+
+  MathJax.Ajax.loadComplete(MATHML.entityDir+"/h.js");
+
+})(MathJax.InputJax.MathML);
 
 /* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
 /* vim: set ts=2 et sw=2 tw=80: */
@@ -16581,1490 +17610,11 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
 
 /*************************************************************
  *
- *  MathJax/extensions/tex2jax.js
+ *  MathJax/extensions/mml2jax.js
  *  
- *  Implements the TeX to Jax preprocessor that locates TeX code
- *  within the text of a document and replaces it with SCRIPT tags
+ *  Implements the MathML to Jax preprocessor that locates <math> nodes
+ *  within the text of a document and replaces them with SCRIPT tags
  *  for processing by MathJax.
- *
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2009-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension.tex2jax = {
-  version: "2.7.1",
-  config: {
-    inlineMath: [              // The start/stop pairs for in-line math
-//    ['$','$'],               //  (comment out any you don't want, or add your own, but
-      ['\\(','\\)']            //  be sure that you don't have an extra comma at the end)
-    ],
-
-    displayMath: [             // The start/stop pairs for display math
-      ['$$','$$'],             //  (comment out any you don't want, or add your own, but
-      ['\\[','\\]']            //  be sure that you don't have an extra comma at the end)
-    ],
-
-    balanceBraces: true,       // determines whether tex2jax requires braces to be
-                               // balanced within math delimiters (allows for nested
-                               // dollar signs).  Set to false to get pre-v2.0 compatibility.
-
-    skipTags: ["script","noscript","style","textarea","pre","code","annotation","annotation-xml"],
-                               // The names of the tags whose contents will not be
-                               // scanned for math delimiters
-
-    ignoreClass: "tex2jax_ignore",    // the class name of elements whose contents should
-                                      // NOT be processed by tex2jax.  Note that this
-                                      // is a regular expression, so be sure to quote any
-                                      // regexp special characters
-
-    processClass: "tex2jax_process",  // the class name of elements whose contents SHOULD
-                                      // be processed when they appear inside ones that
-                                      // are ignored.  Note that this is a regular expression,
-                                      // so be sure to quote any regexp special characters
-
-    processEscapes: false,     // set to true to allow \$ to produce a dollar without
-                               //   starting in-line math mode
-
-    processEnvironments: true, // set to true to process \begin{xxx}...\end{xxx} outside
-                               //   of math mode, false to prevent that
-
-    processRefs: true,         // set to true to process \ref{...} outside of math mode
-
-
-    preview: "TeX"             // set to "none" to not insert MathJax_Preview spans
-                               //   or set to an array specifying an HTML snippet
-                               //   to use the same preview for every equation.
-
-  },
-  
-  //
-  //  Tags to ignore when searching for TeX in the page
-  //
-  ignoreTags: {
-    br: (MathJax.Hub.Browser.isMSIE && document.documentMode < 9 ? "\n" : " "),
-    wbr: "",
-    "#comment": ""
-  },
-  
-  PreProcess: function (element) {
-    if (!this.configured) {
-      this.config = MathJax.Hub.CombineConfig("tex2jax",this.config);
-      if (this.config.Augment) {MathJax.Hub.Insert(this,this.config.Augment)}
-      if (typeof(this.config.previewTeX) !== "undefined" && !this.config.previewTeX)
-        {this.config.preview = "none"} // backward compatibility for previewTeX parameter
-      this.configured = true;
-    }
-    if (typeof(element) === "string") {element = document.getElementById(element)}
-    if (!element) {element = document.body}
-    if (this.createPatterns()) {this.scanElement(element,element.nextSibling)}
-  },
-  
-  createPatterns: function () {
-    var starts = [], parts = [], i, m, config = this.config;
-    this.match = {};
-    for (i = 0, m = config.inlineMath.length; i < m; i++) {
-      starts.push(this.patternQuote(config.inlineMath[i][0]));
-      this.match[config.inlineMath[i][0]] = {
-        mode: "",
-        end: config.inlineMath[i][1],
-        pattern: this.endPattern(config.inlineMath[i][1])
-      };
-    }
-    for (i = 0, m = config.displayMath.length; i < m; i++) {
-      starts.push(this.patternQuote(config.displayMath[i][0]));
-      this.match[config.displayMath[i][0]] = {
-        mode: "; mode=display",
-        end: config.displayMath[i][1],
-        pattern: this.endPattern(config.displayMath[i][1])
-      };
-    }
-    if (starts.length) {parts.push(starts.sort(this.sortLength).join("|"))}
-    if (config.processEnvironments) {parts.push("\\\\begin\\{([^}]*)\\}")}
-    if (config.processEscapes)      {parts.push("\\\\*\\\\\\\$")}
-    if (config.processRefs)         {parts.push("\\\\(eq)?ref\\{[^}]*\\}")}
-    this.start = new RegExp(parts.join("|"),"g");
-    this.skipTags = new RegExp("^("+config.skipTags.join("|")+")$","i");
-    var ignore = [];
-    if (MathJax.Hub.config.preRemoveClass) {ignore.push(MathJax.Hub.config.preRemoveClass)};
-    if (config.ignoreClass) {ignore.push(config.ignoreClass)}
-    this.ignoreClass = (ignore.length ? new RegExp("(^| )("+ignore.join("|")+")( |$)") : /^$/);
-    this.processClass = new RegExp("(^| )("+config.processClass+")( |$)");
-    return (parts.length > 0);
-  },
-  
-  patternQuote: function (s) {return s.replace(/([\^$(){}+*?\-|\[\]\:\\])/g,'\\$1')},
-  
-  endPattern: function (end) {
-    return new RegExp(this.patternQuote(end)+"|\\\\.|[{}]","g");
-  },
-  
-  sortLength: function (a,b) {
-    if (a.length !== b.length) {return b.length - a.length}
-    return (a == b ? 0 : (a < b ? -1 : 1));
-  },
-  
-  scanElement: function (element,stop,ignore) {
-    var cname, tname, ignoreChild, process;
-    while (element && element != stop) {
-      if (element.nodeName.toLowerCase() === '#text') {
-        if (!ignore) {element = this.scanText(element)}
-      } else {
-        cname = (typeof(element.className) === "undefined" ? "" : element.className);
-        tname = (typeof(element.tagName)   === "undefined" ? "" : element.tagName);
-        if (typeof(cname) !== "string") {cname = String(cname)} // jsxgraph uses non-string class names!
-        process = this.processClass.exec(cname);
-        if (element.firstChild && !cname.match(/(^| )MathJax/) &&
-             (process || !this.skipTags.exec(tname))) {
-          ignoreChild = (ignore || this.ignoreClass.exec(cname)) && !process;
-          this.scanElement(element.firstChild,stop,ignoreChild);
-        }
-      }
-      if (element) {element = element.nextSibling}
-    }
-  },
-  
-  scanText: function (element) {
-    if (element.nodeValue.replace(/\s+/,'') == '') {return element}
-    var match, prev;
-    this.search = {start: true};
-    this.pattern = this.start;
-    while (element) {
-      this.pattern.lastIndex = 0;
-      while (element && element.nodeName.toLowerCase() === '#text' &&
-            (match = this.pattern.exec(element.nodeValue))) {
-        if (this.search.start) {element = this.startMatch(match,element)}
-                          else {element = this.endMatch(match,element)}
-      }
-      if (this.search.matched) {element = this.encloseMath(element)}
-      if (element) {
-        do {prev = element; element = element.nextSibling}
-          while (element && this.ignoreTags[element.nodeName.toLowerCase()] != null);
-        if (!element || element.nodeName !== '#text')
-          {return (this.search.close ? this.prevEndMatch() : prev)}
-      }
-    }
-    return element;
-  },
-  
-  startMatch: function (match,element) {
-    var delim = this.match[match[0]];
-    if (delim != null) {                              // a start delimiter
-      this.search = {
-        end: delim.end, mode: delim.mode, pcount: 0,
-        open: element, olen: match[0].length, opos: this.pattern.lastIndex - match[0].length
-      };
-      this.switchPattern(delim.pattern);
-    } else if (match[0].substr(0,6) === "\\begin") {  // \begin{...}
-      this.search = {
-        end: "\\end{"+match[1]+"}", mode: "; mode=display", pcount: 0,
-        open: element, olen: 0, opos: this.pattern.lastIndex - match[0].length,
-        isBeginEnd: true
-      };
-      this.switchPattern(this.endPattern(this.search.end));
-    } else if (match[0].substr(0,4) === "\\ref" || match[0].substr(0,6) === "\\eqref") {
-      this.search = {
-        mode: "", end: "", open: element, pcount: 0,
-        olen: 0, opos: this.pattern.lastIndex - match[0].length
-      }
-      return this.endMatch([""],element);
-    } else {                                         // escaped dollar signs
-      // put $ in a span so it doesn't get processed again
-      // split off backslashes so they don't get removed later
-      var slashes = match[0].substr(0,match[0].length-1), n, span;
-      if (slashes.length % 2 === 0) {span = [slashes.replace(/\\\\/g,"\\")]; n = 1}
-        else {span = [slashes.substr(1).replace(/\\\\/g,"\\"),"$"]; n = 0}
-      span = MathJax.HTML.Element("span",null,span);
-      var text = MathJax.HTML.TextNode(element.nodeValue.substr(0,match.index));
-      element.nodeValue = element.nodeValue.substr(match.index + match[0].length - n);
-      element.parentNode.insertBefore(span,element);
-      element.parentNode.insertBefore(text,span);
-      this.pattern.lastIndex = n;
-    }
-    return element;
-  },
-  
-  endMatch: function (match,element) {
-    var search = this.search;
-    if (match[0] == search.end) {
-      if (!search.close || search.pcount === 0) {
-        search.close = element;
-        search.cpos = this.pattern.lastIndex;
-        search.clen = (search.isBeginEnd ? 0 : match[0].length);
-      }
-      if (search.pcount === 0) {
-        search.matched = true;
-        element = this.encloseMath(element);
-        this.switchPattern(this.start);
-      }
-    }
-    else if (match[0] === "{") {search.pcount++}
-    else if (match[0] === "}" && search.pcount) {search.pcount--}
-    return element;
-  },
-  prevEndMatch: function () {
-    this.search.matched = true;
-    var element = this.encloseMath(this.search.close);
-    this.switchPattern(this.start);
-    return element;
-  },
-  
-  switchPattern: function (pattern) {
-    pattern.lastIndex = this.pattern.lastIndex;
-    this.pattern = pattern;
-    this.search.start = (pattern === this.start);
-  },
-  
-  encloseMath: function (element) {
-    var search = this.search, close = search.close, CLOSE, math, next;
-    if (search.cpos === close.length) {close = close.nextSibling}
-       else {close = close.splitText(search.cpos)}
-    if (!close) {CLOSE = close = MathJax.HTML.addText(search.close.parentNode,"")}
-    search.close = close;
-    math = (search.opos ? search.open.splitText(search.opos) : search.open);
-    while ((next = math.nextSibling) && next !== close) {
-      if (next.nodeValue !== null) {
-        if (next.nodeName === "#comment") {
-          math.nodeValue += next.nodeValue.replace(/^\[CDATA\[((.|\n|\r)*)\]\]$/,"$1");
-        } else {
-          math.nodeValue += next.nodeValue;
-        }
-      } else {
-        var ignore = this.ignoreTags[next.nodeName.toLowerCase()];
-        math.nodeValue += (ignore == null ? " " : ignore);
-      }
-      math.parentNode.removeChild(next);
-    }
-    var TeX = math.nodeValue.substr(search.olen,math.nodeValue.length-search.olen-search.clen);
-    math.parentNode.removeChild(math);
-    if (this.config.preview !== "none") {this.createPreview(search.mode,TeX)}
-    math = this.createMathTag(search.mode,TeX);
-    this.search = {}; this.pattern.lastIndex = 0;
-    if (CLOSE) {CLOSE.parentNode.removeChild(CLOSE)}
-    return math;
-  },
-  
-  insertNode: function (node) {
-    var search = this.search;
-    search.close.parentNode.insertBefore(node,search.close);
-  },
-  
-  createPreview: function (mode,tex) {
-    var previewClass = MathJax.Hub.config.preRemoveClass;
-    var preview = this.config.preview;
-    if (preview === "none") return;
-    if ((this.search.close.previousSibling||{}).className === previewClass) return;
-    if (preview === "TeX") {preview = [this.filterPreview(tex)]}
-    if (preview) {
-      preview = MathJax.HTML.Element("span",{className:previewClass},preview);
-      this.insertNode(preview);
-    }
-  },
-  
-  createMathTag: function (mode,tex) {
-    var script = document.createElement("script");
-    script.type = "math/tex" + mode;
-    MathJax.HTML.setScript(script,tex);
-    this.insertNode(script);
-    return script;
-  },
-  
-  filterPreview: function (tex) {return tex}
-
-};
-
-// We register the preprocessors with the following priorities:
-// - mml2jax.js: 5
-// - jsMath2jax.js: 8
-// - asciimath2jax.js, tex2jax.js: 10 (default)
-// See issues 18 and 484 and the other *2jax.js files.
-MathJax.Hub.Register.PreProcessor(["PreProcess",MathJax.Extension.tex2jax]);
-MathJax.Ajax.loadComplete("[MathJax]/extensions/tex2jax.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/AMScd.js
- *  
- *  Implements the CD environment for commutative diagrams.
- *  
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2013-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/AMScd"] = {
-  version: "2.7.1",
-  config: MathJax.Hub.CombineConfig("TeX.CD",{
-    colspace: "5pt",
-    rowspace: "5pt",
-    harrowsize: "2.75em",
-    varrowsize: "1.75em",
-    hideHorizontalLabels: false
-  })
-};
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  var MML = MathJax.ElementJax.mml,
-      TEX = MathJax.InputJax.TeX,
-      STACKITEM = TEX.Stack.Item,
-      TEXDEF = TEX.Definitions,
-      CONFIG = MathJax.Extension["TeX/AMScd"].config;
-
-  TEXDEF.environment.CD = "CD_env";
-  TEXDEF.special["@"] = "CD_arrow";
-  TEXDEF.macros.minCDarrowwidth = "CD_minwidth";
-  TEXDEF.macros.minCDarrowheight = "CD_minheight";
-
-  TEX.Parse.Augment({
-    //
-    //  Implements \begin{CD}...\end{CD}
-    //
-    CD_env: function (begin) {
-      this.Push(begin);
-      return STACKITEM.array().With({
-        arraydef: {
-          columnalign: "center",
-          columnspacing: CONFIG.colspace,
-          rowspacing: CONFIG.rowspace,
-          displaystyle: true
-        },
-        minw: this.stack.env.CD_minw || CONFIG.harrowsize,
-        minh: this.stack.env.CD_minh || CONFIG.varrowsize
-      });
-    },
-
-    CD_arrow: function (name) {
-      var c = this.string.charAt(this.i);
-      if (!c.match(/[><VA.|=]/)) {return this.Other(name)} else {this.i++}
-
-      var top = this.stack.Top();
-      if (!top.isa(STACKITEM.array) || top.data.length) {
-        this.CD_cell(name);
-        top = this.stack.Top();
-      }
-      //
-      //  Add enough cells to place the arrow correctly
-      //
-      var arrowRow = ((top.table.length % 2) === 1);
-      var n = (top.row.length + (arrowRow ? 0 : 1)) % 2;
-      while (n) {this.CD_cell(name); n--}
-
-      var mml;
-      var hdef = {minsize: top.minw, stretchy:true},
-          vdef = {minsize: top.minh, stretchy:true, symmetric:true, lspace:0, rspace:0};
-
-      if (c === ".") {}
-      else if (c === "|") {mml = this.mmlToken(MML.mo("\u2225").With(vdef))}
-      else if (c === "=") {mml = this.mmlToken(MML.mo("=").With(hdef))}
-      else {
-        //
-        //  for @>>> @<<< @VVV and @AAA, get the arrow and labels
-        //
-        var arrow = {">":"\u2192", "<":"\u2190", V:"\u2193", A:"\u2191"}[c];
-        var a = this.GetUpTo(name+c,c),
-            b = this.GetUpTo(name+c,c);
-
-        if (c === ">" || c === "<") {
-          //
-          //  Lay out horizontal arrows with munderover if it has labels
-          //
-          mml = MML.mo(arrow).With(hdef);
-          if (!a) {a = "\\kern "+top.minw} // minsize needs work
-          if (a || b) {
-            var pad = {width:"+11mu", lspace:"6mu"};
-            mml = MML.munderover(this.mmlToken(mml));
-            if (a) {
-              a = TEX.Parse(a,this.stack.env).mml();
-              mml.SetData(mml.over,MML.mpadded(a).With(pad).With({voffset:".1em"}));
-            }
-            if (b) {
-              b = TEX.Parse(b,this.stack.env).mml();
-              mml.SetData(mml.under,MML.mpadded(b).With(pad));
-            }
-            if (CONFIG.hideHorizontalLabels)
-              {mml = MML.mpadded(mml).With({depth:0, height:".67em"})}
-          }
-        } else {
-          //
-          //  Lay out vertical arrows with mrow if there are labels
-          //
-          mml = arrow = this.mmlToken(MML.mo(arrow).With(vdef));
-          if (a || b) {
-            mml = MML.mrow();
-            if (a) {mml.Append(TEX.Parse("\\scriptstyle\\llap{"+a+"}",this.stack.env).mml())}
-            mml.Append(arrow.With({texClass: MML.TEXCLASS.ORD}));
-            if (b) {mml.Append(TEX.Parse("\\scriptstyle\\rlap{"+b+"}",this.stack.env).mml())}
-          }
-        }
-      }
-      if (mml) {this.Push(mml)};
-      this.CD_cell(name);
-    },
-    CD_cell: function (name) {
-      var top = this.stack.Top();
-      if ((top.table||[]).length % 2 === 0 && (top.row||[]).length === 0) {
-        //
-        // Add a strut to the first cell in even rows to get
-        // better spacing of arrow rows.
-        // 
-        this.Push(MML.mpadded().With({height:"8.5pt",depth:"2pt"}));
-      }
-      this.Push(STACKITEM.cell().With({isEntry:true, name:name}));
-    },
-
-    CD_minwidth: function (name) {
-      this.stack.env.CD_minw = this.GetDimen(name);
-    },
-    CD_minheight: function (name) {
-      this.stack.env.CD_minh = this.GetDimen(name);
-    }
-
-  });
-
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/AMScd.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/AMSmath.js
- *
- *  Implements AMS math environments and macros.
- *  
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2009-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/AMSmath"] = {
-  version: "2.7.1",
-  
-  number: 0,        // current equation number
-  startNumber: 0,   // current starting equation number (for when equation is restarted)
-  IDs: {},          // IDs used in previous equations
-  eqIDs: {},        // IDs used in this equation
-  labels: {},       // the set of labels
-  eqlabels: {},     // labels in the current equation
-  refs: []          // array of jax with unresolved references
-};
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  
-  var MML = MathJax.ElementJax.mml,
-      TEX = MathJax.InputJax.TeX,
-      AMS = MathJax.Extension["TeX/AMSmath"];
-
-  var TEXDEF = TEX.Definitions,
-      STACKITEM = TEX.Stack.Item,
-      CONFIG = TEX.config.equationNumbers;
-      
-  var COLS = function (W) {
-    var WW = [];
-    for (var i = 0, m = W.length; i < m; i++) 
-      {WW[i] = TEX.Parse.prototype.Em(W[i])}
-    return WW.join(" ");
-  };
-  
-  //
-  //  Get the URL of the page (for use with formatURL) when there
-  //  is a <base> element on the page.
-  //  
-  var baseURL = (document.getElementsByTagName("base").length === 0) ? "" :
-                String(document.location).replace(/#.*$/,"");
-
-  
-  /******************************************************************************/
-  
-  TEXDEF.Add({
-    mathchar0mo: {
-      iiiint:     ['2A0C',{texClass: MML.TEXCLASS.OP}]
-    },
-    
-    macros: {
-      mathring:   ['Accent','2DA'],  // or 0x30A
-      
-      nobreakspace: 'Tilde',
-      negmedspace:    ['Spacer',MML.LENGTH.NEGATIVEMEDIUMMATHSPACE],
-      negthickspace:  ['Spacer',MML.LENGTH.NEGATIVETHICKMATHSPACE],
-      
-//    intI:       ['Macro','\\mathchoice{\\!}{}{}{}\\!\\!\\int'],
-//    iint:       ['MultiIntegral','\\int\\intI'],          // now in core TeX input jax
-//    iiint:      ['MultiIntegral','\\int\\intI\\intI'],    // now in core TeX input jax
-//    iiiint:     ['MultiIntegral','\\int\\intI\\intI\\intI'], // now in mathchar0mo above
-      idotsint:   ['MultiIntegral','\\int\\cdots\\int'],
-      
-//    dddot:      ['Macro','\\mathop{#1}\\limits^{\\textstyle \\mathord{.}\\mathord{.}\\mathord{.}}',1],
-//    ddddot:     ['Macro','\\mathop{#1}\\limits^{\\textstyle \\mathord{.}\\mathord{.}\\mathord{.}\\mathord{.}}',1],
-      dddot:      ['Accent','20DB'],
-      ddddot:     ['Accent','20DC'],
-      
-      sideset:    ['Macro','\\mathop{\\mathop{\\rlap{\\phantom{#3}}}\\nolimits#1\\!\\mathop{#3}\\nolimits#2}',3],
-      
-      boxed:      ['Macro','\\fbox{$\\displaystyle{#1}$}',1],
-      
-      tag:         'HandleTag',
-      notag:       'HandleNoTag',
-      label:       'HandleLabel',
-      ref:         'HandleRef',
-      eqref:       ['HandleRef',true],
-      
-      substack:   ['Macro','\\begin{subarray}{c}#1\\end{subarray}',1],
-      
-      injlim:     ['NamedOp','inj&thinsp;lim'],
-      projlim:    ['NamedOp','proj&thinsp;lim'],
-      varliminf:  ['Macro','\\mathop{\\underline{\\mmlToken{mi}{lim}}}'],
-      varlimsup:  ['Macro','\\mathop{\\overline{\\mmlToken{mi}{lim}}}'],
-      varinjlim:  ['Macro','\\mathop{\\underrightarrow{\\mmlToken{mi}{lim}}}'],
-      varprojlim: ['Macro','\\mathop{\\underleftarrow{\\mmlToken{mi}{lim}}}'],
-      
-      DeclareMathOperator: 'HandleDeclareOp',
-      operatorname:        'HandleOperatorName',
-      SkipLimits:          'SkipLimits',
-      
-      genfrac:     'Genfrac',
-      frac:       ['Genfrac',"","","",""],
-      tfrac:      ['Genfrac',"","","",1],
-      dfrac:      ['Genfrac',"","","",0],
-      binom:      ['Genfrac',"(",")","0",""],
-      tbinom:     ['Genfrac',"(",")","0",1],
-      dbinom:     ['Genfrac',"(",")","0",0],
-      
-      cfrac:       'CFrac',
-      
-      shoveleft:  ['HandleShove',MML.ALIGN.LEFT],
-      shoveright: ['HandleShove',MML.ALIGN.RIGHT],
-      
-      xrightarrow: ['xArrow',0x2192,5,6],
-      xleftarrow:  ['xArrow',0x2190,7,3]
-    },
-    
-    environment: {
-      align:         ['AMSarray',null,true,true,  'rlrlrlrlrlrl',COLS([0,2,0,2,0,2,0,2,0,2,0])],
-      'align*':      ['AMSarray',null,false,true, 'rlrlrlrlrlrl',COLS([0,2,0,2,0,2,0,2,0,2,0])],
-      multline:      ['Multline',null,true],
-      'multline*':   ['Multline',null,false],
-      split:         ['AMSarray',null,false,false,'rl',COLS([0])],
-      gather:        ['AMSarray',null,true,true,  'c'],
-      'gather*':     ['AMSarray',null,false,true, 'c'],
-      
-      alignat:       ['AlignAt',null,true,true],
-      'alignat*':    ['AlignAt',null,false,true],
-      alignedat:     ['AlignAt',null,false,false],
-
-      aligned:       ['AlignedAMSArray',null,null,null,'rlrlrlrlrlrl',COLS([0,2,0,2,0,2,0,2,0,2,0]),".5em",'D'],
-      gathered:      ['AlignedAMSArray',null,null,null,'c',null,".5em",'D'],
-
-      subarray:      ['Array',null,null,null,null,COLS([0]),"0.1em",'S',1],
-      smallmatrix:   ['Array',null,null,null,'c',COLS([1/3]),".2em",'S',1],
-      
-      'equation':    ['EquationBegin','Equation',true],
-      'equation*':   ['EquationBegin','EquationStar',false],
-
-      eqnarray:      ['AMSarray',null,true,true, 'rcl',"0 "+MML.LENGTH.THICKMATHSPACE,".5em"],
-      'eqnarray*':   ['AMSarray',null,false,true,'rcl',"0 "+MML.LENGTH.THICKMATHSPACE,".5em"]
-    },
-    
-    delimiter: {
-      '\\lvert':     ['007C',{texClass:MML.TEXCLASS.OPEN}],
-      '\\rvert':     ['007C',{texClass:MML.TEXCLASS.CLOSE}],
-      '\\lVert':     ['2016',{texClass:MML.TEXCLASS.OPEN}],
-      '\\rVert':     ['2016',{texClass:MML.TEXCLASS.CLOSE}]
-    }
-  },null,true);
-    
-
-  /******************************************************************************/
-  
-  TEX.Parse.Augment({
-
-    /*
-     *  Add the tag to the environment (to be added to the table row later)
-     */
-    HandleTag: function (name) {
-      var star = this.GetStar();
-      var arg = this.trimSpaces(this.GetArgument(name)), tag = arg;
-      if (!star) {arg = CONFIG.formatTag(arg)}
-      var global = this.stack.global; global.tagID = tag;
-      if (global.notags) {
-        TEX.Error(["CommandNotAllowedInEnv",
-                   "%1 not allowed in %2 environment",
-                   name,global.notags]
-        );
-      }
-      if (global.tag) {TEX.Error(["MultipleCommand","Multiple %1",name])}
-      global.tag = MML.mtd.apply(MML,this.InternalMath(arg)).With({id:CONFIG.formatID(tag)});
-    },
-    HandleNoTag: function (name) {
-      if (this.stack.global.tag) {delete this.stack.global.tag}
-      this.stack.global.notag = true;  // prevent auto-tagging
-    },
-    
-    /*
-     *  Record a label name for a tag
-     */
-    HandleLabel: function (name) {
-      var global = this.stack.global, label = this.GetArgument(name);
-      if (label === "") return;
-      if (!AMS.refUpdate) {
-        if (global.label) {TEX.Error(["MultipleCommand","Multiple %1",name])}
-        global.label = label;
-        if (AMS.labels[label] || AMS.eqlabels[label])
-          {TEX.Error(["MultipleLabel","Label '%1' multiply defined",label])}
-        AMS.eqlabels[label] = {tag:"???", id:""}; // will be replaced by tag value later
-      }
-    },
-    
-    /*
-     *  Handle a label reference
-     */
-    HandleRef: function (name,eqref) {
-      var label = this.GetArgument(name);
-      var ref = AMS.labels[label] || AMS.eqlabels[label];
-      if (!ref) {ref = {tag:"???",id:""}; AMS.badref = !AMS.refUpdate}
-      var tag = ref.tag; if (eqref) {tag = CONFIG.formatTag(tag)}
-      this.Push(MML.mrow.apply(MML,this.InternalMath(tag)).With({
-        href:CONFIG.formatURL(ref.id,baseURL), "class":"MathJax_ref"
-      }));
-    },
-    
-    /*
-     *  Handle \DeclareMathOperator
-     */
-    HandleDeclareOp: function (name) {
-      var limits = (this.GetStar() ? "" : "\\nolimits\\SkipLimits");
-      var cs = this.trimSpaces(this.GetArgument(name));
-      if (cs.charAt(0) == "\\") {cs = cs.substr(1)}
-      var op = this.GetArgument(name);
-      op = op.replace(/\*/g,'\\text{*}').replace(/-/g,'\\text{-}');
-      TEX.Definitions.macros[cs] = ['Macro','\\mathop{\\rm '+op+'}'+limits];
-    },
-    
-    HandleOperatorName: function (name) {
-      var limits = (this.GetStar() ? "" : "\\nolimits\\SkipLimits");
-      var op = this.trimSpaces(this.GetArgument(name));
-      op = op.replace(/\*/g,'\\text{*}').replace(/-/g,'\\text{-}');
-      this.string = '\\mathop{\\rm '+op+'}'+limits+" "+this.string.slice(this.i);
-      this.i = 0;
-    },
-    
-    SkipLimits: function (name) {
-      var c = this.GetNext(), i = this.i;
-      if (c === "\\" && ++this.i && this.GetCS() !== "limits") this.i = i;
-    },
-
-    /*
-     *  Record presence of \shoveleft and \shoveright
-     */
-    HandleShove: function (name,shove) {
-      var top = this.stack.Top();
-      if (top.type !== "multline" || top.data.length) {
-        TEX.Error(["CommandAtTheBeginingOfLine",
-                   "%1 must come at the beginning of the line",name]);
-      }
-      top.data.shove = shove;
-    },
-    
-    /*
-     *  Handle \cfrac
-     */
-    CFrac: function (name) {
-      var lr  = this.trimSpaces(this.GetBrackets(name,"")),
-          num = this.GetArgument(name),
-          den = this.GetArgument(name);
-      var frac = MML.mfrac(TEX.Parse('\\strut\\textstyle{'+num+'}',this.stack.env).mml(),
-                           TEX.Parse('\\strut\\textstyle{'+den+'}',this.stack.env).mml());
-      lr = ({l:MML.ALIGN.LEFT, r:MML.ALIGN.RIGHT,"":""})[lr];
-      if (lr == null)
-        {TEX.Error(["IllegalAlign","Illegal alignment specified in %1",name])}
-      if (lr) {frac.numalign = frac.denomalign = lr}
-      this.Push(frac);
-    },
-    
-    /*
-     *  Implement AMS generalized fraction
-     */
-    Genfrac: function (name,left,right,thick,style) {
-      if (left  == null) {left  = this.GetDelimiterArg(name)}
-      if (right == null) {right = this.GetDelimiterArg(name)}
-      if (thick == null) {thick = this.GetArgument(name)}
-      if (style == null) {style = this.trimSpaces(this.GetArgument(name))}
-      var num = this.ParseArg(name);
-      var den = this.ParseArg(name);
-      var frac = MML.mfrac(num,den);
-      if (thick !== "") {frac.linethickness = thick}
-      if (left || right) {frac = TEX.fixedFence(left,frac.With({texWithDelims:true}),right)}
-      if (style !== "") {
-        var STYLE = (["D","T","S","SS"])[style];
-        if (STYLE == null)
-          {TEX.Error(["BadMathStyleFor","Bad math style for %1",name])}
-        frac = MML.mstyle(frac);
-        if (STYLE === "D") {frac.displaystyle = true; frac.scriptlevel = 0}
-          else {frac.displaystyle = false; frac.scriptlevel = style - 1}
-      }
-      this.Push(frac);
-    },
-
-    /*
-     *  Implements multline environment (mostly handled through STACKITEM below)
-     */
-    Multline: function (begin,numbered) {
-      this.Push(begin); this.checkEqnEnv();
-      return STACKITEM.multline(numbered,this.stack).With({
-        arraydef: {
-          displaystyle: true,
-          rowspacing: ".5em",
-          width: TEX.config.MultLineWidth, columnwidth:"100%",
-          side: TEX.config.TagSide,
-          minlabelspacing: TEX.config.TagIndent
-        }
-      });
-    },
-
-    /*
-     *  Handle AMS aligned environments
-     */
-    AMSarray: function (begin,numbered,taggable,align,spacing) {
-      this.Push(begin); if (taggable) {this.checkEqnEnv()}
-      align = align.replace(/[^clr]/g,'').split('').join(' ');
-      align = align.replace(/l/g,'left').replace(/r/g,'right').replace(/c/g,'center');
-      return STACKITEM.AMSarray(begin.name,numbered,taggable,this.stack).With({
-        arraydef: {
-          displaystyle: true,
-          rowspacing: ".5em",
-          columnalign: align,
-          columnspacing: (spacing||"1em"),
-          rowspacing: "3pt",
-          side: TEX.config.TagSide,
-          minlabelspacing: TEX.config.TagIndent
-        }
-      });
-    },
-    
-    AlignedAMSArray: function (begin) {
-      var align = this.GetBrackets("\\begin{"+begin.name+"}");
-      return this.setArrayAlign(this.AMSarray.apply(this,arguments),align);
-    },
-
-    /*
-     *  Handle alignat environments
-     */
-    AlignAt: function (begin,numbered,taggable) {
-      var n, valign, align = "", spacing = [];
-      if (!taggable) {valign = this.GetBrackets("\\begin{"+begin.name+"}")}
-      n = this.GetArgument("\\begin{"+begin.name+"}");
-      if (n.match(/[^0-9]/)) {
-        TEX.Error(["PositiveIntegerArg","Argument to %1 must me a positive integer",
-                  "\\begin{"+begin.name+"}"]);
-      }
-      while (n > 0) {align += "rl"; spacing.push("0em 0em"); n--}
-      spacing = spacing.join(" ");
-      if (taggable) {return this.AMSarray(begin,numbered,taggable,align,spacing)}
-      var array = this.AMSarray(begin,numbered,taggable,align,spacing);
-      return this.setArrayAlign(array,valign);
-    },
-    
-    /*
-     *  Handle equation environment
-     */
-    EquationBegin: function (begin,force) {
-      this.checkEqnEnv();
-      this.stack.global.forcetag = (force && CONFIG.autoNumber !== "none");
-      return begin;
-    },
-    EquationStar: function (begin,row) {
-      this.stack.global.tagged = true; // prevent automatic tagging
-      return row;
-    },
-    
-    /*
-     *  Check for bad nesting of equation environments
-     */
-    checkEqnEnv: function () {
-      if (this.stack.global.eqnenv)
-        {TEX.Error(["ErroneousNestingEq","Erroneous nesting of equation structures"])}
-      this.stack.global.eqnenv = true;
-    },
-    
-    /*
-     *  Handle multiple integrals (make a mathop if followed by limits)
-     */
-    MultiIntegral: function (name,integral) {
-      var next = this.GetNext();
-      if (next === "\\") {
-        var i = this.i; next = this.GetArgument(name); this.i = i;
-        if (next === "\\limits") {
-          if (name === "\\idotsint") {integral = "\\!\\!\\mathop{\\,\\,"+integral+"}"}
-                           else {integral = "\\!\\!\\!\\mathop{\\,\\,\\,"+integral+"}"}
-        }
-      }
-      this.string = integral + " " + this.string.slice(this.i);
-      this.i = 0;
-    },
-    
-    /*
-     *  Handle stretchable arrows
-     */
-    xArrow: function (name,chr,l,r) {
-      var def = {width: "+"+(l+r)+"mu", lspace: l+"mu"};
-      var bot = this.GetBrackets(name),
-          top = this.ParseArg(name);
-      var arrow = MML.mo(MML.chars(String.fromCharCode(chr))).With({
-        stretchy: true, texClass: MML.TEXCLASS.REL
-      });
-      var mml = MML.munderover(arrow);
-      mml.SetData(mml.over,MML.mpadded(top).With(def).With({voffset:".15em"}));
-      if (bot) {
-        bot = TEX.Parse(bot,this.stack.env).mml()
-        mml.SetData(mml.under,MML.mpadded(bot).With(def).With({voffset:"-.24em"}));
-      }
-      this.Push(mml.With({subsupOK:true}));
-    },
-    
-    /*
-     *  Get a delimiter or empty argument
-     */
-    GetDelimiterArg: function (name) {
-      var c = this.trimSpaces(this.GetArgument(name));
-      if (c == "") return null;
-      if (c in TEXDEF.delimiter) return c;
-      TEX.Error(["MissingOrUnrecognizedDelim","Missing or unrecognized delimiter for %1",name]);
-    },
-    
-    /*
-     *  Get a star following a control sequence name, if any
-     */
-    GetStar: function () {
-      var star = (this.GetNext() === "*");
-      if (star) {this.i++}
-      return star;
-    }
-    
-  });
-  
-  /******************************************************************************/
-  
-  STACKITEM.Augment({
-    /*
-     *  Increment equation number and form tag mtd element
-     */
-    autoTag: function () {
-      var global = this.global;
-      if (!global.notag) {
-        AMS.number++; global.tagID = CONFIG.formatNumber(AMS.number.toString());
-        var mml = TEX.Parse("\\text{"+CONFIG.formatTag(global.tagID)+"}",{}).mml();
-        global.tag = MML.mtd(mml).With({id:CONFIG.formatID(global.tagID)});
-      }
-    },
-  
-    /*
-     *  Get the tag and record the label, if any
-     */
-    getTag: function () {
-      var global = this.global, tag = global.tag; global.tagged = true;
-      if (global.label) {
-        if (CONFIG.useLabelIds) {tag.id = CONFIG.formatID(global.label)}
-        AMS.eqlabels[global.label] = {tag:global.tagID, id:tag.id};        
-      }
-      //
-      //  Check for repeated ID's (either in the document or as
-      //  a previous tag) and find a unique related one. (#240)
-      //
-      if (document.getElementById(tag.id) || AMS.IDs[tag.id] || AMS.eqIDs[tag.id]) {
-        var i = 0, ID;
-        do {i++; ID = tag.id+"_"+i}
-          while (document.getElementById(ID) || AMS.IDs[ID] || AMS.eqIDs[ID]);
-        tag.id = ID; if (global.label) {AMS.eqlabels[global.label].id = ID}
-      }
-      AMS.eqIDs[tag.id] = 1;
-      this.clearTag();
-      return tag;
-    },
-    clearTag: function () {
-      var global = this.global;
-      delete global.tag; delete global.tagID; delete global.label;
-    },
-
-    /*
-     *  If the initial child, skipping any initial space or
-     *  empty braces (TeXAtom with child being an empty inferred row),
-     *  is an <mo>, preceed it by an empty <mi> to force the <mo> to
-     *  be infix.
-     */
-    fixInitialMO: function (data) {
-      for (var i = 0, m = data.length; i < m; i++) {
-        if (data[i] && (data[i].type !== "mspace" &&
-           (data[i].type !== "texatom" || (data[i].data[0] && data[i].data[0].data.length)))) {
-          if (data[i].isEmbellished()) data.unshift(MML.mi());
-          break;
-        }
-      }
-    }
-  });
-  
-  /*
-   *  Implement multline environment via a STACKITEM
-   */
-  STACKITEM.multline = STACKITEM.array.Subclass({
-    type: "multline",
-    Init: function (numbered,stack) {
-      this.SUPER(arguments).Init.apply(this);
-      this.numbered = (numbered && CONFIG.autoNumber !== "none");
-      this.save = {notag: stack.global.notag};
-      stack.global.tagged = !numbered && !stack.global.forcetag; // prevent automatic tagging in starred environments
-    },
-    EndEntry: function () {
-      if (this.table.length) {this.fixInitialMO(this.data)}
-      var mtd = MML.mtd.apply(MML,this.data);
-      if (this.data.shove) {mtd.columnalign = this.data.shove}
-      this.row.push(mtd);
-      this.data = [];
-    },
-    EndRow: function () {
-      if (this.row.length != 1) {
-        TEX.Error(["MultlineRowsOneCol",
-                   "The rows within the %1 environment must have exactly one column",
-                   "multline"]);
-      }
-      this.table.push(this.row); this.row = [];
-    },
-    EndTable: function () {
-      this.SUPER(arguments).EndTable.call(this);
-      if (this.table.length) {
-        var m = this.table.length-1, i, label = -1;
-        if (!this.table[0][0].columnalign) {this.table[0][0].columnalign = MML.ALIGN.LEFT}
-        if (!this.table[m][0].columnalign) {this.table[m][0].columnalign = MML.ALIGN.RIGHT}
-        if (!this.global.tag && this.numbered) {this.autoTag()}
-        if (this.global.tag && !this.global.notags) {
-          label = (this.arraydef.side === "left" ? 0 : this.table.length - 1);
-          this.table[label] = [this.getTag()].concat(this.table[label]);
-        }
-        for (i = 0, m = this.table.length; i < m; i++) {
-          var mtr = (i === label ? MML.mlabeledtr : MML.mtr);
-          this.table[i] = mtr.apply(MML,this.table[i]);
-        }
-      }
-      this.global.notag  = this.save.notag;
-    }
-  });
-  
-  /*
-   *  Save data about numbering and taging equations, and add
-   *  tags at the ends of rows.
-   */
-  STACKITEM.AMSarray = STACKITEM.array.Subclass({
-    type: "AMSarray",
-    Init: function (name,numbered,taggable,stack) {
-      this.SUPER(arguments).Init.apply(this);
-      this.numbered = (numbered && CONFIG.autoNumber !== "none");
-      this.save = {notags: stack.global.notags, notag: stack.global.notag};
-      stack.global.notags = (taggable ? null : name);
-      stack.global.tagged = !numbered && !stack.global.forcetag; // prevent automatic tagging in starred environments
-    },
-    EndEntry: function () {
-      if (this.row.length) {this.fixInitialMO(this.data)}
-      this.row.push(MML.mtd.apply(MML,this.data));
-      this.data = [];
-    },
-    EndRow: function () {
-      var mtr = MML.mtr;
-      if (!this.global.tag && this.numbered) {this.autoTag()}
-      if (this.global.tag && !this.global.notags) {
-        this.row = [this.getTag()].concat(this.row);
-        mtr = MML.mlabeledtr;
-      } else {this.clearTag()}
-      if (this.numbered) {delete this.global.notag}
-      this.table.push(mtr.apply(MML,this.row)); this.row = [];
-    },
-    EndTable: function () {
-      this.SUPER(arguments).EndTable.call(this);
-      this.global.notags = this.save.notags;
-      this.global.notag  = this.save.notag;
-    }
-  });
-  
-  //
-  //  Look for \tag on a formula and make an mtable to include it
-  //
-  STACKITEM.start.Augment({
-    oldCheckItem: STACKITEM.start.prototype.checkItem,
-    checkItem: function (item) {
-      if (item.type === "stop") {
-        var mml = this.mmlData(), global = this.global;
-        if (AMS.display && !global.tag && !global.tagged && !global.isInner &&
-            (CONFIG.autoNumber === "all" || global.forcetag)) {this.autoTag()}
-        if (global.tag) {
-          var row = [this.getTag(),MML.mtd(mml)];
-          var def = {
-            side: TEX.config.TagSide,
-            minlabelspacing: TEX.config.TagIndent,
-            displaystyle: "inherit"   // replaced by TeX input jax Translate() function with actual value
-          };
-          mml = MML.mtable(MML.mlabeledtr.apply(MML,row)).With(def);
-        }
-        return STACKITEM.mml(mml);
-      }
-      return this.oldCheckItem.call(this,item);
-    }
-  });
-  
-  /******************************************************************************/
-
-  /*
-   *  Add pre- and post-filters to handle the equation number maintainance.
-   */
-  TEX.prefilterHooks.Add(function (data) {
-    AMS.display = data.display;
-    AMS.number = AMS.startNumber;  // reset equation numbers (in case the equation restarted)
-    AMS.eqlabels = {};
-    AMS.eqIDs = {}; 
-    AMS.badref = false;
-    if (AMS.refUpdate) {AMS.number = data.script.MathJax.startNumber}
-  });
-  TEX.postfilterHooks.Add(function (data) {
-    data.script.MathJax.startNumber = AMS.startNumber;
-    AMS.startNumber = AMS.number;                // equation numbers for next equation
-    MathJax.Hub.Insert(AMS.IDs,AMS.eqIDs);       // save IDs from this equation
-    MathJax.Hub.Insert(AMS.labels,AMS.eqlabels); // save labels from this equation
-    if (AMS.badref && !data.math.texError) {AMS.refs.push(data.script)}  // reprocess later
-  },100);
-  
-  MathJax.Hub.Register.MessageHook("Begin Math Input",function () {
-    AMS.refs = [];                 // array of jax with bad references
-    AMS.refUpdate = false;
-  });
-  MathJax.Hub.Register.MessageHook("End Math Input",function (message) {
-    if (AMS.refs.length) {
-      AMS.refUpdate = true;
-      for (var i = 0, m = AMS.refs.length; i < m; i++)
-        {AMS.refs[i].MathJax.state = MathJax.ElementJax.STATE.UPDATE}
-      return MathJax.Hub.processInput({
-        scripts:AMS.refs,
-        start: new Date().getTime(),
-        i:0, j:0, jax:{}, jaxIDs:[]
-      });
-    }
-    return null;
-  });
-  
-  //
-  //  Clear the equation numbers and labels
-  //
-  TEX.resetEquationNumbers = function (n,keepLabels) {
-    AMS.startNumber = (n || 0);
-    if (!keepLabels) {
-      AMS.labels = {};
-      AMS.IDs = {};
-    }
-  }
-
-  /******************************************************************************/
-
-  MathJax.Hub.Startup.signal.Post("TeX AMSmath Ready");
-  
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/AMSmath.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/AMSsymbols.js
- *  
- *  Implements macros for accessing the AMS symbol fonts.
- *  
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2009-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/AMSsymbols"] = {
-  version: "2.7.1"
-};
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  var MML = MathJax.ElementJax.mml,
-      TEXDEF = MathJax.InputJax.TeX.Definitions;
-  
-  TEXDEF.Add({
-
-    mathchar0mi: {
-      // Lowercase Greek letters
-      digamma:                '03DD',
-      varkappa:               '03F0',
-      
-      // Uppercase Greek letters
-      varGamma:               ['0393',{mathvariant: MML.VARIANT.ITALIC}],
-      varDelta:               ['0394',{mathvariant: MML.VARIANT.ITALIC}],
-      varTheta:               ['0398',{mathvariant: MML.VARIANT.ITALIC}],
-      varLambda:              ['039B',{mathvariant: MML.VARIANT.ITALIC}],
-      varXi:                  ['039E',{mathvariant: MML.VARIANT.ITALIC}],
-      varPi:                  ['03A0',{mathvariant: MML.VARIANT.ITALIC}],
-      varSigma:               ['03A3',{mathvariant: MML.VARIANT.ITALIC}],
-      varUpsilon:             ['03A5',{mathvariant: MML.VARIANT.ITALIC}],
-      varPhi:                 ['03A6',{mathvariant: MML.VARIANT.ITALIC}],
-      varPsi:                 ['03A8',{mathvariant: MML.VARIANT.ITALIC}],
-      varOmega:               ['03A9',{mathvariant: MML.VARIANT.ITALIC}],
-
-      // Hebrew letters
-      beth:                   '2136',
-      gimel:                  '2137',
-      daleth:                 '2138',
-
-      // Miscellaneous symbols
-//    hbar:                   '0127',  // in TeX/jax.js
-      backprime:              ['2035',{variantForm: true}],
-      hslash:                 '210F',
-      varnothing:             ['2205',{variantForm: true}],
-      blacktriangle:          '25B4',
-      triangledown:           ['25BD',{variantForm: true}],
-      blacktriangledown:      '25BE',
-      square:                 '25FB',
-      Box:                    '25FB',
-      blacksquare:            '25FC',
-      lozenge:                '25CA',
-      Diamond:                '25CA',
-      blacklozenge:           '29EB',
-      circledS:               ['24C8',{mathvariant: MML.VARIANT.NORMAL}],
-      bigstar:                '2605',
-//    angle:                  '2220',  // in TeX/jax.js
-      sphericalangle:         '2222',
-      measuredangle:          '2221',
-      nexists:                '2204',
-      complement:             '2201',
-      mho:                    '2127',
-      eth:                    ['00F0',{mathvariant: MML.VARIANT.NORMAL}],
-      Finv:                   '2132',
-      diagup:                 '2571',
-      Game:                   '2141',
-      diagdown:               '2572',
-      Bbbk:                   ['006B',{mathvariant: MML.VARIANT.DOUBLESTRUCK}],
-      
-      yen:                    '00A5',
-      circledR:               '00AE',
-      checkmark:              '2713',
-      maltese:                '2720'
-    },
-
-    mathchar0mo: {
-      // Binary operators
-      dotplus:                '2214',
-      ltimes:                 '22C9',
-      smallsetminus:          '2216',
-      rtimes:                 '22CA',
-      Cap:                    '22D2',
-      doublecap:              '22D2',
-      leftthreetimes:         '22CB',
-      Cup:                    '22D3',
-      doublecup:              '22D3',
-      rightthreetimes:        '22CC',
-      barwedge:               '22BC',
-      curlywedge:             '22CF',
-      veebar:                 '22BB',
-      curlyvee:               '22CE',
-      doublebarwedge:         '2A5E',
-      boxminus:               '229F',
-      circleddash:            '229D',
-      boxtimes:               '22A0',
-      circledast:             '229B',
-      boxdot:                 '22A1',
-      circledcirc:            '229A',
-      boxplus:                '229E',
-      centerdot:              ['22C5',{variantForm: true}],
-      divideontimes:          '22C7',
-      intercal:               '22BA',
-
-      // Binary relations
-      leqq:                   '2266',
-      geqq:                   '2267',
-      leqslant:               '2A7D',
-      geqslant:               '2A7E',
-      eqslantless:            '2A95',
-      eqslantgtr:             '2A96',
-      lesssim:                '2272',
-      gtrsim:                 '2273',
-      lessapprox:             '2A85',
-      gtrapprox:              '2A86',
-      approxeq:               '224A',
-      lessdot:                '22D6',
-      gtrdot:                 '22D7',
-      lll:                    '22D8',
-      llless:                 '22D8',
-      ggg:                    '22D9',
-      gggtr:                  '22D9',
-      lessgtr:                '2276',
-      gtrless:                '2277',
-      lesseqgtr:              '22DA',
-      gtreqless:              '22DB',
-      lesseqqgtr:             '2A8B',
-      gtreqqless:             '2A8C',
-      doteqdot:               '2251',
-      Doteq:                  '2251',
-      eqcirc:                 '2256',
-      risingdotseq:           '2253',
-      circeq:                 '2257',
-      fallingdotseq:          '2252',
-      triangleq:              '225C',
-      backsim:                '223D',
-      thicksim:               ['223C',{variantForm: true}],
-      backsimeq:              '22CD',
-      thickapprox:            ['2248',{variantForm: true}],
-      subseteqq:              '2AC5',
-      supseteqq:              '2AC6',
-      Subset:                 '22D0',
-      Supset:                 '22D1',
-      sqsubset:               '228F',
-      sqsupset:               '2290',
-      preccurlyeq:            '227C',
-      succcurlyeq:            '227D',
-      curlyeqprec:            '22DE',
-      curlyeqsucc:            '22DF',
-      precsim:                '227E',
-      succsim:                '227F',
-      precapprox:             '2AB7',
-      succapprox:             '2AB8',
-      vartriangleleft:        '22B2',
-      lhd:                    '22B2',
-      vartriangleright:       '22B3',
-      rhd:                    '22B3',
-      trianglelefteq:         '22B4',
-      unlhd:                  '22B4',
-      trianglerighteq:        '22B5',
-      unrhd:                  '22B5',
-      vDash:                  '22A8',
-      Vdash:                  '22A9',
-      Vvdash:                 '22AA',
-      smallsmile:             ['2323',{variantForm: true}],
-      shortmid:               ['2223',{variantForm: true}],
-      smallfrown:             ['2322',{variantForm: true}],
-      shortparallel:          ['2225',{variantForm: true}],
-      bumpeq:                 '224F',
-      between:                '226C',
-      Bumpeq:                 '224E',
-      pitchfork:              '22D4',
-      varpropto:              '221D',
-      backepsilon:            '220D',
-      blacktriangleleft:      '25C2',
-      blacktriangleright:     '25B8',
-      therefore:              '2234',
-      because:                '2235',
-      eqsim:                  '2242',
-      vartriangle:            ['25B3',{variantForm: true}],
-      Join:                   '22C8',
-
-      // Negated relations
-      nless:                  '226E',
-      ngtr:                   '226F',
-      nleq:                   '2270',
-      ngeq:                   '2271',
-      nleqslant:              ['2A87',{variantForm: true}],
-      ngeqslant:              ['2A88',{variantForm: true}],
-      nleqq:                  ['2270',{variantForm: true}],
-      ngeqq:                  ['2271',{variantForm: true}],
-      lneq:                   '2A87',
-      gneq:                   '2A88',
-      lneqq:                  '2268',
-      gneqq:                  '2269',
-      lvertneqq:              ['2268',{variantForm: true}],
-      gvertneqq:              ['2269',{variantForm: true}],
-      lnsim:                  '22E6',
-      gnsim:                  '22E7',
-      lnapprox:               '2A89',
-      gnapprox:               '2A8A',
-      nprec:                  '2280',
-      nsucc:                  '2281',
-      npreceq:                ['22E0',{variantForm: true}],
-      nsucceq:                ['22E1',{variantForm: true}],
-      precneqq:               '2AB5',
-      succneqq:               '2AB6',
-      precnsim:               '22E8',
-      succnsim:               '22E9',
-      precnapprox:            '2AB9',
-      succnapprox:            '2ABA',
-      nsim:                   '2241',
-      ncong:                  '2246',
-      nshortmid:              ['2224',{variantForm: true}],
-      nshortparallel:         ['2226',{variantForm: true}],
-      nmid:                   '2224',
-      nparallel:              '2226',
-      nvdash:                 '22AC',
-      nvDash:                 '22AD',
-      nVdash:                 '22AE',
-      nVDash:                 '22AF',
-      ntriangleleft:          '22EA',
-      ntriangleright:         '22EB',
-      ntrianglelefteq:        '22EC',
-      ntrianglerighteq:       '22ED',
-      nsubseteq:              '2288',
-      nsupseteq:              '2289',
-      nsubseteqq:             ['2288',{variantForm: true}],
-      nsupseteqq:             ['2289',{variantForm: true}],
-      subsetneq:              '228A',
-      supsetneq:              '228B',
-      varsubsetneq:           ['228A',{variantForm: true}],
-      varsupsetneq:           ['228B',{variantForm: true}],
-      subsetneqq:             '2ACB',
-      supsetneqq:             '2ACC',
-      varsubsetneqq:          ['2ACB',{variantForm: true}],
-      varsupsetneqq:          ['2ACC',{variantForm: true}],
-
-
-      // Arrows
-      leftleftarrows:         '21C7',
-      rightrightarrows:       '21C9',
-      leftrightarrows:        '21C6',
-      rightleftarrows:        '21C4',
-      Lleftarrow:             '21DA',
-      Rrightarrow:            '21DB',
-      twoheadleftarrow:       '219E',
-      twoheadrightarrow:      '21A0',
-      leftarrowtail:          '21A2',
-      rightarrowtail:         '21A3',
-      looparrowleft:          '21AB',
-      looparrowright:         '21AC',
-      leftrightharpoons:      '21CB',
-      rightleftharpoons:      ['21CC',{variantForm: true}],
-      curvearrowleft:         '21B6',
-      curvearrowright:        '21B7',
-      circlearrowleft:        '21BA',
-      circlearrowright:       '21BB',
-      Lsh:                    '21B0',
-      Rsh:                    '21B1',
-      upuparrows:             '21C8',
-      downdownarrows:         '21CA',
-      upharpoonleft:          '21BF',
-      upharpoonright:         '21BE',
-      downharpoonleft:        '21C3',
-      restriction:            '21BE',
-      multimap:               '22B8',
-      downharpoonright:       '21C2',
-      leftrightsquigarrow:    '21AD',
-      rightsquigarrow:        '21DD',
-      leadsto:                '21DD',
-      dashrightarrow:         '21E2',
-      dashleftarrow:          '21E0',
-
-      // Negated arrows
-      nleftarrow:             '219A',
-      nrightarrow:            '219B',
-      nLeftarrow:             '21CD',
-      nRightarrow:            '21CF',
-      nleftrightarrow:        '21AE',
-      nLeftrightarrow:        '21CE'
-    },
-    
-    delimiter: {
-      // corners
-      "\\ulcorner":           '231C',
-      "\\urcorner":           '231D',
-      "\\llcorner":           '231E',
-      "\\lrcorner":           '231F'
-    },
-    
-    macros: {
-      implies:    ['Macro','\\;\\Longrightarrow\\;'],
-      impliedby:  ['Macro','\\;\\Longleftarrow\\;']
-    }
-    
-  },null,true);
-  
-  var REL = MML.mo.OPTYPES.REL;
-
-  MathJax.Hub.Insert(MML.mo.prototype,{
-    OPTABLE: {
-      infix: {
-        '\u2322': REL,  // smallfrown
-        '\u2323': REL,  // smallsmile
-        '\u25B3': REL,  // vartriangle
-        '\uE006': REL,  // nshortmid
-        '\uE007': REL,  // nshortparallel
-        '\uE00C': REL,  // lvertneqq
-        '\uE00D': REL,  // gvertneqq
-        '\uE00E': REL,  // ngeqq
-        '\uE00F': REL,  // ngeqslant
-        '\uE010': REL,  // nleqslant
-        '\uE011': REL,  // nleqq
-        '\uE016': REL,  // nsubseteqq
-        '\uE017': REL,  // varsubsetneqq
-        '\uE018': REL,  // nsupseteqq
-        '\uE019': REL,  // varsupsetneqq
-        '\uE01A': REL,  // varsubsetneq
-        '\uE01B': REL,  // varsupsetneq
-        '\uE04B': REL,  // npreceq
-        '\uE04F': REL   // nsucceq
-      }
-    }
-  });
-
-  MathJax.Hub.Startup.signal.Post("TeX AMSsymbols Ready");
-
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/AMSsymbols.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/HTML.js
- *  
- *  Implements the \href, \class, \style, \cssId macros.
  *
  *  ---------------------------------------------------------------------
  *  
@@ -18083,2214 +17633,277 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/AMSsymbols.js");
  *  limitations under the License.
  */
 
-MathJax.Extension["TeX/HTML"] = {
-  version: "2.7.1"
-};
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-
-  var TEX = MathJax.InputJax.TeX;
-  var TEXDEF = TEX.Definitions;
-  
-  TEXDEF.Add({
-    macros: {
-      href:    'HREF_attribute',
-      "class": 'CLASS_attribute',
-      style:   'STYLE_attribute',
-      cssId:   'ID_attribute'
-    }
-  },null,true);
-
-  TEX.Parse.Augment({
-
-    //
-    //  Implements \href{url}{math}
-    //
-    HREF_attribute: function (name) {
-      var url = this.GetArgument(name),
-          arg = this.GetArgumentMML(name);
-      this.Push(arg.With({href:url}));
-    },
-    
-    //
-    //  Implements \class{name}{math}
-    //
-    CLASS_attribute: function (name) {
-      var CLASS = this.GetArgument(name),
-          arg   = this.GetArgumentMML(name);
-      if (arg["class"] != null) {CLASS = arg["class"] + " " + CLASS}
-      this.Push(arg.With({"class":CLASS}));
-    },
-
-    //
-    //  Implements \style{style-string}{math}
-    //
-    STYLE_attribute: function (name) {
-      var style = this.GetArgument(name),
-          arg   = this.GetArgumentMML(name);
-      // check that it looks like a style string
-      if (arg.style != null) {
-        if (style.charAt(style.length-1) !== ";") {style += ";"}
-        style = arg.style + " " + style;
-      }
-      this.Push(arg.With({style: style}));
-    },
-
-    //
-    //  Implements \cssId{id}{math}
-    //
-    ID_attribute: function (name) {
-      var ID  = this.GetArgument(name),
-          arg = this.GetArgumentMML(name);
-      this.Push(arg.With({id:ID}));
-    },
-
-    //
-    //  returns an argument that is a single MathML element
-    //  (in an mrow if necessary)
-    //
-    GetArgumentMML: function (name) {
-      var arg = this.ParseArg(name);
-      if (arg.inferred && arg.data.length == 1)
-        {arg = arg.data[0]} else {delete arg.inferred}
-      return arg;
-    }
-
-  });
-  
-  MathJax.Hub.Startup.signal.Post("TeX HTML Ready");
-  
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/HTML.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/action.js
- *  
- *  Implements the \mathtip, \texttip, and \toggle macros, which give
- *  access from TeX to the <maction> tag in the MathML that underlies
- *  MathJax's internal format.
- *  
- *  Usage:
- *  
- *      \mathtip{math}{tip}        % use "tip" (in math mode) as tooltip for "math"
- *      \texttip{math}{tip}        % use "tip" (in text mode) as tooltip for "math"
- *      \toggle{math1}{math2}...\endtoggle
- *                                 % show math1, and when clicked, show math2, and so on.
- *                                 %   When the last one is clicked, go back to math1.   
- *  
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2011-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/action"] = {
-  version: "2.7.1"
-};
-  
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  var TEX = MathJax.InputJax.TeX,
-      MML = MathJax.ElementJax.mml;
-  
-  //
-  //  Set up control sequenecs
-  //
-  TEX.Definitions.Add({
-    macros: {
-      toggle:  'Toggle',
-      mathtip: 'Mathtip',
-      texttip: ['Macro','\\mathtip{#1}{\\text{#2}}',2]
-    }
-  },null,true);
-
-  TEX.Parse.Augment({
-
-    //
-    //  Implement \toggle {math1} {math2} ... \endtoggle
-    //    (as an <maction actiontype="toggle">)
-    //
-    Toggle: function (name) {
-      var data = [], arg;
-      while ((arg = this.GetArgument(name)) !== "\\endtoggle")
-        {data.push(TEX.Parse(arg,this.stack.env).mml())}
-      this.Push(MML.maction.apply(MML,data).With({actiontype: MML.ACTIONTYPE.TOGGLE}));
-    },
-
-    //
-    //  Implement \mathtip{math}{tip}
-    //    (an an <maction actiontype="tooltip">)
-    //
-    Mathtip: function(name) {
-      var arg = this.ParseArg(name), tip = this.ParseArg(name);
-      this.Push(MML.maction(arg,tip).With({actiontype: MML.ACTIONTYPE.TOOLTIP}));
-    }
-  });
-
-  MathJax.Hub.Startup.signal.Post("TeX action Ready");
-  
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/action.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/autobold.js
- *  
- *  Adds \boldsymbol around mathematics that appears in a section
- *  of an HTML page that is in bold.
- *  
- *  ---------------------------------------------------------------------
- * 
- *  Copyright (c) 2009-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/autobold"] = {
-  version: "2.7.1"
-};
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  var TEX = MathJax.InputJax.TeX;
-  
-  TEX.prefilterHooks.Add(function (data) {
-    var span = data.script.parentNode.insertBefore(document.createElement("span"),data.script);
-    span.visibility = "hidden";
-    span.style.fontFamily = "Times, serif";
-    span.appendChild(document.createTextNode("ABCXYZabcxyz"));
-    var W = span.offsetWidth;
-    span.style.fontWeight = "bold";
-    if (W && span.offsetWidth === W) {data.math = "\\boldsymbol{"+data.math+"}"}
-    span.parentNode.removeChild(span);
-  });
-  
-  MathJax.Hub.Startup.signal.Post("TeX autobold Ready");
-
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/autobold.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/bbox.js
- *  
- *  This file implements the \bbox macro, which creates an box that
- *  can be styled (for background colors, and so on).  You can include
- *  an optional dimension that tells how much extra padding to include
- *  around the bounding box for the mathematics, or a color specification 
- *  for the background color to use, or both.  E.g.,
- *  
- *    \bbox[2pt]{x+y}        %  an invisible box around x+y with 2pt of extra space
- *    \bbox[green]{x+y}      %  a green box around x+y
- *    \bbox[green,2pt]{x+y}  %  a green box with 2pt of extra space
- *
- *  You can also specify style attributes, for example
- *  
- *    \bbox[red,border:3px solid blue,5px]{x+y}
- *  
- *  would give a red background with a 3px solid blue border that has 5px
- *  of padding between the border and the mathematics.  Note that not all
- *  output formats support the style specifications.  In particular, the
- *  NativeMML output depends on the browser to render the attributes, and
- *  not all MathML renderers will honor them (e.g., MathPlayer2 doesn't
- *  render border styles).
- *  
- *  This file will be loaded automatically when \bbox is first used.
- *
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2011-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/bbox"] = {
-  version: "2.7.1"
-};
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-
-  var TEX = MathJax.InputJax.TeX,
-      MML = MathJax.ElementJax.mml;
-
-  TEX.Definitions.Add({macros: {bbox: "BBox"}},null,true);
-  
-  TEX.Parse.Augment({
-    BBox: function (name) {
-      var bbox = this.GetBrackets(name,""),
-          math = this.ParseArg(name);
-      var parts = bbox.split(/,/), def, background, style;
-      for (var i = 0, m = parts.length; i < m; i++) {
-        var part = parts[i].replace(/^\s+/,'').replace(/\s+$/,'');
-        var match = part.match(/^(\.\d+|\d+(\.\d*)?)(pt|em|ex|mu|px|in|cm|mm)$/);
-        if (match) {
-          if (def)
-            {TEX.Error(["MultipleBBoxProperty","%1 specified twice in %2","Padding",name])}
-          var pad = this.BBoxPadding(match[1]+match[3]);
-          if (pad) def = {height:"+"+pad, depth:"+"+pad, lspace:pad, width:"+"+(2*match[1])+match[3]};
-        } else if (part.match(/^([a-z0-9]+|\#[0-9a-f]{6}|\#[0-9a-f]{3})$/i)) {
-          if (background)
-            {TEX.Error(["MultipleBBoxProperty","%1 specified twice in %2","Background",name])}
-          background = part;
-        } else if (part.match(/^[-a-z]+:/i)) {
-          if (style)
-            {TEX.Error(["MultipleBBoxProperty","%1 specified twice in %2", "Style",name])}
-          style = this.BBoxStyle(part);
-        } else if (part !== "") {
-          TEX.Error(
-            ["InvalidBBoxProperty",
-            "'%1' doesn't look like a color, a padding dimension, or a style",
-            part]
-          );
-        }
-      }
-      if (def) {math = MML.mpadded(math).With(def)}
-      if (background || style) {
-        math = MML.mstyle(math).With({mathbackground:background, style:style});
-      }
-      this.Push(math);
-    },
-    BBoxStyle: function (styles) {return styles},
-    BBoxPadding: function (pad) {return pad}
-  });
-
-  MathJax.Hub.Startup.signal.Post("TeX bbox Ready");
-
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/bbox.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/boldsymbol.js
- *  
- *  Implements the \boldsymbol{...} command to make bold
- *  versions of all math characters (not just variables).
- *
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2009-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/boldsymbol"] = {
-  version: "2.7.1"
-};
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  
-  var MML = MathJax.ElementJax.mml;
-  var TEX = MathJax.InputJax.TeX;
-  var TEXDEF = TEX.Definitions;
-  
-  var BOLDVARIANT = {};
-  BOLDVARIANT[MML.VARIANT.NORMAL]    = MML.VARIANT.BOLD;
-  BOLDVARIANT[MML.VARIANT.ITALIC]    = MML.VARIANT.BOLDITALIC;
-  BOLDVARIANT[MML.VARIANT.FRAKTUR]   = MML.VARIANT.BOLDFRAKTUR;
-  BOLDVARIANT[MML.VARIANT.SCRIPT]    = MML.VARIANT.BOLDSCRIPT;
-  BOLDVARIANT[MML.VARIANT.SANSSERIF] = MML.VARIANT.BOLDSANSSERIF;
-  BOLDVARIANT["-tex-caligraphic"]    = "-tex-caligraphic-bold";
-  BOLDVARIANT["-tex-oldstyle"]       = "-tex-oldstyle-bold";
-  
-  TEXDEF.Add({macros: {boldsymbol: 'Boldsymbol'}},null,true);
-  
-  TEX.Parse.Augment({
-    mmlToken: function (token) {
-      if (this.stack.env.boldsymbol) {
-        var variant = token.Get("mathvariant");
-        if (variant == null) {token.mathvariant = MML.VARIANT.BOLD}
-        else {token.mathvariant = (BOLDVARIANT[variant]||variant)}
-      }
-      return token;
-    },
-    
-    Boldsymbol: function (name) {
-      var boldsymbol = this.stack.env.boldsymbol,
-          font = this.stack.env.font;
-      this.stack.env.boldsymbol = true;
-      this.stack.env.font = null;
-      var mml = this.ParseArg(name);
-      this.stack.env.font = font;
-      this.stack.env.boldsymbol = boldsymbol;
-      this.Push(mml);
-    }
-  });
-  
-  MathJax.Hub.Startup.signal.Post("TeX boldsymbol Ready");
-
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/boldsymbol.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/cancel.js
- *  
- *  Implements the \cancel, \bcancel, \xcancel, and \cancelto macros.
- *  
- *  Usage:
- *  
- *      \cancel{math}            % strikeout math from lower left to upper right
- *      \bcancel{math}           % strikeout from upper left to lower right
- *      \xcancel{math}           % strikeout with an X
- *      \cancelto{value}{math}   % strikeout with arrow going to value
- *  
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2011-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/cancel"] = {
+MathJax.Extension.mml2jax = {
   version: "2.7.1",
+  config: {
+    preview: "mathml"       // Use the <math> element as the
+                            //   preview.  Set to "none" for no preview,
+                            //   set to "alttext" to use the alttext attribute
+                            //   of the <math> element, set to "altimg" to use
+                            //   an image described by the altimg* attributes
+                            //   or set to an array specifying an HTML snippet
+                            //   to use a fixed preview for all math
 
-  //
-  //  The attributes allowed in \enclose{notation}[attributes]{math}
-  //
-  ALLOWED: {
-    color: 1, mathcolor: 1,
-    background: 1, mathbackground: 1,
-    padding: 1,
-    thickness: 1
-  }
-};
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  var TEX = MathJax.InputJax.TeX,
-      MML = MathJax.ElementJax.mml,
-      CANCEL = MathJax.Extension["TeX/cancel"];
-      
-      CANCEL.setAttributes = function (def,attr) {
-        if (attr !== "") {
-          attr = attr.replace(/ /g,"").split(/,/);
-          for (var i = 0, m = attr.length; i < m; i++) {
-            var keyvalue = attr[i].split(/[:=]/);
-            if (CANCEL.ALLOWED[keyvalue[0]]) {
-              if (keyvalue[1] === "true") {keyvalue[1] = true}
-              if (keyvalue[1] === "false") {keyvalue[1] = false}
-              def[keyvalue[0]] = keyvalue[1];
-            }
-          }
-        }
-        return def;
-      };
-  
-  //
-  //  Set up macros
-  //
-  TEX.Definitions.Add({
-    macros: {
-      cancel:   ['Cancel',MML.NOTATION.UPDIAGONALSTRIKE],
-      bcancel:  ['Cancel',MML.NOTATION.DOWNDIAGONALSTRIKE],
-      xcancel:  ['Cancel',MML.NOTATION.UPDIAGONALSTRIKE+" "+MML.NOTATION.DOWNDIAGONALSTRIKE],
-      cancelto: 'CancelTo'
-    }
-  },null,true);
-
-  TEX.Parse.Augment({
-    //
-    //  Implement \cancel[attributes]{math},
-    //            \bcancel[attributes]{math}, and
-    //            \xcancel[attributes]{math}
-    //
-    Cancel: function(name,notation) {
-      var attr = this.GetBrackets(name,""), math = this.ParseArg(name);
-      var def = CANCEL.setAttributes({notation: notation},attr);
-      this.Push(MML.menclose(math).With(def));
-    },
-    
-    //
-    //  Implement \cancelto{value}[attributes]{math}
-    //
-    CancelTo: function(name,notation) {
-      var value = this.ParseArg(name),
-          attr = this.GetBrackets(name,""),
-          math = this.ParseArg(name);
-      var def = CANCEL.setAttributes({notation: MML.NOTATION.UPDIAGONALSTRIKE+" "+MML.NOTATION.UPDIAGONALARROW},attr);
-      value = MML.mpadded(value).With({depth:"-.1em",height:"+.1em",voffset:".1em"});
-      this.Push(MML.msup(MML.menclose(math).With(def),value));
-    }
-
-  });
-
-  MathJax.Hub.Startup.signal.Post("TeX cancel Ready");
-  
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/cancel.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/color.js
- *  
- *  Implements LaTeX-compatible \color macro rather than MathJax's original
- *  (non-standard) version.  It includes the rgb, RGB, gray, and named color
- *  models, and the \textcolor, \definecolor, \colorbox, and \fcolorbox
- *  macros.
- *  
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2011-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-//
-//  The configuration defaults, augmented by the user settings
-//  
-MathJax.Extension["TeX/color"] = {
-  version: "2.7.1",
-
-  config: MathJax.Hub.CombineConfig("TeX.color",{
-    padding: "5px",
-    border: "2px"
-  }),
-
-  colors: {
-    Apricot:        "#FBB982",
-    Aquamarine:     "#00B5BE",
-    Bittersweet:    "#C04F17",
-    Black:          "#221E1F",
-    Blue:           "#2D2F92",
-    BlueGreen:      "#00B3B8",
-    BlueViolet:     "#473992",
-    BrickRed:       "#B6321C",
-    Brown:          "#792500",
-    BurntOrange:    "#F7921D",
-    CadetBlue:      "#74729A",
-    CarnationPink:  "#F282B4",
-    Cerulean:       "#00A2E3",
-    CornflowerBlue: "#41B0E4",
-    Cyan:           "#00AEEF",
-    Dandelion:      "#FDBC42",
-    DarkOrchid:     "#A4538A",
-    Emerald:        "#00A99D",
-    ForestGreen:    "#009B55",
-    Fuchsia:        "#8C368C",
-    Goldenrod:      "#FFDF42",
-    Gray:           "#949698",
-    Green:          "#00A64F",
-    GreenYellow:    "#DFE674",
-    JungleGreen:    "#00A99A",
-    Lavender:       "#F49EC4",
-    LimeGreen:      "#8DC73E",
-    Magenta:        "#EC008C",
-    Mahogany:       "#A9341F",
-    Maroon:         "#AF3235",
-    Melon:          "#F89E7B",
-    MidnightBlue:   "#006795",
-    Mulberry:       "#A93C93",
-    NavyBlue:       "#006EB8",
-    OliveGreen:     "#3C8031",
-    Orange:         "#F58137",
-    OrangeRed:      "#ED135A",
-    Orchid:         "#AF72B0",
-    Peach:          "#F7965A",
-    Periwinkle:     "#7977B8",
-    PineGreen:      "#008B72",
-    Plum:           "#92268F",
-    ProcessBlue:    "#00B0F0",
-    Purple:         "#99479B",
-    RawSienna:      "#974006",
-    Red:            "#ED1B23",
-    RedOrange:      "#F26035",
-    RedViolet:      "#A1246B",
-    Rhodamine:      "#EF559F",
-    RoyalBlue:      "#0071BC",
-    RoyalPurple:    "#613F99",
-    RubineRed:      "#ED017D",
-    Salmon:         "#F69289",
-    SeaGreen:       "#3FBC9D",
-    Sepia:          "#671800",
-    SkyBlue:        "#46C5DD",
-    SpringGreen:    "#C6DC67",
-    Tan:            "#DA9D76",
-    TealBlue:       "#00AEB3",
-    Thistle:        "#D883B7",
-    Turquoise:      "#00B4CE",
-    Violet:         "#58429B",
-    VioletRed:      "#EF58A0",
-    White:          "#FFFFFF",
-    WildStrawberry: "#EE2967",
-    Yellow:         "#FFF200",
-    YellowGreen:    "#98CC70",
-    YellowOrange:   "#FAA21A"
   },
-
-  /*
-   *  Look up a color based on its model and definition
-   */
-  getColor: function (model,def) {
-    if (!model) {model = "named"}
-    var fn = this["get_"+model];
-    if (!fn) {this.TEX.Error(["UndefinedColorModel","Color model '%1' not defined",model])}
-    return fn.call(this,def);
-  },
+  MMLnamespace: "http://www.w3.org/1998/Math/MathML",
   
-  /*
-   *  Get an rgb color
-   */
-  get_rgb: function (rgb) {
-    rgb = rgb.replace(/^\s+/,"").replace(/\s+$/,"").split(/\s*,\s*/); var RGB = "#";
-    if (rgb.length !== 3)
-      {this.TEX.Error(["ModelArg1","Color values for the %1 model require 3 numbers","rgb"])}
-    for (var i = 0; i < 3; i++) {
-      if (!rgb[i].match(/^(\d+(\.\d*)?|\.\d+)$/))
-        {this.TEX.Error(["InvalidDecimalNumber","Invalid decimal number"])}
-      var n = parseFloat(rgb[i]);
-      if (n < 0 || n > 1) {
-        this.TEX.Error(["ModelArg2",
-                        "Color values for the %1 model must be between %2 and %3",
-                        "rgb",0,1]);
-      }
-      n = Math.floor(n*255).toString(16); if (n.length < 2) {n = "0"+n}
-      RGB += n;
+  PreProcess: function (element) {
+    if (!this.configured) {
+      this.config = MathJax.Hub.CombineConfig("mml2jax",this.config);
+      if (this.config.Augment) {MathJax.Hub.Insert(this,this.config.Augment)}
+      this.InitBrowser();
+      this.configured = true;
     }
-    return RGB;
-  },
-  
-  /*
-   *  Get an RGB color
-   */
-  get_RGB: function (rgb) {
-    rgb = rgb.replace(/^\s+/,"").replace(/\s+$/,"").split(/\s*,\s*/); var RGB = "#";
-    if (rgb.length !== 3)
-      {this.TEX.Error(["ModelArg1","Color values for the %1 model require 3 numbers","RGB"])}
-    for (var i = 0; i < 3; i++) {
-      if (!rgb[i].match(/^\d+$/))
-        {this.TEX.Error(["InvalidNumber","Invalid number"])}
-      var n = parseInt(rgb[i]);
-      if (n > 255) {
-        this.TEX.Error(["ModelArg2",
-                        "Color values for the %1 model must be between %2 and %3",
-                        "RGB",0,255]);
-      }
-      n = n.toString(16); if (n.length < 2) {n = "0"+n}
-      RGB += n;
-    }
-    return RGB;
-  },
-  
-  /*
-   *  Get a gray-scale value
-   */
-  get_gray: function (gray) {
-    if (!gray.match(/^\s*(\d+(\.\d*)?|\.\d+)\s*$/))
-      {this.TEX.Error(["InvalidDecimalNumber","Invalid decimal number"])}
-    var n = parseFloat(gray);
-    if (n < 0 || n > 1) {
-      this.TEX.Error(["ModelArg2",
-                      "Color values for the %1 model must be between %2 and %3",
-                      "gray",0,1]);
-    }
-    n = Math.floor(n*255).toString(16); if (n.length < 2) {n = "0"+n}
-    return "#"+n+n+n;
-  },
-  
-  /*
-   *  Get a named value
-   */
-  get_named: function (name) {
-    if (this.colors[name]) {return this.colors[name]}
-    return name;
-  },
-  
-  padding: function () {
-    var pad = "+"+this.config.padding;
-    var unit = this.config.padding.replace(/^.*?([a-z]*)$/,"$1");
-    var pad2 = "+"+(2*parseFloat(pad))+unit;
-    return {width:pad2, height:pad, depth:pad, lspace:this.config.padding};
-  }
-
-};
-  
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  var TEX = MathJax.InputJax.TeX,
-      MML = MathJax.ElementJax.mml;
-  var STACKITEM = TEX.Stack.Item;
-  var COLOR = MathJax.Extension["TeX/color"];
-
-  COLOR.TEX = TEX; // for reference in getColor above
-
-  TEX.Definitions.Add({
-    macros: {
-      color: "Color",
-      textcolor: "TextColor",
-      definecolor: "DefineColor",
-      colorbox: "ColorBox",
-      fcolorbox: "fColorBox"
-    }
-  },null,true);
-
-  TEX.Parse.Augment({
-    
+    if (typeof(element) === "string") {element = document.getElementById(element)}
+    if (!element) {element = document.body}
+    var mathArray = [];
     //
-    //  Override \color macro definition
+    //  Handle all math tags with no namespaces
     //
-    Color: function (name) {
-      var model = this.GetBrackets(name),
-          color = this.GetArgument(name);
-      color = COLOR.getColor(model,color);
-      var mml = STACKITEM.style().With({styles:{mathcolor:color}});
-      this.stack.env.color = color;
-      this.Push(mml);
-    },
-    
-    TextColor: function (name) {
-      var model = this.GetBrackets(name),
-          color = this.GetArgument(name);
-      color = COLOR.getColor(model,color);
-      var old = this.stack.env.color; this.stack.env.color = color;
-      var math = this.ParseArg(name);
-      if (old) {this.stack.env.color} else {delete this.stack.env.color}
-      this.Push(MML.mstyle(math).With({mathcolor: color}));
-    },
-
+    this.PushMathElements(mathArray,element,"math");
     //
-    //  Define the \definecolor macro
+    //  Handle math with namespaces in XHTML
     //
-    DefineColor: function (name) {
-      var cname = this.GetArgument(name),
-          model = this.GetArgument(name),
-          def = this.GetArgument(name);
-      COLOR.colors[cname] = COLOR.getColor(model,def);
-    },
-    
+    this.PushMathElements(mathArray,element,"math",this.MMLnamespace);
     //
-    //  Produce a text box with a colored background
+    //  Handle math with namespaces in HTML
     //
-    ColorBox: function (name) {
-      var cname = this.GetArgument(name),
-          arg = this.InternalMath(this.GetArgument(name));
-      this.Push(MML.mpadded.apply(MML,arg).With({
-        mathbackground:COLOR.getColor("named",cname)
-      }).With(COLOR.padding()));
-    },
-    
-    //
-    //  Procude a framed text box with a colored background
-    //
-    fColorBox: function (name) {
-      var fname = this.GetArgument(name),
-          cname = this.GetArgument(name),
-          arg = this.InternalMath(this.GetArgument(name));
-      this.Push(MML.mpadded.apply(MML,arg).With({
-        mathbackground: COLOR.getColor("named",cname),
-        style: "border: "+COLOR.config.border+" solid "+COLOR.getColor("named",fname)
-      }).With(COLOR.padding()));
-    }
-
-  });
-
-  MathJax.Hub.Startup.signal.Post("TeX color Ready");
-
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/color.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/enclose.js
- *  
- *  Implements the \enclose macros, which give access from TeX to the
- *  <menclose> tag in the MathML that underlies MathJax's internal format.
- *  
- *  Usage:
- *  
- *      \enclose{notation}{math}                  % enclose math using given notation
- *      \enclose{notation,notation,...}{math}     % enclose with several notations
- *      \enclose{notation}[attributes]{math}      % enclose with attributes
- *  
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2011-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/enclose"] = {
-  version: "2.7.1",
-  
-  //
-  //  The attributes allowed in \enclose{notation}[attributes]{math}
-  //
-  ALLOWED: {
-    arrow: 1,
-    color: 1, mathcolor: 1,
-    background: 1, mathbackground: 1,
-    padding: 1,
-    thickness: 1
-  }
-};
-  
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  var TEX = MathJax.InputJax.TeX,
-      MML = MathJax.ElementJax.mml,
-      ALLOW = MathJax.Extension["TeX/enclose"].ALLOWED;
-  
-  //
-  //  Set up macro
-  //
-  TEX.Definitions.Add({macros: {enclose: 'Enclose'}},null,true);
-
-  TEX.Parse.Augment({
-    //
-    //  Implement \enclose{notation}[attr]{math}
-    //    (create <menclose notation="notation">math</menclose>)
-    //
-    Enclose: function(name) {
-      var notation = this.GetArgument(name),
-          attr = this.GetBrackets(name),
-          math = this.ParseArg(name);
-      var def = {notation: notation.replace(/,/g," ")};
-      if (attr) {
-        attr = attr.replace(/ /g,"").split(/,/);
-        for (var i = 0, m = attr.length; i < m; i++) {
-          var keyvalue = attr[i].split(/[:=]/);
-          if (ALLOW[keyvalue[0]]) {
-            keyvalue[1] = keyvalue[1].replace(/^"(.*)"$/,"$1");
-            if (keyvalue[1] === "true") {keyvalue[1] = true}
-            if (keyvalue[1] === "false") {keyvalue[1] = false}
-            if (keyvalue[0] === "arrow" && keyvalue[1])
-              {def.notation = def.notation + " updiagonalarrow"} else
-              {def[keyvalue[0]] = keyvalue[1]}
-          }
-        }
-      }
-      this.Push(MML.menclose(math).With(def));
-    }
-  });
-
-  MathJax.Hub.Startup.signal.Post("TeX enclose Ready");
-  
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/enclose.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/extpfeil.js
- *  
- *  Implements additional stretchy arrow macros.
- *
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2011-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/extpfeil"] = {
-  version: "2.7.1"
-};
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  
-  var TEX = MathJax.InputJax.TeX,
-      TEXDEF = TEX.Definitions;
-  
-  //
-  //  Define the arrows to load the AMSmath extension
-  //  (since they need its xArrow method)
-  // 
-  TEXDEF.Add({
-    macros: {
-      xtwoheadrightarrow: ['Extension','AMSmath'],
-      xtwoheadleftarrow:  ['Extension','AMSmath'],
-      xmapsto:            ['Extension','AMSmath'],
-      xlongequal:         ['Extension','AMSmath'],
-      xtofrom:            ['Extension','AMSmath'],
-      Newextarrow:        ['Extension','AMSmath']
-    }
-  },null,true);
-  
-  //
-  //  Redefine the macros when AMSmath is loaded
-  //
-  MathJax.Hub.Register.StartupHook("TeX AMSmath Ready",function () {
-    MathJax.Hub.Insert(TEXDEF,{
-      macros: {
-        xtwoheadrightarrow: ['xArrow',0x21A0,12,16],
-        xtwoheadleftarrow:  ['xArrow',0x219E,17,13],
-        xmapsto:            ['xArrow',0x21A6,6,7],
-        xlongequal:         ['xArrow',0x003D,7,7],
-        xtofrom:            ['xArrow',0x21C4,12,12],
-        Newextarrow:        'NewExtArrow'
-      }
-    });
-  });
-
-  //
-  //  Implements \Newextarrow to define a new arrow (not compatible with \newextarrow, but
-  //  the equivalent for MathJax)
-  //
-  TEX.Parse.Augment({
-    NewExtArrow: function (name) {
-      var cs    = this.GetArgument(name),
-          space = this.GetArgument(name),
-          chr   = this.GetArgument(name);
-      if (!cs.match(/^\\([a-z]+|.)$/i)) {
-        TEX.Error(["NewextarrowArg1",
-                   "First argument to %1 must be a control sequence name",name]);
-      }
-      if (!space.match(/^(\d+),(\d+)$/)) {
-        TEX.Error(
-          ["NewextarrowArg2",
-           "Second argument to %1 must be two integers separated by a comma",
-           name]
-        );
-      }
-      if (!chr.match(/^(\d+|0x[0-9A-F]+)$/i)) {
-        TEX.Error(
-          ["NewextarrowArg3",
-           "Third argument to %1 must be a unicode character number",
-           name]
-        );
-      }
-      cs = cs.substr(1); space = space.split(","); chr = parseInt(chr);
-      TEXDEF.macros[cs] = ['xArrow',chr,parseInt(space[0]),parseInt(space[1])];
-    }
-  });
-  
-  MathJax.Hub.Startup.signal.Post("TeX extpfeil Ready");
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/extpfeil.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/mathchoice.js
- *  
- *  Implements the \mathchoice macro (rarely used)
- *
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2009-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  var VERSION = "2.7.1";
-
-  var MML = MathJax.ElementJax.mml;
-  var TEX = MathJax.InputJax.TeX;
-  var TEXDEF = TEX.Definitions;
-  
-  TEXDEF.Add({macros: {mathchoice: 'MathChoice'}},null,true);
-
-  TEX.Parse.Augment({
-    MathChoice: function (name) {
-      var D  = this.ParseArg(name),
-          T  = this.ParseArg(name),
-          S  = this.ParseArg(name),
-          SS = this.ParseArg(name);
-      this.Push(MML.TeXmathchoice(D,T,S,SS));
-    }
-  });
-  
-  MML.TeXmathchoice = MML.mbase.Subclass({
-    type: "TeXmathchoice", notParent: true,
-    choice: function () {
-      if (this.selection != null) return this.selection;
-      if (this.choosing) return 2; // prevent infinite loops:  see issue #1151
-      this.choosing = true;
-      var selection = 0, values = this.getValues("displaystyle","scriptlevel");
-      if (values.scriptlevel > 0) {selection = Math.min(3,values.scriptlevel+1)}
-        else {selection = (values.displaystyle ? 0 : 1)}
-      // only cache the result if we are actually in place in a <math> tag.
-      var node = this.inherit; while (node && node.type !== "math") node = node.inherit;
-      if (node) this.selection = selection;
-      this.choosing = false;
-      return selection;
-    },
-    selected: function () {return this.data[this.choice()]},
-    setTeXclass: function (prev) {return this.selected().setTeXclass(prev)},
-    isSpacelike: function () {return this.selected().isSpacelike()},
-    isEmbellished: function () {return this.selected().isEmbellished()},
-    Core: function () {return this.selected()},
-    CoreMO: function () {return this.selected().CoreMO()},
-    toHTML: function (span) {
-      span = this.HTMLcreateSpan(span);
-      span.bbox = this.Core().toHTML(span).bbox;
-      // Firefox doesn't correctly handle a span with a negatively sized content,
-      //   so move marginLeft to main span (this is a hack to get \iiiint to work).
-      //   FIXME:  This is a symptom of a more general problem with Firefox, and
-      //           there probably needs to be a more general solution (e.g., modifying
-      //           HTMLhandleSpace() to get the width and adjust the right margin to
-      //           compensate for negative-width contents)
-      if (span.firstChild && span.firstChild.style.marginLeft) {
-        span.style.marginLeft = span.firstChild.style.marginLeft;
-        span.firstChild.style.marginLeft = "";
-      }
-      return span;
-    },
-    toSVG: function () {
-      var svg = this.Core().toSVG();
-      this.SVGsaveData(svg);
-      return svg;
-    },
-    toCommonHTML: function (node) {
-      node = this.CHTMLcreateNode(node);
-      this.CHTMLhandleStyle(node);
-      this.CHTMLhandleColor(node);
-      this.CHTMLaddChild(node,this.choice(),{});
-      return node;
-    },
-    toPreviewHTML: function(span) {
-      span = this.PHTMLcreateSpan(span);
-      this.PHTMLhandleStyle(span);
-      this.PHTMLhandleColor(span);
-      this.PHTMLaddChild(span,this.choice(),{});
-      return span;
-    }
-  });
-  
-  MathJax.Hub.Startup.signal.Post("TeX mathchoice Ready");
-  
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/mathchoice.js");
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/mediawiki-texvc.js
- *  
- *  Implements macros used by mediawiki with their texvc preprocessor.
- *
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2015-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/mediawiki-texvc"] = {
-  version: "2.7.1"
-};
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready", function () {
-  MathJax.InputJax.TeX.Definitions.Add({
-    macros: {
-      AA: ["Macro", "\u00c5"],
-      alef: ["Macro", "\\aleph"],
-      alefsym: ["Macro", "\\aleph"],
-      Alpha: ["Macro", "\\mathrm{A}"],
-      and: ["Macro", "\\land"],
-      ang: ["Macro", "\\angle"],
-      Bbb: ["Macro", "\\mathbb"],
-      Beta: ["Macro", "\\mathrm{B}"],
-      bold: ["Macro", "\\mathbf"],
-      bull: ["Macro", "\\bullet"],
-      C: ["Macro", "\\mathbb{C}"],
-      Chi: ["Macro", "\\mathrm{X}"],
-      clubs: ["Macro", "\\clubsuit"],
-      cnums: ["Macro", "\\mathbb{C}"],
-      Complex: ["Macro", "\\mathbb{C}"],
-      coppa: ["Macro", "\u03D9"],
-      Coppa: ["Macro", "\u03D8"],
-      Dagger: ["Macro", "\\ddagger"],
-      Digamma: ["Macro", "\u03DC"],
-      darr: ["Macro", "\\downarrow"],
-      dArr: ["Macro", "\\Downarrow"],
-      Darr: ["Macro", "\\Downarrow"],
-      diamonds: ["Macro", "\\diamondsuit"],
-      empty: ["Macro", "\\emptyset"],
-      Epsilon: ["Macro", "\\mathrm{E}"],
-      Eta: ["Macro", "\\mathrm{H}"],
-      euro: ["Macro", "\u20AC"],
-      exist: ["Macro", "\\exists"],
-      geneuro: ["Macro", "\u20AC"],
-      geneuronarrow: ["Macro", "\u20AC"],
-      geneurowide: ["Macro", "\u20AC"],
-      H: ["Macro", "\\mathbb{H}"],
-      hAar: ["Macro", "\\Leftrightarrow"],
-      harr: ["Macro", "\\leftrightarrow"],
-      Harr: ["Macro", "\\Leftrightarrow"],
-      hearts: ["Macro", "\\heartsuit"],
-      image: ["Macro", "\\Im"],
-      infin: ["Macro", "\\infty"],
-      Iota: ["Macro", "\\mathrm{I}"],
-      isin: ["Macro", "\\in"],
-      Kappa: ["Macro", "\\mathrm{K}"],
-      koppa: ["Macro", "\u03DF"],
-      Koppa: ["Macro", "\u03DE"],
-      lang: ["Macro", "\\langle"],
-      larr: ["Macro", "\\leftarrow"],
-      Larr: ["Macro", "\\Leftarrow"],
-      lArr: ["Macro", "\\Leftarrow"],
-      lrarr: ["Macro", "\\leftrightarrow"],
-      Lrarr: ["Macro", "\\Leftrightarrow"],
-      lrArr: ["Macro", "\\Leftrightarrow"],
-      Mu: ["Macro", "\\mathrm{M}"],
-      N: ["Macro", "\\mathbb{N}"],
-      natnums: ["Macro", "\\mathbb{N}"],
-      Nu: ["Macro", "\\mathrm{N}"],
-      O: ["Macro", "\\emptyset"],
-      officialeuro: ["Macro", "\u20AC"],
-      Omicron: ["Macro", "\\mathrm{O}"],
-      or: ["Macro", "\\lor"],
-      P: ["Macro", "\u00B6"],
-      pagecolor: ['Macro','',1],  // ignore \pagecolor{}
-      part: ["Macro", "\\partial"],
-      plusmn: ["Macro", "\\pm"],
-      Q: ["Macro", "\\mathbb{Q}"],
-      R: ["Macro", "\\mathbb{R}"],
-      rang: ["Macro", "\\rangle"],
-      rarr: ["Macro", "\\rightarrow"],
-      Rarr: ["Macro", "\\Rightarrow"],
-      rArr: ["Macro", "\\Rightarrow"],
-      real: ["Macro", "\\Re"],
-      reals: ["Macro", "\\mathbb{R}"],
-      Reals: ["Macro", "\\mathbb{R}"],
-      Rho: ["Macro", "\\mathrm{P}"],
-      sdot: ["Macro", "\\cdot"],
-      sampi: ["Macro", "\u03E1"],
-      Sampi: ["Macro", "\u03E0"],
-      sect: ["Macro", "\\S"],
-      spades: ["Macro", "\\spadesuit"],
-      stigma: ["Macro", "\u03DB"],
-      Stigma: ["Macro", "\u03DA"],
-      sub: ["Macro", "\\subset"],
-      sube: ["Macro", "\\subseteq"],
-      supe: ["Macro", "\\supseteq"],
-      Tau: ["Macro", "\\mathrm{T}"],
-      textvisiblespace: ["Macro", "\u2423"],
-      thetasym: ["Macro", "\\vartheta"],
-      uarr: ["Macro", "\\uparrow"],
-      uArr: ["Macro", "\\Uparrow"],
-      Uarr: ["Macro", "\\Uparrow"],
-      varcoppa: ["Macro", "\u03D9"],
-      varstigma: ["Macro", "\u03DB"],
-      vline: ['Macro','\\smash{\\large\\lvert}',0],
-      weierp: ["Macro", "\\wp"],
-      Z: ["Macro", "\\mathbb{Z}"],
-      Zeta: ["Macro", "\\mathrm{Z}"]
-    }
-  });
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/mediawiki-texvc.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/mhchem.js
- *  
- *  Implements the \ce command for handling chemical formulas
- *  from the mhchem LaTeX package.
- *  
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2011-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-
-//
-//  Don't replace [Contrib]/mhchem if it is already loaded
-//
-if (MathJax.Extension["TeX/mhchem"]) {
-  MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/mhchem.js");
-} else {
-  
-MathJax.Extension["TeX/mhchem"] = {
-  version: "2.7.1",
-  config: MathJax.Hub.CombineConfig("TeX.mhchem",{
-    legacy: true
-  })
-};
-
-//
-//  Load [mhchem]/mhchem.js if not configured for legacy vesion
-//
-if (!MathJax.Extension["TeX/mhchem"].config.legacy) {
-  if (!MathJax.Ajax.config.path.mhchem) {
-    MathJax.Ajax.config.path.mhchem = MathJax.Hub.config.root + "/extensions/TeX/mhchem3";
-  }
-  MathJax.Callback.Queue(
-    ["Require",MathJax.Ajax,"[mhchem]/mhchem.js"],
-    ["loadComplete",MathJax.Ajax,"[MathJax]/extensions/TeX/mhchem.js"]
-  );
-} else {
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  
-  var TEX = MathJax.InputJax.TeX;
-  
-  /*
-   *  This is the main class for handing the \ce and related commands.
-   *  Its main method is Parse() which takes the argument to \ce and
-   *  returns the corresponding TeX string.
-   */
-
-  var CE = MathJax.Object.Subclass({
-    string: "",   // the \ce string being parsed
-    i: 0,         // the current position in the string
-    tex: "",      // the partially processed TeX result
-    TEX: "",      // the full TeX result
-    atom: false,  // last processed token is an atom
-    sup: "",      // pending superscript
-    sub: "",      // pending subscript
-    presup: "",   // pending pre-superscript
-    presub: "",   // pending pre-subscript
-    
-    //
-    //  Store the string when a CE object is created
-    //
-    Init: function (string) {this.string = string},
-    
-    //
-    //  These are the special characters and the methods that
-    //  handle them.  All others are passed through verbatim.
-    //
-    ParseTable: {
-      '-': "Minus",
-      '+': "Plus",
-      '(': "Open",
-      ')': "Close",
-      '[': "Open",
-      ']': "Close",
-      '<': "Less",
-      '^': "Superscript",
-      '_': "Subscript",
-      '*': "Dot",
-      '.': "Dot",
-      '=': "Equal",
-      '#': "Pound",
-      '$': "Math",
-      '\\': "Macro",
-      ' ': "Space"
-    },
-    //
-    //  Basic arrow names for reactions
-    //
-    Arrows: {
-      '->': "rightarrow",
-      '<-': "leftarrow",
-      '<->': "leftrightarrow",
-      '<=>': "rightleftharpoons",
-      '<=>>': "Rightleftharpoons",
-      '<<=>': "Leftrightharpoons",
-      '^': "uparrow",
-      'v': "downarrow"
-    },
-    
-    //
-    //  Implementations for the various bonds
-    //  (the ~ ones are hacks that don't work well in NativeMML)
-    //
-    Bonds: {
-      '-': "-",
-      '=': "=",
-      '#': "\\equiv",
-      '~': "\\tripledash",
-      '~-': "\\begin{CEstack}{}\\tripledash\\\\-\\end{CEstack}",
-      '~=': "\\raise2mu{\\begin{CEstack}{}\\tripledash\\\\-\\\\-\\end{CEstack}}",
-      '~--': "\\raise2mu{\\begin{CEstack}{}\\tripledash\\\\-\\\\-\\end{CEstack}}",
-      '-~-': "\\raise2mu{\\begin{CEstack}{}-\\\\\\tripledash\\\\-\\end{CEstack}}",
-      '...': "{\\cdot}{\\cdot}{\\cdot}",
-      '....': "{\\cdot}{\\cdot}{\\cdot}{\\cdot}",
-      '->': "\\rightarrow",
-      '<-': "\\leftarrow",
-      '??': "\\text{??}"           // unknown bond
-    },
-
-    //
-    //  This converts the CE string to a TeX string.
-    //  It loops through the string and calls the proper
-    //  method depending on the ccurrent character.
-    //  
-    Parse: function () {
-      this.tex = ""; this.atom = false;
-      while (this.i < this.string.length) {
-        var c = this.string.charAt(this.i);
-        if (c.match(/[a-z]/i)) {this.ParseLetter()}
-        else if (c.match(/[0-9]/)) {this.ParseNumber()}
-        else {this["Parse"+(this.ParseTable[c]||"Other")](c)}
-      }
-      this.FinishAtom(true);
-      return this.TEX;
-    },
-    
-    //
-    //  Make an atom name or a down arrow
-    //  
-    ParseLetter: function () {
-      this.FinishAtom();
-      if (this.Match(/^v( |$)/)) {
-        this.tex += "{\\"+this.Arrows["v"]+"}";
-      } else {
-        this.tex += "\\text{"+this.Match(/^[a-z]+/i)+"}";
-        this.atom = true;
-      }
-    },
-    
-    //
-    //  Make a number or fraction preceeding an atom,
-    //  or a subscript for an atom.
-    //  
-    ParseNumber: function () {
-      var n = this.Match(/^\d+/);
-      if (this.atom && !this.sub) {
-        this.sub = n;
-      } else {
-        this.FinishAtom();
-        var match = this.Match(/^\/\d+/);
-        if (match) {
-          var frac = "\\frac{"+n+"}{"+match.substr(1)+"}";
-          this.tex += "\\mathchoice{\\textstyle"+frac+"}{"+frac+"}{"+frac+"}{"+frac+"}";
-        } else {
-          this.tex += n;
-          if (this.i < this.string.length) {this.tex += "\\,"}
-        }
-      }
-    },
-    
-    //
-    //  Make a superscript minus, or an arrow, or a single bond.
-    //
-    ParseMinus: function (c) {
-      if (this.atom && (this.i === this.string.length-1 || this.string.charAt(this.i+1) === " ")) {
-        this.sup += c;
-      } else {
-        this.FinishAtom();
-        if (this.string.substr(this.i,2) === "->") {this.i += 2; this.AddArrow("->"); return}
-        else {this.tex += "{-}"}
-      }
-      this.i++;
-    },
-
-    //
-    //  Make a superscript plus, or pass it through
-    //
-    ParsePlus: function (c) {
-      if (this.atom) {this.sup += c} else {this.FinishAtom(); this.tex += c}
-      this.i++;
-    },
-    
-    //
-    //  Handle dots and double or triple bonds
-    //
-    ParseDot:   function (c) {this.FinishAtom(); this.tex += "\\cdot "; this.i++},
-    ParseEqual: function (c) {this.FinishAtom(); this.tex += "{=}"; this.i++},
-    ParsePound: function (c) {this.FinishAtom(); this.tex += "{\\equiv}"; this.i++},
-
-    //
-    //  Look for (v) or (^), or pass it through
-    //
-    ParseOpen: function (c) {
-      this.FinishAtom();
-      var match = this.Match(/^\([v^]\)/);
-      if (match) {this.tex += "{\\"+this.Arrows[match.charAt(1)]+"}"}
-        else {this.tex += "{"+c; this.i++}
-    },
-    //
-    //  Allow ) and ] to get super- and subscripts
-    //
-    ParseClose: function (c) {this.FinishAtom(); this.atom = true; this.tex += c+"}"; this.i++},
-
-    //
-    //  Make the proper arrow
-    //
-    ParseLess: function (c) {
-      this.FinishAtom();
-      var arrow = this.Match(/^(<->?|<=>>?|<<=>)/);
-      if (!arrow) {this.tex += c; this.i++} else {this.AddArrow(arrow)}
-    },
-
-    //
-    //  Look for a superscript, or an up arrow
-    //  
-    ParseSuperscript: function (c) {
-      c = this.string.charAt(++this.i);
-      if (c === "{") {
-        this.i++; var m = this.Find("}");
-        if (m === "-.") {this.sup += "{-}{\\cdot}"}
-        else if (m) {this.sup += CE(m).Parse().replace(/^\{-\}/,"-")}
-      } else if (c === " " || c === "") {
-        this.tex += "{\\"+this.Arrows["^"]+"}"; this.i++;
-      } else {
-        var n = this.Match(/^(\d+|-\.)/);
-        if (n) {this.sup += n}
-      }
-    },
-    //
-    //  Look for subscripts
-    //
-    ParseSubscript: function (c) {
-      if (this.string.charAt(++this.i) == "{") {
-        this.i++; this.sub += CE(this.Find("}")).Parse().replace(/^\{-\}/,"-");
-      } else {
-        var n = this.Match(/^\d+/);
-        if (n) {this.sub += n}
-      }
-    },
-
-    //
-    //  Look for raw TeX code to include
-    //
-    ParseMath: function (c) {
-      this.FinishAtom();
-      this.i++; this.tex += this.Find(c);
-    },
-    
-    //
-    //  Look for specific macros for bonds
-    //  and allow \} to have subscripts
-    //
-    ParseMacro: function (c) {
-      this.FinishAtom();
-      this.i++; var match = this.Match(/^([a-z]+|.)/i)||" ";
-      if (match === "sbond") {this.tex += "{-}"}
-      else if (match === "dbond") {this.tex += "{=}"}
-      else if (match === "tbond") {this.tex += "{\\equiv}"}
-      else if (match === "bond") {
-        var bond = (this.Match(/^\{.*?\}/)||"");
-        bond = bond.substr(1,bond.length-2);
-        this.tex += "{"+(this.Bonds[bond]||"\\text{??}")+"}";
-      }
-      else if (match === "{") {this.tex += "{\\{"}
-      else if (match === "}") {this.tex += "\\}}"; this.atom = true}
-      else {this.tex += c+match}
-    },
-    
-    //
-    //  Ignore spaces
-    //
-    ParseSpace: function (c) {this.FinishAtom(); this.i++},
-    
-    //
-    //  Pass anything else on verbatim
-    //
-    ParseOther: function (c) {this.FinishAtom(); this.tex += c; this.i++},
-
-    //
-    //  Process an arrow (looking for brackets for above and below)
-    //
-    AddArrow: function (arrow) {
-      var c = this.Match(/^[CT]\[/);
-      if (c) {this.i--; c = c.charAt(0)}
-      var above = this.GetBracket(c), below = this.GetBracket(c);
-      arrow = this.Arrows[arrow];
-      if (above || below) {
-        if (below) {arrow += "["+below+"]"}
-        arrow += "{"+above+"}";
-        arrow = "\\mathrel{\\x"+arrow+"}";
-      } else {
-        arrow = "\\long"+arrow+" ";
-      }
-      this.tex += arrow;
-    },
-
-    //
-    //  Handle the super and subscripts for an atom
-    //  
-    FinishAtom: function (force) {
-      if (this.sup || this.sub || this.presup || this.presub) {
-        if (!force && !this.atom) {
-          if (this.tex === "" && !this.sup && !this.sub) return;
-          if (!this.presup && !this.presub &&
-                (this.tex === "" || this.tex === "{" ||
-                (this.tex === "}" && this.TEX.substr(-1) === "{"))) {
-            this.presup = this.sup, this.presub = this.sub;  // save for later
-            this.sub = this.sup = "";
-            this.TEX += this.tex; this.tex = "";
-            return;
-          }
-        }
-        if (this.sub && !this.sup) {this.sup = "\\Space{0pt}{0pt}{.2em}"} // forces subscripts to align properly
-        if ((this.presup || this.presub) && this.tex !== "{") {
-          if (!this.presup && !this.sup) {this.presup = "\\Space{0pt}{0pt}{.2em}"}
-          this.tex = "\\CEprescripts{"+(this.presub||"\\CEnone")+"}{"+(this.presup||"\\CEnone")+"}"
-                   + "{"+(this.tex !== "}" ? this.tex : "")+"}"
-                   + "{"+(this.sub||"\\CEnone")+"}{"+(this.sup||"\\CEnone")+"}"
-                   + (this.tex === "}" ? "}" : "");
-          this.presub = this.presup = "";
-        } else {
-          if (this.sup) this.tex += "^{"+this.sup+"}";
-          if (this.sub) this.tex += "_{"+this.sub+"}";
-        }
-        this.sup = this.sub = "";
-      }
-      this.TEX += this.tex; this.tex = "";
-      this.atom = false;
-    },
-    
-    //
-    //  Find a bracket group and handle C and T prefixes
-    //
-    GetBracket: function (c) {
-      if (this.string.charAt(this.i) !== "[") {return ""}
-      this.i++; var bracket = this.Find("]");
-      if (c === "C") {bracket = "\\ce{"+bracket+"}"} else
-      if (c === "T") {
-        if (!bracket.match(/^\{.*\}$/)) {bracket = "{"+bracket+"}"}
-        bracket = "\\text"+bracket;
-      };
-      return bracket;
-    },
-
-    //
-    //  Check if the string matches a regular expression
-    //    and move past it if so, returning the match
-    //
-    Match: function (regex) {
-      var match = regex.exec(this.string.substr(this.i));
-      if (match) {match = match[0]; this.i += match.length}
-      return match;
-    },
-    
-    //
-    //  Find a particular character, skipping over braced groups
-    //
-    Find: function (c) {
-      var m = this.string.length, i = this.i, braces = 0;
-      while (this.i < m) {
-        var C = this.string.charAt(this.i++);
-        if (C === c && braces === 0) {return this.string.substr(i,this.i-i-1)}
-        if (C === "{") {braces++} else
-        if (C === "}") {
-          if (braces) {braces--}
-          else {
-            TEX.Error(["ExtraCloseMissingOpen","Extra close brace or missing open brace"])
-          }
-        }
-      }
-      if (braces) {TEX.Error(["MissingCloseBrace","Missing close brace"])}
-      TEX.Error(["NoClosingChar","Can't find closing %1",c]);
-    }
-    
-  });
-  
-  MathJax.Extension["TeX/mhchem"].CE = CE;
-  
-  /***************************************************************************/
-  
-  TEX.Definitions.Add({
-    macros: {
+    var i, m;
+    if (typeof(document.namespaces) !== "undefined") {
       //
-      //  Set up the macros for chemistry
+      // IE namespaces are listed in document.namespaces
       //
-      ce:   'CE',
-      cf:   'CE',
-      cee:  'CE',
-      
+      try {
+        for (i = 0, m = document.namespaces.length; i < m; i++) {
+          var ns = document.namespaces[i];
+          if (ns.urn === this.MMLnamespace)
+            {this.PushMathElements(mathArray,element,ns.name+":math")}
+        }
+      } catch (err) {}
+    } else {
       //
-      //  Make these load AMSmath package (redefined below when loaded)
-      //
-      xleftrightarrow:    ['Extension','AMSmath'],
-      xrightleftharpoons: ['Extension','AMSmath'],
-      xRightleftharpoons: ['Extension','AMSmath'],
-      xLeftrightharpoons: ['Extension','AMSmath'],
-
-      //  FIXME:  These don't work well in FF NativeMML mode
-      longrightleftharpoons: ["Macro","\\stackrel{\\textstyle{{-}\\!\\!{\\rightharpoonup}}}{\\smash{{\\leftharpoondown}\\!\\!{-}}}"],
-      longRightleftharpoons: ["Macro","\\stackrel{\\textstyle{-}\\!\\!{\\rightharpoonup}}{\\small\\smash\\leftharpoondown}"],
-      longLeftrightharpoons: ["Macro","\\stackrel{\\rightharpoonup}{{{\\leftharpoondown}\\!\\!\\textstyle{-}}}"],
-
-      //
-      //  Add \hyphen used in some mhchem examples
+      //  Everybody else
       //  
-      hyphen: ["Macro","\\text{-}"],
-      
-      //
-      //  Handle prescripts and none
-      //
-      CEprescripts: "CEprescripts",
-      CEnone: "CEnone",
-
-      //
-      //  Needed for \bond for the ~ forms
-      //
-      tripledash: ["Macro","\\raise3mu{\\tiny\\text{-}\\kern2mu\\text{-}\\kern2mu\\text{-}}"]
-    },
-    
-    //
-    //  Needed for \bond for the ~ forms
-    //
-    environment: {
-      CEstack:       ['Array',null,null,null,'r',null,"0.001em",'T',1]
-    }
-  },null,true);
-  
-  if (!MathJax.Extension["TeX/AMSmath"]) {
-    TEX.Definitions.Add({
-      macros: {
-        xrightarrow: ['Extension','AMSmath'],
-        xleftarrow:  ['Extension','AMSmath']
+      var html = document.getElementsByTagName("html")[0];
+      if (html) {
+        for (i = 0, m = html.attributes.length; i < m; i++) {
+          var attr = html.attributes[i];
+          if (attr.nodeName.substr(0,6) === "xmlns:" && attr.nodeValue === this.MMLnamespace)
+            {this.PushMathElements(mathArray,element,attr.nodeName.substr(6)+":math")}
+        }
       }
-    },null,true);
+    }
+    this.ProcessMathArray(mathArray);
+  },
+  
+  PushMathElements: function (array,element,name,namespace) {
+    var math, preview = MathJax.Hub.config.preRemoveClass;
+    if (namespace) {
+      if (!element.getElementsByTagNameNS) return;
+      math = element.getElementsByTagNameNS(namespace,name);
+    } else {
+      math = element.getElementsByTagName(name);
+    }
+    for (var i = 0, m = math.length; i < m; i++) {
+      var parent = math[i].parentNode;
+      if (parent && parent.className !== preview &&
+         !parent.isMathJax && !math[i].prefix === !namespace) array.push(math[i]);
+    }
+  },
+  
+  ProcessMathArray: function (math) {
+    var i, m = math.length;
+    if (m) {
+      if (this.MathTagBug) {
+        for (i = 0; i < m; i++) {
+          if (math[i].nodeName === "MATH") {this.ProcessMathFlattened(math[i])}
+                                      else {this.ProcessMath(math[i])}
+        }
+      } else {
+        for (i = 0; i < m; i++) {this.ProcessMath(math[i])}
+      }
+    }
+  },
+  
+  ProcessMath: function (math) {
+    var parent = math.parentNode;
+    if (!parent || parent.className === MathJax.Hub.config.preRemoveClass) return;
+    var script = document.createElement("script");
+    script.type = "math/mml";
+    parent.insertBefore(script,math);
+    if (this.AttributeBug) {
+      var html = this.OuterHTML(math);
+      if (this.CleanupHTML) {
+        html = html.replace(/<\?import .*?>/i,"").replace(/<\?xml:namespace .*?\/>/i,"");
+        html = html.replace(/&nbsp;/g,"&#xA0;");
+      }
+      MathJax.HTML.setScript(script,html); parent.removeChild(math);
+    } else {
+      var span = MathJax.HTML.Element("span"); span.appendChild(math);
+      MathJax.HTML.setScript(script,span.innerHTML);
+    }
+    if (this.config.preview !== "none") {this.createPreview(math,script)}
+  },
+  
+  ProcessMathFlattened: function (math) {
+    var parent = math.parentNode;
+    if (!parent || parent.className === MathJax.Hub.config.preRemoveClass) return;
+    var script = document.createElement("script");
+    script.type = "math/mml";
+    parent.insertBefore(script,math);
+    var mml = "", node, MATH = math;
+    while (math && math.nodeName !== "/MATH") {
+      node = math; math = math.nextSibling;
+      mml += this.NodeHTML(node);
+      node.parentNode.removeChild(node);
+    }
+    if (math && math.nodeName === "/MATH") {math.parentNode.removeChild(math)}
+    script.text = mml + "</math>";
+    if (this.config.preview !== "none") {this.createPreview(MATH,script)}
+  },
+  
+  NodeHTML: function (node) {
+    var html, i, m;
+    if (node.nodeName === "#text") {
+      html = this.quoteHTML(node.nodeValue);
+    } else if (node.nodeName === "#comment") {
+      html = "<!--" + node.nodeValue + "-->"
+    } else {
+      // In IE, outerHTML doesn't properly quote attributes, so quote them by hand
+      // In Opera, HTML special characters aren't quoted in attributes, so quote them
+      html = "<"+node.nodeName.toLowerCase();
+      for (i = 0, m = node.attributes.length; i < m; i++) {
+        var attribute = node.attributes[i];
+        if (attribute.specified && attribute.nodeName.substr(0,10) !== "_moz-math-") {
+          // Opera 11.5 beta turns xmlns into xmlns:xmlns, so put it back (*** check after 11.5 is out ***)
+          html += " "+attribute.nodeName.toLowerCase().replace(/xmlns:xmlns/,"xmlns")+"=";
+          var value = attribute.nodeValue; // IE < 8 doesn't properly set style by setAttributes
+          if (value == null && attribute.nodeName === "style" && node.style) {value = node.style.cssText}
+          html += '"'+this.quoteHTML(value)+'"';
+        }
+      }
+      html += ">";
+      // Handle internal HTML (possibly due to <semantics> annotation or missing </math>)
+      if (node.outerHTML != null && node.outerHTML.match(/(.<\/[A-Z]+>|\/>)$/)) {
+        for (i = 0, m = node.childNodes.length; i < m; i++)
+          {html += this.OuterHTML(node.childNodes[i])}
+        html += "</"+node.nodeName.toLowerCase()+">";
+      }
+    }
+    return html;
+  },
+  OuterHTML: function (node) {
+    if (node.nodeName.charAt(0) === "#") {return this.NodeHTML(node)}
+    if (!this.AttributeBug) {return node.outerHTML}
+    var html = this.NodeHTML(node);
+    for (var i = 0, m = node.childNodes.length; i < m; i++)
+      {html += this.OuterHTML(node.childNodes[i]);}
+    html += "</"+node.nodeName.toLowerCase()+">";
+    return html;
+  },
+  quoteHTML: function (string) {
+    if (string == null) {string = ""}
+    return string.replace(/&/g,"&#x26;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;");
+  },
+  
+  createPreview: function (math,script) {
+    var preview = this.config.preview;
+    if (preview === "none") return;
+    var isNodePreview = false;
+    var previewClass = MathJax.Hub.config.preRemoveClass;
+    if ((script.previousSibling||{}).className === previewClass) return;
+    if (preview === "mathml") {
+      isNodePreview = true;
+      // mathml preview does not work with IE < 9, so fallback to alttext.
+      if (this.MathTagBug) {preview = "alttext"} else {preview = math.cloneNode(true)}
+    }
+    if (preview === "alttext" || preview === "altimg") {
+      isNodePreview = true;
+      var alttext = this.filterPreview(math.getAttribute("alttext"));
+      if (preview === "alttext") {
+        if (alttext != null) {preview = MathJax.HTML.TextNode(alttext)} else {preview = null}
+      } else {
+        var src = math.getAttribute("altimg");
+        if (src != null) {
+          // FIXME: use altimg-valign when display="inline"?
+          var style = {width: math.getAttribute("altimg-width"), height: math.getAttribute("altimg-height")};
+          preview = MathJax.HTML.Element("img",{src:src,alt:alttext,style:style});
+        } else {preview = null}
+      }
+    }
+    if (preview) {
+      var span;
+      if (isNodePreview) {
+        span = MathJax.HTML.Element("span",{className:previewClass});
+        span.appendChild(preview);
+      } else {
+        span = MathJax.HTML.Element("span",{className:previewClass},preview);
+      }
+      script.parentNode.insertBefore(span,script);
+    }
+  },
+  
+  filterPreview: function (text) {return text},
+  
+  InitBrowser: function () {
+    var test = MathJax.HTML.Element("span",{id:"<", className: "mathjax", innerHTML: "<math><mi>x</mi><mspace /></math>"});
+    var html = test.outerHTML || "";
+    this.AttributeBug = html !== "" && !(
+      html.match(/id="&lt;"/) &&           // "<" should convert to "&lt;"
+      html.match(/class="mathjax"/) &&     // IE leaves out quotes
+      html.match(/<\/math>/)               // Opera 9 drops tags after self-closing tags
+    );
+    this.MathTagBug = test.childNodes.length > 1;    // IE < 9 flattens unknown tags
+    this.CleanupHTML = MathJax.Hub.Browser.isMSIE;   // remove namespace and other added tags
   }
-  
-  //
-  //  These arrows need to wait until AMSmath is loaded
-  //
-  MathJax.Hub.Register.StartupHook("TeX AMSmath Ready",function () {
-    TEX.Definitions.Add({
-      macros: {
-        //
-        //  Some of these are hacks for now
-        //
-        xleftrightarrow:    ['xArrow',0x2194,6,6],
-        xrightleftharpoons: ['xArrow',0x21CC,5,7],  // FIXME:  doesn't stretch in HTML-CSS output
-        xRightleftharpoons: ['xArrow',0x21CC,5,7],  // FIXME:  how should this be handled?
-        xLeftrightharpoons: ['xArrow',0x21CC,5,7]
-      }
-    },null,true);
-  });
 
-  TEX.Parse.Augment({
-
-    //
-    //  Implements \ce and friends
-    //
-    CE: function (name) {
-      var arg = this.GetArgument(name);
-      var tex = CE(arg).Parse();
-      this.string = tex + this.string.substr(this.i); this.i = 0;
-    },
-    
-    //
-    //  Implements \CEprescripts{presub}{presup}{base}{sub}{sup}
-    //
-    CEprescripts: function (name) {
-      var presub = this.ParseArg(name),
-          presup = this.ParseArg(name),
-          base = this.ParseArg(name),
-          sub = this.ParseArg(name),
-          sup = this.ParseArg(name);
-      var MML = MathJax.ElementJax.mml;
-      this.Push(MML.mmultiscripts(base,sub,sup,MML.mprescripts(),presub,presup));
-    },
-    CEnone: function (name) {
-      this.Push(MathJax.ElementJax.mml.none());
-    }
-    
-  });
-  
-  //
-  //  Indicate that the extension is ready
-  //
-  MathJax.Hub.Startup.signal.Post("TeX mhchem Ready");
-
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/mhchem.js");
-
-}}
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/newcommand.js
- *  
- *  Implements the \newcommand, \newenvironment and \def
- *  macros, and is loaded automatically when needed.
- *
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2009-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-MathJax.Extension["TeX/newcommand"] = {
-  version: "2.7.1"
 };
-
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  
-  var TEX = MathJax.InputJax.TeX;
-  var TEXDEF = TEX.Definitions;
-  
-  TEXDEF.Add({
-    macros: {
-      newcommand:       'NewCommand',
-      renewcommand:     'NewCommand',
-      newenvironment:   'NewEnvironment',
-      renewenvironment: 'NewEnvironment',
-      def:              'MacroDef',
-      let:              'Let'
-    }
-  },null,true);
-
-  TEX.Parse.Augment({
-
-    /*
-     *  Implement \newcommand{\name}[n][default]{...}
-     */
-    NewCommand: function (name) {
-      var cs = this.trimSpaces(this.GetArgument(name)),
-          n  = this.GetBrackets(name),
-          opt = this.GetBrackets(name),
-          def = this.GetArgument(name);
-      if (cs.charAt(0) === "\\") {cs = cs.substr(1)}
-      if (!cs.match(/^(.|[a-z]+)$/i)) {
-        TEX.Error(["IllegalControlSequenceName",
-                   "Illegal control sequence name for %1",name]);
-      }
-      if (n) {
-        n = this.trimSpaces(n);
-        if (!n.match(/^[0-9]+$/)) {
-          TEX.Error(["IllegalParamNumber",
-                     "Illegal number of parameters specified in %1",name]);
-        }
-      }
-      this.setDef(cs,['Macro',def,n,opt]);
-    },
-    
-    /*
-     *  Implement \newenvironment{name}[n][default]{begincmd}{endcmd}
-     */
-    NewEnvironment: function (name) {
-      var env  = this.trimSpaces(this.GetArgument(name)),
-          n    = this.GetBrackets(name),
-          opt  = this.GetBrackets(name),
-          bdef = this.GetArgument(name),
-          edef = this.GetArgument(name);
-      if (n) {
-        n = this.trimSpaces(n);
-        if (!n.match(/^[0-9]+$/)) {
-          TEX.Error(["IllegalParamNumber",
-                     "Illegal number of parameters specified in %1",name]);
-        }
-      }
-      this.setEnv(env,['BeginEnv',[null,'EndEnv'],bdef,edef,n,opt]);
-    },
-    
-    /*
-     *  Implement \def command
-     */
-    MacroDef: function (name) {
-      var cs     = this.GetCSname(name),
-          params = this.GetTemplate(name,"\\"+cs),
-          def    = this.GetArgument(name);
-      if (!(params instanceof Array)) {this.setDef(cs,['Macro',def,params])}
-        else {this.setDef(cs,['MacroWithTemplate',def].concat(params))}
-    },
-    
-    /*
-     *  Implements the \let command
-     */
-    Let: function (name) {
-      var cs = this.GetCSname(name), macro;
-      var c = this.GetNext(); if (c === "=") {this.i++; c = this.GetNext()}
-      //
-      //  All \let commands create entries in the macros array, but we
-      //  have to look in the various mathchar and delimiter arrays if
-      //  the source isn't a macro already, and attach the data to a
-      //  macro with the proper routine to process it.
-      //
-      //  A command of the form \let\cs=char produces a macro equivalent
-      //  to \def\cs{char}, which is as close as MathJax can get for this.
-      //  So \let\bgroup={ is possible, but doesn't work as it does in TeX.
-      //
-      if (c === "\\") {
-        name = this.GetCSname(name);
-        macro = this.csFindMacro(name);
-        if (!macro) {
-          if (TEXDEF.mathchar0mi[name])            {macro = ["csMathchar0mi",TEXDEF.mathchar0mi[name]]}  else
-          if (TEXDEF.mathchar0mo[name])            {macro = ["csMathchar0mo",TEXDEF.mathchar0mo[name]]}  else
-          if (TEXDEF.mathchar7[name])              {macro = ["csMathchar7",TEXDEF.mathchar7[name]]}      else 
-          if (TEXDEF.delimiter["\\"+name] != null) {macro = ["csDelimiter",TEXDEF.delimiter["\\"+name]]} else
-          return;
-        }
-      } else {macro = ["Macro",c]; this.i++}
-      this.setDef(cs,macro);
-    },
-    
-    /*
-     *  Routines to set the macro and environment definitions
-     *  (overridden by begingroup to make localized versions)
-     */
-    setDef: function (name,value) {value.isUser = true; TEXDEF.macros[name] = value},
-    setEnv: function (name,value) {value.isUser = true; TEXDEF.environment[name] = value},
-    
-    /*
-     *  Get a CS name or give an error
-     */
-    GetCSname: function (cmd) {
-      var c = this.GetNext();
-      if (c !== "\\") {
-        TEX.Error(["MissingCS",
-                   "%1 must be followed by a control sequence", cmd])
-      }
-      var cs = this.trimSpaces(this.GetArgument(cmd));
-      return cs.substr(1);
-    },
-    
-    /*
-     *  Get a \def parameter template
-     */
-    GetTemplate: function (cmd,cs) {
-      var c, params = [], n = 0;
-      c = this.GetNext(); var i = this.i;
-      while (this.i < this.string.length) {
-        c = this.GetNext();
-        if (c === '#') {
-          if (i !== this.i) {params[n] = this.string.substr(i,this.i-i)}
-          c = this.string.charAt(++this.i);
-          if (!c.match(/^[1-9]$/)) {
-            TEX.Error(["CantUseHash2",
-                       "Illegal use of # in template for %1",cs]);
-          }
-          if (parseInt(c) != ++n) {
-            TEX.Error(["SequentialParam",
-                       "Parameters for %1 must be numbered sequentially",cs]);
-          }
-          i = this.i+1;
-        } else if (c === '{') {
-          if (i !== this.i) {params[n] = this.string.substr(i,this.i-i)}
-          if (params.length > 0) {return [n,params]} else {return n}
-        }
-        this.i++;
-      }
-      TEX.Error(["MissingReplacementString",
-                 "Missing replacement string for definition of %1",cmd]);
-    },
-    
-    /*
-     *  Process a macro with a parameter template
-     */
-    MacroWithTemplate: function (name,text,n,params) {
-      if (n) {
-        var args = []; this.GetNext();
-        if (params[0] && !this.MatchParam(params[0])) {
-          TEX.Error(["MismatchUseDef",
-                     "Use of %1 doesn't match its definition",name]);
-        }
-        for (var i = 0; i < n; i++) {args.push(this.GetParameter(name,params[i+1]))}
-        text = this.SubstituteArgs(args,text);
-      }
-      this.string = this.AddArgs(text,this.string.slice(this.i));
-      this.i = 0;
-      if (++this.macroCount > TEX.config.MAXMACROS) {
-        TEX.Error(["MaxMacroSub1",
-                   "MathJax maximum macro substitution count exceeded; " +
-                   "is there a recursive macro call?"]);
-      }
-    },
-    
-    /*
-     *  Process a user-defined environment
-     */
-    BeginEnv: function (begin,bdef,edef,n,def) {
-      if (n) {
-        var args = [];
-        if (def != null) {
-          var optional = this.GetBrackets("\\begin{"+name+"}");
-          args.push(optional == null ? def : optional);
-        }
-        for (var i = args.length; i < n; i++) {args.push(this.GetArgument("\\begin{"+name+"}"))}
-        bdef = this.SubstituteArgs(args,bdef);
-        edef = this.SubstituteArgs([],edef); // no args, but get errors for #n in edef
-      }
-      this.string = this.AddArgs(bdef,this.string.slice(this.i)); this.i = 0;
-      return begin;
-    },
-    EndEnv: function (begin,bdef,edef,n) {
-      var end = "\\end{\\end\\"+begin.name+"}"; // special version of \end for after edef
-      this.string = this.AddArgs(edef,end+this.string.slice(this.i)); this.i = 0;
-      return null;
-    },
-    
-    /*
-     *  Find a single parameter delimited by a trailing template
-     */
-    GetParameter: function (name,param) {
-      if (param == null) {return this.GetArgument(name)}
-      var i = this.i, j = 0, hasBraces = 0;
-      while (this.i < this.string.length) {
-        var c = this.string.charAt(this.i);
-        if (c === '{') {
-          if (this.i === i) {hasBraces = 1}
-          this.GetArgument(name); j = this.i - i;
-        } else if (this.MatchParam(param)) {
-          if (hasBraces) {i++; j -= 2}
-          return this.string.substr(i,j);
-	} else if (c === "\\") {
-	  this.i++; j++; hasBraces = 0;
-	  var match = this.string.substr(this.i).match(/[a-z]+|./i);
-	  if (match) {this.i += match[0].length; j = this.i - i}
-        } else {
-          this.i++; j++; hasBraces = 0;
-        }
-      }
-      TEX.Error(["RunawayArgument","Runaway argument for %1?",name]);
-    },
-    
-    /*
-     *  Check if a template is at the current location.
-     *  (The match must be exact, with no spacing differences.  TeX is
-     *   a little more forgiving than this about spaces after macro names)
-     */
-    MatchParam: function (param) {
-      if (this.string.substr(this.i,param.length) !== param) {return 0}
-      if (param.match(/\\[a-z]+$/i) &&
-          this.string.charAt(this.i+param.length).match(/[a-z]/i)) {return 0}
-      this.i += param.length;
-      return 1;
-    }
-    
-  });
-  
-  TEX.Environment = function (name) {
-    TEXDEF.environment[name] = ['BeginEnv',[null,'EndEnv']].concat([].slice.call(arguments,1));
-    TEXDEF.environment[name].isUser = true;
-  }
-
-  MathJax.Hub.Startup.signal.Post("TeX newcommand Ready");
-
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/newcommand.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
-
-/*************************************************************
- *
- *  MathJax/extensions/TeX/unicode.js
- *  
- *  Implements the \unicode extension to TeX to allow arbitrary unicode
- *  code points to be entered into the TeX file.  You can specify
- *  the height and depth of the character (the width is determined by
- *  the browser), and the default font from which to take the character.
- *  
- *  Examples:
- *      \unicode{65}                        % the character 'A'
- *      \unicode{x41}                       % the character 'A'
- *      \unicode[.55,0.05]{x22D6}           % less-than with dot, with height .55 and depth 0.05
- *      \unicode[.55,0.05][Geramond]{x22D6} % same taken from Geramond font
- *      \unicode[Garamond]{x22D6}           % same, but with default height, depth of .8,.2
- *
- *  Once a size and font are provided for a given code point, they need
- *  not be specified again in subsequent \unicode calls for that character.
- *  Note that a font list can be given, but Internet Explorer has a buggy
- *  implementation of font-family where it only looks in the first
- *  available font and if the glyph is not in that, it does not look at
- *  later fonts, but goes directly to the default font as set in the
- *  Internet-Options/Font panel.  For this reason, the default font list is
- *  "STIXGeneral,'Arial Unicode MS'", so if the user has STIX fonts, the
- *  symbol will be taken from that (almost all the symbols are in
- *  STIXGeneral), otherwise Arial Unicode MS is tried.
- *  
- *  To configure the default font list, use
- *  
- *      MathJax.Hub.Config({
- *        TeX: {
- *          unicode: {
- *            fonts: "STIXGeneral,'Arial Unicode MS'"
- *          }
- *        }
- *      });
- *
- *  The result of \unicode will have TeX class ORD (i.e., it will act like a
- *  variable).  Use \mathbin, \mathrel, etc, to specify a different class.
- *  
- *  ---------------------------------------------------------------------
- *  
- *  Copyright (c) 2009-2017 The MathJax Consortium
- * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 
 //
-//  The configuration defaults, augmented by the user settings
-//  
-MathJax.Extension["TeX/unicode"] = {
-  version: "2.7.1",
-  unicode: {},
-  config: MathJax.Hub.CombineConfig("TeX.unicode",{
-    fonts: "STIXGeneral,'Arial Unicode MS'"
-  })
-};
-  
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  var TEX = MathJax.InputJax.TeX;
-  var MML = MathJax.ElementJax.mml;
-  var UNICODE = MathJax.Extension["TeX/unicode"].unicode;
-  
-  //
-  //  Add \unicode macro
-  //
-  TEX.Definitions.Add({macros: {unicode: 'Unicode'}},null,true);
-  //
-  //  Implementation of \unicode in parser
-  //
-  TEX.Parse.Augment({
-    Unicode: function(name) {
-      var HD = this.GetBrackets(name), font;
-      if (HD) {
-        if (HD.replace(/ /g,"").match(/^(\d+(\.\d*)?|\.\d+),(\d+(\.\d*)?|\.\d+)$/))
-          {HD = HD.replace(/ /g,"").split(/,/); font = this.GetBrackets(name)}
-            else {font = HD; HD = null}
-      }
-      var n = this.trimSpaces(this.GetArgument(name)),
-          N = parseInt(n.match(/^x/) ? "0"+n : n);
-      if (!UNICODE[N]) {UNICODE[N] = [800,200,font,N]}
-      else if (!font) {font = UNICODE[N][2]}
-      if (HD) {
-        UNICODE[N][0] = Math.floor(HD[0]*1000);
-        UNICODE[N][1] = Math.floor(HD[1]*1000);
-      }
-      var variant = this.stack.env.font, def = {};
-      if (font) {
-        UNICODE[N][2] = def.fontfamily = font.replace(/"/g,"'");
-        if (variant) {
-          if (variant.match(/bold/))   {def.fontweight = "bold"}
-          if (variant.match(/italic|-mathit/)) {def.fontstyle = "italic"}
-        }
-      } else if (variant) {def.mathvariant = variant}
-      def.unicode = [].concat(UNICODE[N]); // make a copy
-      this.Push(MML.mtext(MML.entity("#"+n)).With(def));
-    }
-  });
-
-  MathJax.Hub.Startup.signal.Post("TeX unicode Ready");
-  
-});
-    
-MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
-  var MML = MathJax.ElementJax.mml;
-  var FONTS = MathJax.Extension["TeX/unicode"].config.fonts;
-
-  //
-  //  Override getVariant to make one that includes the font and size
-  //
-  var GETVARIANT = MML.mbase.prototype.HTMLgetVariant;
-  MML.mbase.Augment({
-    HTMLgetVariant: function () {
-      var variant = GETVARIANT.apply(this,arguments);
-      if (variant.unicode) {delete variant.unicode; delete variant.FONTS} // clear font cache in case of restart
-      if (!this.unicode) {return variant}
-      variant.unicode = true;
-      if (!variant.defaultFont) {
-        variant = MathJax.Hub.Insert({},variant); // make a copy
-        variant.defaultFont = {family:FONTS};
-      }
-      var family = this.unicode[2]; if (family) {family += ","+FONTS} else {family = FONTS}
-      variant.defaultFont[this.unicode[3]] = [
-        this.unicode[0],this.unicode[1],500,0,500,
-        {isUnknown:true, isUnicode:true, font:family}
-      ];
-      return variant;
-    }
-  });
-});
-
-MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var MML = MathJax.ElementJax.mml;
-  var FONTS = MathJax.Extension["TeX/unicode"].config.fonts;
-
-  //
-  //  Override getVariant to make one that includes the font and size
-  //
-  var GETVARIANT = MML.mbase.prototype.SVGgetVariant;
-  MML.mbase.Augment({
-    SVGgetVariant: function () {
-      var variant = GETVARIANT.call(this);
-      if (variant.unicode) {delete variant.unicode; delete variant.FONTS} // clear font cache in case of restart
-      if (!this.unicode) {return variant}
-      variant.unicode = true;
-      if (!variant.forceFamily) {variant = MathJax.Hub.Insert({},variant)} // make a copy
-      variant.defaultFamily = FONTS; variant.noRemap = true;
-      variant.h = this.unicode[0]; variant.d = this.unicode[1];
-      return variant;
-    }
-  });
-});
-
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/unicode.js");
-
-/* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
-/* vim: set ts=2 et sw=2 tw=80: */
+// We register the preprocessors with the following priorities:
+// - mml2jax.js: 5
+// - jsMath2jax.js: 8
+// - asciimath2jax.js, tex2jax.js: 10 (default)
+// See issues 18 and 484 and the other *2jax.js files.
+// 
+MathJax.Hub.Register.PreProcessor(["PreProcess",MathJax.Extension.mml2jax],5);
+MathJax.Ajax.loadComplete("[MathJax]/extensions/mml2jax.js");
 
 /*************************************************************
  *
- *  MathJax/extensions/TeX/verb.js
- *  
- *  Implements the \verb|...| command for including text verbatim
- *  (with no processing of macros or special characters).
+ *  MathJax/extensions/MathML/mml3.js
  *
+ *  This file implements an XSLT transform to convert some MathML 3 
+ *  constructs to constructs MathJax can render. The transform is
+ *  performed in a pre-filter for the MathML input jax, so that the
+ *  Show Math As menu will still show the Original MathML correctly,
+ *  but the transformed MathML can be obtained from the regular MathML menu.
+ *  
+ *  To load it, include
+ *  
+ *      MathML: {
+ *        extensions: ["mml3.js"]
+ *      }
+ *  
+ *  in your configuration.
+ * 
+ *  A portion of this file is taken from mml3mj.xsl which is
+ *  Copyright (c) David Carlisle 2008-2015
+ *  and is used by permission of David Carlisle, who has agreed to allow us
+ *  to release it under the Apache2 license (see below).  That portion is
+ *  indicated via comments.
+ *   
+ *  The remainder falls under the copyright that follows.
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2009-2017 The MathJax Consortium
- * 
+ *  Copyright (c) 2013-2017 The MathJax Consortium
+ *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *  
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *  
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20298,40 +17911,748 @@ MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/unicode.js");
  *  limitations under the License.
  */
 
-MathJax.Extension["TeX/verb"] = {
+
+MathJax.Extension["MathML/mml3"] = {
   version: "2.7.1"
 };
 
-MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
-  
-  var MML = MathJax.ElementJax.mml;
-  var TEX = MathJax.InputJax.TeX;
-  var TEXDEF = TEX.Definitions;
-  
-  TEXDEF.Add({macros: {verb: 'Verb'}},null,true);
+MathJax.Hub.Register.StartupHook("MathML Jax Ready",function () {
 
-  TEX.Parse.Augment({
+  var MATHML = MathJax.InputJax.MathML,
+      PARSE = MATHML.Parse.prototype;
 
-    /*
-     *  Implement \verb|...|
-     */
-    Verb: function (name) {
-      var c = this.GetNext(); var start = ++this.i;
-      if (c == "" ) {TEX.Error(["MissingArgFor","Missing argument for %1",name])}
-      while (this.i < this.string.length && this.string.charAt(this.i) != c) {this.i++}
-      if (this.i == this.string.length)
-        {TEX.Error(["NoClosingDelim","Can't find closing delimiter for %1", name])}
-      var text = this.string.slice(start,this.i).replace(/ /g,"\u00A0"); this.i++;
-      this.Push(MML.mtext(text).With({mathvariant:MML.VARIANT.MONOSPACE}));
+  MATHML.prefilterHooks.Add(function (data) {
+    if (!MATHML.mml3XSLT) return;
+
+    // Parse the <math> but use MATHML.Parse's preProcessMath to apply the normal preprocessing.
+    if (!MATHML.ParseXML) {MATHML.ParseXML = MATHML.createParser()}
+    var doc = MATHML.ParseXML(PARSE.preProcessMath(data.math));
+
+    // Now transform the <math> using the mml3 stylesheet.
+    var newdoc = MATHML.mml3XSLT.transformToDocument(doc);
+
+    if ((typeof newdoc) === "string") {
+      // Internet Explorer returns a string, so just use it.
+      data.math = newdoc;
+    } else if (window.XMLSerializer) {
+      // Serialize the <math> again. We could directly provide the DOM content
+      // but other prefilterHooks may assume data.math is still a string.
+      var serializer = new XMLSerializer();
+      data.math = serializer.serializeToString(newdoc.documentElement, doc);
     }
-    
   });
-  
-  MathJax.Hub.Startup.signal.Post("TeX verb Ready");
 
+  /*
+   *  The following is derived from mml3mj.xsl
+   *  (https://github.com/davidcarlisle/web-xslt/blob/master/ctop/mml3mj.xsl)
+   *  which is Copyright (c) David Carlisle 2008-2015.
+   *  It is used by permission of David Carlisle, who has agreed to allow it to
+   *  be released under the Apache License, Version 2.0.
+   */
+  var BROWSER = MathJax.Hub.Browser;
+  var exslt = '';
+  if (BROWSER.isEdge || BROWSER.isMSIE) {
+    exslt = 'urn:schemas-microsoft-com:xslt'
+  } else {
+    exslt = 'http://exslt.org/common';
+  }
+  var mml3Stylesheet =
+    '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" ' +
+    '		xmlns:m="http://www.w3.org/1998/Math/MathML"' +
+    '		xmlns:c="' + exslt + '"' +
+    '		exclude-result-prefixes="m c">' +
+    '<xsl:output indent="yes" omit-xml-declaration="yes"/>' +
+    '<xsl:output indent="yes" omit-xml-declaration="yes"/><xsl:template match="*">' +
+    ' <xsl:copy>' +
+    '  <xsl:copy-of select="@*"/>' +
+    '  <xsl:apply-templates/>' +
+    ' </xsl:copy>' +
+    '</xsl:template><xsl:template match="m:*[@dir=\'rtl\']"  priority="10">' +
+    ' <xsl:apply-templates mode="rtl" select="."/>' +
+    '</xsl:template><xsl:template match="@*" mode="rtl">' +
+    ' <xsl:copy-of select="."/>' +
+    ' <xsl:attribute name="dir">ltr</xsl:attribute>' +
+    '</xsl:template>' +
+    '<xsl:template match="*" mode="rtl">' +
+    ' <xsl:copy>' +
+    '  <xsl:apply-templates select="@*" mode="rtl"/>' +
+    '  <xsl:for-each select="node()">' +
+    '   <xsl:sort data-type="number" order="descending" select="position()"/>' +
+    '   <xsl:text> </xsl:text>' +
+    '   <xsl:apply-templates mode="rtl" select="."/>' +
+    '  </xsl:for-each>' +
+    ' </xsl:copy>' +
+    '</xsl:template><xsl:template match="@open" mode="rtl">' +
+    ' <xsl:attribute name="close"><xsl:value-of select="."/></xsl:attribute>' +
+    '</xsl:template><xsl:template match="@open[.=\'(\']" mode="rtl">' +
+    ' <xsl:attribute name="close">)</xsl:attribute>' +
+    '</xsl:template><xsl:template match="@open[.=\')\']" mode="rtl">' +
+    ' <xsl:attribute name="close">(</xsl:attribute>' +
+    '</xsl:template>' +
+    '<xsl:template match="@open[.=\'[\']" mode="rtl">' +
+    ' <xsl:attribute name="close">]</xsl:attribute>' +
+    '</xsl:template>' +
+    '<xsl:template match="@open[.=\']\']" mode="rtl">' +
+    ' <xsl:attribute name="close">[</xsl:attribute>' +
+    '</xsl:template>' +
+    '<xsl:template match="@open[.=\'{\']" mode="rtl">' +
+    ' <xsl:attribute name="close">}</xsl:attribute>' +
+    '</xsl:template>' +
+    '<xsl:template match="@open[.=\'}\']" mode="rtl">' +
+    ' <xsl:attribute name="close">{</xsl:attribute>' +
+    '</xsl:template>' +
+    '<xsl:template match="@close" mode="rtl">' +
+    ' <xsl:attribute name="open"><xsl:value-of select="."/></xsl:attribute>' +
+    '</xsl:template><xsl:template match="@close[.=\'(\']" mode="rtl">' +
+    ' <xsl:attribute name="open">)</xsl:attribute>' +
+    '</xsl:template><xsl:template match="@close[.=\')\']" mode="rtl">' +
+    ' <xsl:attribute name="open">(</xsl:attribute>' +
+    '</xsl:template>' +
+    '<xsl:template match="@close[.=\'[\']" mode="rtl">' +
+    ' <xsl:attribute name="open">]</xsl:attribute>' +
+    '</xsl:template>' +
+    '<xsl:template match="@close[.=\']\']" mode="rtl">' +
+    ' <xsl:attribute name="open">[</xsl:attribute>' +
+    '</xsl:template>' +
+    '<xsl:template match="@close[.=\'{\']" mode="rtl">' +
+    ' <xsl:attribute name="open">}</xsl:attribute>' +
+    '</xsl:template>' +
+    '<xsl:template match="@close[.=\'}\']" mode="rtl">' +
+    ' <xsl:attribute name="open">{</xsl:attribute>' +
+    '</xsl:template><xsl:template match="m:mfrac[@bevelled=\'true\']" mode="rtl">' +
+    ' <m:mrow>' +
+    '  <m:msub><m:mi></m:mi><xsl:apply-templates select="*[2]" mode="rtl"/></m:msub>' +
+    '  <m:mo>&#x5c;</m:mo>' +
+    '  <m:msup><m:mi></m:mi><xsl:apply-templates select="*[1]" mode="rtl"/></m:msup>' +
+    ' </m:mrow>' +
+    '</xsl:template><xsl:template match="m:mfrac" mode="rtl">' +
+    ' <xsl:copy>' +
+    '  <xsl:apply-templates mode="rtl" select="@*|*"/>' +
+    ' </xsl:copy>' +
+    '</xsl:template><xsl:template match="m:mroot" mode="rtl">' +
+    ' <m:msup>' +
+    '  <m:menclose notation="top right">' +
+    '   <xsl:apply-templates mode="rtl" select="@*|*[1]"/>' +
+    '  </m:menclose>' +
+    '  <xsl:apply-templates mode="rtl" select="*[2]"/>' +
+    ' </m:msup>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:msqrt" mode="rtl">' +
+    ' <m:menclose notation="top right">' +
+    '  <xsl:apply-templates mode="rtl" select="@*|*[1]"/>' +
+    ' </m:menclose>' +
+    '</xsl:template><xsl:template match="m:mtable|m:munder|m:mover|m:munderover" mode="rtl" priority="2">' +
+    ' <xsl:copy>' +
+    '  <xsl:apply-templates select="@*" mode="rtl"/>' +
+    '  <xsl:apply-templates mode="rtl">' +
+    '  </xsl:apply-templates>' +
+    ' </xsl:copy>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:msup" mode="rtl" priority="2">' +
+    ' <m:mmultiscripts>' +
+    '  <xsl:apply-templates select="*[1]" mode="rtl"/>' +
+    '  <m:mprescripts/>' +
+    '  <m:none/>' +
+    '  <xsl:apply-templates select="*[2]" mode="rtl"/>' +
+    ' </m:mmultiscripts>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:msub" mode="rtl" priority="2">' +
+    ' <m:mmultiscripts>' +
+    '  <xsl:apply-templates select="*[1]" mode="rtl"/>' +
+    '  <m:mprescripts/>' +
+    '  <xsl:apply-templates select="*[2]" mode="rtl"/>' +
+    '  <m:none/>' +
+    ' </m:mmultiscripts>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:msubsup" mode="rtl" priority="2">' +
+    ' <m:mmultiscripts>' +
+    '  <xsl:apply-templates select="*[1]" mode="rtl"/>' +
+    '  <m:mprescripts/>' +
+    '  <xsl:apply-templates select="*[2]" mode="rtl"/>' +
+    '  <xsl:apply-templates select="*[3]" mode="rtl"/>' +
+    ' </m:mmultiscripts>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:mmultiscripts" mode="rtl" priority="2">' +
+    ' <m:mmultiscripts>' +
+    '  <xsl:apply-templates select="*[1]" mode="rtl"/>' +
+    '  <xsl:for-each  select="m:mprescripts/following-sibling::*[position() mod 2 = 1]">' +
+    '   <xsl:sort data-type="number" order="descending" select="position()"/>' +
+    '   <xsl:apply-templates select="."  mode="rtl"/>' +
+    '   <xsl:apply-templates select="following-sibling::*[1]"  mode="rtl"/>' +
+    '  </xsl:for-each>' +
+    '  <m:mprescripts/>' +
+    '  <xsl:for-each  select="m:mprescripts/preceding-sibling::*[position()!=last()][position() mod 2 = 0]">' +
+    '   <xsl:sort data-type="number" order="descending" select="position()"/>' +
+    '   <xsl:apply-templates select="."  mode="rtl"/>' +
+    '   <xsl:apply-templates select="following-sibling::*[1]"  mode="rtl"/>' +
+    '  </xsl:for-each>' +
+    ' </m:mmultiscripts>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:mmultiscripts[not(m:mprescripts)]" mode="rtl" priority="3">' +
+    ' <m:mmultiscripts>' +
+    '  <xsl:apply-templates select="*[1]" mode="rtl"/>' +
+    '  <m:mprescripts/>' +
+    '  <xsl:for-each  select="*[position() mod 2 = 0]">' +
+    '   <xsl:sort data-type="number" order="descending" select="position()"/>' +
+    '   <xsl:apply-templates select="."  mode="rtl"/>' +
+    '   <xsl:apply-templates select="following-sibling::*[1]"  mode="rtl"/>' +
+    '  </xsl:for-each>' +
+    ' </m:mmultiscripts>' +
+    '</xsl:template>' +
+    '<xsl:template match="text()[.=\'(\']" mode="rtl">)</xsl:template>' +
+    '<xsl:template match="text()[.=\')\']" mode="rtl">(</xsl:template>' +
+    '<xsl:template match="text()[.=\'{\']" mode="rtl">}</xsl:template>' +
+    '<xsl:template match="text()[.=\'}\']" mode="rtl">{</xsl:template>' +
+    '<xsl:template match="text()[.=\'&lt;\']" mode="rtl">&gt;</xsl:template>' +
+    '<xsl:template match="text()[.=\'&gt;\']" mode="rtl">&lt;</xsl:template>' +
+    '<xsl:template match="text()[.=\'&#x2208;\']" mode="rtl">&#x220b;</xsl:template>' +
+    '<xsl:template match="text()[.=\'&#x220b;\']" mode="rtl">&#x2208;</xsl:template>' +
+    '<xsl:template match="@notation[.=\'radical\']" mode="rtl">' +
+    ' <xsl:attribute name="notation">top right</xsl:attribute>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:mlongdiv|m:mstack" mode="rtl">' +
+    ' <m:mrow dir="ltr">' +
+    ' <xsl:apply-templates select="."/>' +
+    ' </m:mrow>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:mstack" priority="11">' +
+    ' <xsl:variable name="m">' +
+    '  <m:mtable columnspacing="0em">' +
+    '   <xsl:copy-of select="@align"/>' +
+    '  <xsl:variable name="t">' +
+    '   <xsl:apply-templates select="*" mode="mstack1">' +
+    '    <xsl:with-param name="p" select="0"/>' +
+    '   </xsl:apply-templates>' +
+    '  </xsl:variable>' +
+    '  <xsl:variable name="maxl">' +
+    '   <xsl:for-each select="c:node-set($t)/*/@l">' +
+    '    <xsl:sort data-type="number" order="descending"/>' +
+    '    <xsl:if test="position()=1">' +
+    '     <xsl:value-of select="."/>' +
+    '    </xsl:if>' +
+    '   </xsl:for-each>' +
+    '  </xsl:variable>' +
+    '  <xsl:for-each select="c:node-set($t)/*[not(@class=\'mscarries\') or following-sibling::*[1]/@class=\'mscarries\']">' +
+    '<xsl:variable name="c" select="preceding-sibling::*[1][@class=\'mscarries\']"/>' +
+    '   <xsl:text>&#10;</xsl:text>' +
+    '   <m:mtr>' +
+    '    <xsl:copy-of select="@class[.=\'msline\']"/>' +
+    '    <xsl:variable name="offset" select="$maxl - @l"/>' +
+    '    <xsl:choose>' +
+    '     <xsl:when test="@class=\'msline\' and @l=\'*\'">' +
+    '      <xsl:variable name="msl" select="*[1]"/>' +
+    '      <xsl:for-each select="(//node())[position()&lt;=$maxl]">' +
+    '       <xsl:copy-of select="$msl"/>' +
+    '      </xsl:for-each>' +
+    '     </xsl:when>' +
+    '     <xsl:when test="$c">' +
+    '      <xsl:variable name="ldiff" select="$c/@l - @l"/>' +
+    '      <xsl:variable name="loffset" select="$maxl - $c/@l"/>' +
+    '      <xsl:for-each select="(//*)[position()&lt;= $offset]">' +
+    '       <xsl:variable name="pn" select="position()"/>' +
+    '       <xsl:variable name="cy" select="$c/*[position()=$pn - $loffset]"/>' +
+    '	 <m:mtd>' +
+    '	  <xsl:if test="$cy/*">' +
+    '	  <m:mover><m:mphantom><m:mn>0</m:mn></m:mphantom><m:mpadded width="0em" lspace="-0.5width">' +
+    '	  <xsl:copy-of select="$cy/*"/></m:mpadded></m:mover>' +
+    '	  </xsl:if>' +
+    '	 </m:mtd>' +
+    '      </xsl:for-each>' +
+    '      <xsl:for-each select="*">' +
+    '       <xsl:variable name="pn" select="position()"/>' +
+    '       <xsl:variable name="cy" select="$c/*[position()=$pn + $ldiff]"/>' +
+    '       <xsl:copy>' +
+    '	<xsl:copy-of select="@*"/>' +
+    '	<xsl:variable name="b">' +
+    '	 <xsl:choose>' +
+    '	  <xsl:when test="not(string($cy/@crossout) or $cy/@crossout=\'none\')"><xsl:copy-of select="*"/></xsl:when>' +
+    '	  <xsl:otherwise>' +
+    '	   <m:menclose notation="{$cy/@crossout}"><xsl:copy-of select="*"/></m:menclose>' +
+    '	  </xsl:otherwise>' +
+    '	 </xsl:choose>' +
+    '	</xsl:variable>' +
+    '	<xsl:choose>' +
+    '	 <xsl:when test="$cy/m:none or not($cy/*)"><xsl:copy-of select="$b"/></xsl:when>' +
+    '	 <xsl:when test="not(string($cy/@location)) or $cy/@location=\'n\'">' +
+    '	  <m:mover>' +
+    '	   <xsl:copy-of select="$b"/><m:mpadded width="0em" lspace="-0.5width">' +
+    '	   <xsl:copy-of select="$cy/*"/>' +
+    '	  </m:mpadded>' +
+    '	  </m:mover>' +
+    '	 </xsl:when>' +
+    '	 <xsl:when test="$cy/@location=\'nw\'">' +
+    '	  <m:mmultiscripts><xsl:copy-of select="$b"/><m:mprescripts/><m:none/><m:mpadded lspace="-1width" width="0em"><xsl:copy-of select="$cy/*"/></m:mpadded></m:mmultiscripts>' +
+    '	 </xsl:when>' +
+    '	 <xsl:when test="$cy/@location=\'s\'">' +
+    '	  <m:munder><xsl:copy-of select="$b"/><m:mpadded width="0em" lspace="-0.5width"><xsl:copy-of select="$cy/*"/></m:mpadded></m:munder>' +
+    '	 </xsl:when>' +
+    '	 <xsl:when test="$cy/@location=\'sw\'">' +
+    '	  <m:mmultiscripts><xsl:copy-of select="$b"/><m:mprescripts/><m:mpadded lspace="-1width" width="0em"><xsl:copy-of select="$cy/*"/></m:mpadded><m:none/></m:mmultiscripts>' +
+    '	 </xsl:when>' +
+    '	 <xsl:when test="$cy/@location=\'ne\'">' +
+    '	  <m:msup><xsl:copy-of select="$b"/><m:mpadded width="0em"><xsl:copy-of select="$cy/*"/></m:mpadded></m:msup>' +
+    '	 </xsl:when>' +
+    '	 <xsl:when test="$cy/@location=\'se\'">' +
+    '	  <m:msub><xsl:copy-of select="$b"/><m:mpadded width="0em"><xsl:copy-of select="$cy/*"/></m:mpadded></m:msub>' +
+    '	 </xsl:when>' +
+    '	 <xsl:when test="$cy/@location=\'w\'">' +
+    '	  <m:msup><m:mrow/><m:mpadded lspace="-1width" width="0em"><xsl:copy-of select="$cy/*"/></m:mpadded></m:msup>' +
+    '	  <xsl:copy-of select="$b"/>' +
+    '	 </xsl:when>' +
+    '	 <xsl:when test="$cy/@location=\'e\'">' +
+    '	  <xsl:copy-of select="$b"/>' +
+    '	  <m:msup><m:mrow/><m:mpadded width="0em"><xsl:copy-of select="$cy/*"/></m:mpadded></m:msup>' +
+    '	 </xsl:when>' +
+    '	 <xsl:otherwise>' +
+    '	  <xsl:copy-of select="$b"/>' +
+    '	 </xsl:otherwise>' +
+    '	</xsl:choose>' +
+    '       </xsl:copy>' +
+    '      </xsl:for-each>' +
+    '     </xsl:when>' +
+    '     <xsl:otherwise>' +
+    '      <xsl:for-each select="(//*)[position()&lt;= $offset]"><m:mtd/></xsl:for-each>' +
+    '      <xsl:copy-of select="*"/>' +
+    '     </xsl:otherwise>' +
+    '    </xsl:choose>' +
+    '   </m:mtr>' +
+    '  </xsl:for-each>' +
+    ' </m:mtable>' +
+    '</xsl:variable>' +
+    '<xsl:apply-templates mode="ml" select="c:node-set($m)"/>' +
+    '</xsl:template>' +
+    '<xsl:template match="*" mode="ml">' +
+    ' <xsl:copy>' +
+    '  <xsl:copy-of select="@*"/>' +
+    '  <xsl:apply-templates mode="ml"/>' +
+    ' </xsl:copy>' +
+    '</xsl:template>' +
+    '<xsl:template mode="ml" match="m:mtr[following-sibling::*[1][@class=\'msline\']]">' +
+    ' <m:mtr>' +
+    '  <xsl:copy-of select="@*"/>' +
+    '  <xsl:variable name="m" select="following-sibling::*[1]/m:mtd"/>' +
+    '  <xsl:for-each select="m:mtd">' +
+    '   <xsl:variable name="p" select="position()"/>' +
+    '   <m:mtd>' +
+    '    <xsl:copy-of select="@*"/>' +
+    '    <xsl:choose>' +
+    '     <xsl:when test="$m[$p]/m:mpadded">' +
+    '      <m:menclose notation="bottom">' +
+    '       <m:mpadded depth=".1em" height="1em" width=".4em">' +
+    '	<xsl:copy-of select="*"/>' +
+    '       </m:mpadded>' +
+    '      </m:menclose>' +
+    '     </xsl:when>' +
+    '     <xsl:otherwise>' +
+    '      <xsl:copy-of select="*"/>' +
+    '     </xsl:otherwise>' +
+    '    </xsl:choose>' +
+    '   </m:mtd>' +
+    '  </xsl:for-each>' +
+    ' </m:mtr>' +
+    '</xsl:template><xsl:template mode="ml" match="m:mtr[not(preceding-sibling::*)][@class=\'msline\']" priority="3">' +
+    ' <m:mtr>' +
+    '  <xsl:copy-of select="@*"/>' +
+    '  <xsl:for-each select="m:mtd">' +
+    '   <m:mtd>' +
+    '    <xsl:copy-of select="@*"/>' +
+    '    <xsl:if test="m:mpadded">' +
+    '     <m:menclose notation="bottom">' +
+    '      <m:mpadded depth=".1em" height="1em" width=".4em">' +
+    '       <m:mspace width=".2em"/>' +
+    '      </m:mpadded>' +
+    '     </m:menclose>' +
+    '    </xsl:if>' +
+    '   </m:mtd>' +
+    '  </xsl:for-each>' +
+    ' </m:mtr>' +
+    '</xsl:template><xsl:template mode="ml" match="m:mtr[@class=\'msline\']" priority="2"/>' +
+    '<xsl:template mode="mstack1" match="*">' +
+    ' <xsl:param name="p"/>' +
+    ' <xsl:param name="maxl" select="0"/>' +
+    ' <m:mtr l="{1 + $p}">' +
+    '  <xsl:if test="ancestor::mstack[1]/@stackalign=\'left\'">' +
+    '   <xsl:attribute name="l"><xsl:value-of  select="$p"/></xsl:attribute>' +
+    '  </xsl:if>' +
+    '  <m:mtd><xsl:apply-templates select="."/></m:mtd>' +
+    ' </m:mtr>' +
+    '</xsl:template>' +
+    '<xsl:template mode="mstack1" match="m:msrow">' +
+    ' <xsl:param name="p"/>' +
+    ' <xsl:param name="maxl" select="0"/>' +
+    ' <xsl:variable  name="align1" select="ancestor::m:mstack[1]/@stackalign"/>' +
+    ' <xsl:variable name="align">' +
+    '  <xsl:choose>' +
+    '   <xsl:when test="string($align1)=\'\'">decimalpoint</xsl:when>' +
+    '   <xsl:otherwise><xsl:value-of select="$align1"/></xsl:otherwise>' +
+    '  </xsl:choose>' +
+    ' </xsl:variable>' +
+    ' <xsl:variable name="row">' +
+    '  <xsl:apply-templates mode="mstack1" select="*">' +
+    '   <xsl:with-param name="p" select="0"/>' +
+    '  </xsl:apply-templates>' +
+    ' </xsl:variable>' +
+    ' <xsl:text>&#10;</xsl:text>' +
+    ' <xsl:variable name="l1">' +
+    '  <xsl:choose>' +
+    '   <xsl:when test="$align=\'decimalpoint\' and m:mn">' +
+    '    <xsl:for-each select="c:node-set($row)/m:mtr[m:mtd/m:mn][1]">' +
+    '     <xsl:value-of select="number(sum(@l))+count(preceding-sibling::*/@l)"/>' +
+    '    </xsl:for-each>' +
+    '   </xsl:when>' +
+    '   <xsl:when test="$align=\'right\' or $align=\'decimalpoint\'">' +
+    '    <xsl:value-of select="count(c:node-set($row)/m:mtr/m:mtd)"/>' +
+    '   </xsl:when>' +
+    '   <xsl:otherwise>' +
+    '    <xsl:value-of select="0"/>' +
+    '   </xsl:otherwise>' +
+    '  </xsl:choose>' +
+    ' </xsl:variable>' +
+    ' <m:mtr class="msrow" l="{number($l1) + number(sum(@position)) +$p}">' +
+    '  <xsl:copy-of select="c:node-set($row)/m:mtr/*"/>' +
+    ' </m:mtr>' +
+    '</xsl:template><xsl:template mode="mstack1" match="m:mn">' +
+    ' <xsl:param name="p"/>' +
+    ' <xsl:variable name="align1" select="ancestor::m:mstack[1]/@stackalign"/>' +
+    ' <xsl:variable name="dp1" select="ancestor::*[@decimalpoint][1]/@decimalpoint"/>' +
+    ' <xsl:variable name="align">' +
+    '  <xsl:choose>' +
+    '   <xsl:when test="string($align1)=\'\'">decimalpoint</xsl:when>' +
+    '   <xsl:otherwise><xsl:value-of select="$align1"/></xsl:otherwise>' +
+    '  </xsl:choose>' +
+    ' </xsl:variable>' +
+    ' <xsl:variable name="dp">' +
+    '  <xsl:choose>' +
+    '   <xsl:when test="string($dp1)=\'\'">.</xsl:when>' +
+    '   <xsl:otherwise><xsl:value-of select="$dp1"/></xsl:otherwise>' +
+    '  </xsl:choose>' +
+    ' </xsl:variable>' +
+    ' <m:mtr l="$p">' +
+    '  <xsl:variable name="mn" select="normalize-space(.)"/>' +
+    '  <xsl:variable name="len" select="string-length($mn)"/>' +
+    '  <xsl:choose>' +
+    '   <xsl:when test="$align=\'right\' or ($align=\'decimalpoint\' and not(contains($mn,$dp)))">' +
+    '    <xsl:attribute name="l"><xsl:value-of select="$p + $len"/></xsl:attribute>' +
+    '   </xsl:when>' +
+    '   <xsl:when test="$align=\'center\'">' +
+    '    <xsl:attribute name="l"><xsl:value-of select="round(($p + $len) div 2)"/></xsl:attribute>' +
+    '   </xsl:when>' +
+    '   <xsl:when test="$align=\'decimalpoint\'">' +
+    '    <xsl:attribute name="l"><xsl:value-of select="$p + string-length(substring-before($mn,$dp))"/></xsl:attribute>' +
+    '   </xsl:when>' +
+    '  </xsl:choose>  <xsl:for-each select="(//node())[position() &lt;=$len]">' +
+    '   <xsl:variable name="pos" select="position()"/>' +
+    '   <m:mtd><m:mn><xsl:value-of select="substring($mn,$pos,1)"/></m:mn></m:mtd>' +
+    '  </xsl:for-each>' +
+    ' </m:mtr>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:msgroup" mode="mstack1">' +
+    ' <xsl:param name="p"/>' +
+    ' <xsl:variable name="s" select="number(sum(@shift))"/>' +
+    ' <xsl:variable name="thisp" select="number(sum(@position))"/>' +
+    ' <xsl:for-each select="*">' +
+    '  <xsl:apply-templates mode="mstack1" select=".">' +
+    '   <xsl:with-param name="p" select="number($p)+$thisp+(position()-1)*$s"/>' +
+    '  </xsl:apply-templates>' +
+    ' </xsl:for-each>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:msline" mode="mstack1">' +
+    ' <xsl:param name="p"/>' +
+    ' <xsl:variable  name="align1" select="ancestor::m:mstack[1]/@stackalign"/>' +
+    ' <xsl:variable name="align">' +
+    '  <xsl:choose>' +
+    '   <xsl:when test="string($align1)=\'\'">decimalpoint</xsl:when>' +
+    '   <xsl:otherwise><xsl:value-of select="$align1"/></xsl:otherwise>' +
+    '  </xsl:choose>' +
+    ' </xsl:variable>' +
+    ' <m:mtr class="msline">' +
+    '  <xsl:attribute name="l">' +
+    '   <xsl:choose>' +
+    '    <xsl:when test="not(string(@length)) or @length=0">*</xsl:when>' +
+    '    <xsl:when test="string($align)=\'right\' or string($align)=\'decimalpoint\' "><xsl:value-of select="$p+ @length"/></xsl:when>' +
+    '    <xsl:otherwise><xsl:value-of select="$p"/></xsl:otherwise>' +
+    '   </xsl:choose>' +
+    '  </xsl:attribute>' +
+    '  <xsl:variable name="w">' +
+    '   <xsl:choose>' +
+    '    <xsl:when test="@mslinethickness=\'thin\'">0.1em</xsl:when>' +
+    '    <xsl:when test="@mslinethickness=\'medium\'">0.15em</xsl:when>' +
+    '    <xsl:when test="@mslinethickness=\'thick\'">0.2em</xsl:when>' +
+    '    <xsl:when test="@mslinethickness"><xsl:value-of select="@mslinethickness"/></xsl:when>' +
+    '    <xsl:otherwise>0.15em</xsl:otherwise>' +
+    '   </xsl:choose>' +
+    '  </xsl:variable>' +
+    '  <xsl:choose>' +
+    '   <xsl:when test="not(string(@length)) or @length=0">' +
+    '    <m:mtd class="mslinemax">' +
+    '     <m:mpadded lspace="-0.2em" width="0em" height="0em">' +
+    '      <m:mfrac linethickness="{$w}">' +
+    '       <m:mspace width=".4em"/>' +
+    '       <m:mrow/>' +
+    '      </m:mfrac>' +
+    '     </m:mpadded>' +
+    '    </m:mtd>' +
+    '   </xsl:when>' +
+    '   <xsl:otherwise>' +
+    '    <xsl:variable name="l" select="@length"/>' +
+    '    <xsl:for-each select="(//node())[position()&lt;=$l]">' +
+    '     <m:mtd class="msline">' +
+    '      <m:mpadded lspace="-0.2em" width="0em" height="0em">' +
+    '       <m:mfrac linethickness="{$w}">' +
+    '	<m:mspace width=".4em"/>' +
+    '	<m:mrow/>' +
+    '       </m:mfrac>' +
+    '      </m:mpadded>' +
+    '     </m:mtd>' +
+    '    </xsl:for-each>' +
+    '   </xsl:otherwise>' +
+    '  </xsl:choose>' +
+    ' </m:mtr>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:mscarries" mode="mstack1">' +
+    ' <xsl:param name="p"/>' +
+    ' <xsl:variable  name="align1" select="ancestor::m:mstack[1]/@stackalign"/>' +
+    ' <xsl:variable name="l1">' +
+    '  <xsl:choose>' +
+    '   <xsl:when test="string($align1)=\'left\'">0</xsl:when>' +
+    '   <xsl:otherwise><xsl:value-of select="count(*)"/></xsl:otherwise>' +
+    '  </xsl:choose>' +
+    ' </xsl:variable>' +
+    ' <m:mtr class="mscarries" l="{$p + $l1 + sum(@position)}">' +
+    '  <xsl:apply-templates select="*" mode="msc"/>' +
+    ' </m:mtr>' +
+    '</xsl:template><xsl:template match="*" mode="msc">' +
+    ' <m:mtd>' +
+    '  <xsl:copy-of select="../@location|../@crossout"/>' +
+    '  <xsl:choose>' +
+    '   <xsl:when test="../@scriptsizemultiplier">' +
+    '    <m:mstyle mathsize="{round(../@scriptsizemultiplier div .007)}%">' +
+    '     <xsl:apply-templates select="."/>' +
+    '    </m:mstyle>' +
+    '   </xsl:when>' +
+    '   <xsl:otherwise>' +
+    '    <xsl:apply-templates select="."/>' +
+    '   </xsl:otherwise>' +
+    '  </xsl:choose>' +
+    ' </m:mtd>' +
+    '</xsl:template><xsl:template match="m:mscarry" mode="msc">' +
+    ' <m:mtd>' +
+    ' <xsl:copy-of select="@location|@crossout"/>' +
+    '  <xsl:choose>' +
+    '   <xsl:when test="../@scriptsizemultiplier">' +
+    '    <m:mstyle mathsize="{round(../@scriptsizemultiplier div .007)}%">' +
+    '     <xsl:apply-templates/>' +
+    '    </m:mstyle>' +
+    '   </xsl:when>' +
+    '   <xsl:otherwise>' +
+    '    <xsl:apply-templates/>' +
+    '   </xsl:otherwise>' +
+    '  </xsl:choose>' +
+    ' </m:mtd>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:mlongdiv" priority="11">' +
+    ' <xsl:variable name="ms">' +
+    '  <m:mstack>' +
+    '   <xsl:copy-of select="(ancestor-or-self::*/@decimalpoint)[last()]"/>' +
+    '   <xsl:choose>' +
+    '    <xsl:when test="@longdivstyle=\'left)(right\'">' +
+    '     <m:msrow>' +
+    '      <m:mrow><xsl:copy-of select="*[1]"/></m:mrow>' +
+    '      <m:mo>)</m:mo>' +
+    '      <xsl:copy-of select="*[3]"/>' +
+    '      <m:mo>(</m:mo>' +
+    '      <xsl:copy-of select="*[2]"/>' +
+    '     </m:msrow>' +
+    '    </xsl:when>' +
+    '    <xsl:when test="@longdivstyle=\'left/\right\'">' +
+    '     <m:msrow>' +
+    '      <m:mrow><xsl:copy-of select="*[1]"/></m:mrow>' +
+    '      <m:mo>/</m:mo>' +
+    '      <xsl:copy-of select="*[3]"/>' +
+    '      <m:mo>\</m:mo>' +
+    '      <xsl:copy-of select="*[2]"/>' +
+    '     </m:msrow>' +
+    '    </xsl:when>' +
+    '    <xsl:when test="@longdivstyle=\':right=right\'">' +
+    '     <m:msrow>' +
+    '      <xsl:copy-of select="*[3]"/>' +
+    '      <m:mo>:</m:mo>' +
+    '      <xsl:copy-of select="*[1]"/>' +
+    '      <m:mo>=</m:mo>' +
+    '      <xsl:copy-of select="*[2]"/>' +
+    '     </m:msrow>' +
+    '    </xsl:when>' +
+    '    <xsl:when test="@longdivstyle=\'stackedrightright\'' +
+    '		    or @longdivstyle=\'mediumstackedrightright\'' +
+    '		    or @longdivstyle=\'shortstackedrightright\'' +
+    '		    or @longdivstyle=\'stackedleftleft\'' +
+    '		    ">' +
+    '     <xsl:attribute name="align">top</xsl:attribute>' +
+    '     <xsl:copy-of select="*[3]"/>' +
+    '    </xsl:when>' +
+    '    <xsl:when test="@longdivstyle=\'stackedleftlinetop\'">' +
+    '     <xsl:copy-of select="*[2]"/>' +
+    '     <m:msline length="{string-length(*[3])-1}"/>' +
+    '     <m:msrow>' +
+    '      <m:mrow>' +
+    '     <m:menclose notation="bottom right">' +
+    '      <xsl:copy-of select="*[1]"/>' +
+    '     </m:menclose>' +
+    '      </m:mrow>' +
+    '      <xsl:copy-of select="*[3]"/>' +
+    '     </m:msrow>' +
+    '    </xsl:when>' +
+    '    <xsl:when test="@longdivstyle=\'righttop\'">' +
+    '     <xsl:copy-of select="*[2]"/>' +
+    '     <m:msline length="{string-length(*[3])}"/>' +
+    '     <m:msrow>' +
+    '      <xsl:copy-of select="*[3]"/>' +
+    '      <m:menclose notation="top left bottom">' +
+    '       <xsl:copy-of select="*[1]"/></m:menclose>' +
+    '     </m:msrow>' +
+    '    </xsl:when>' +
+    '    <xsl:otherwise>' +
+    '     <xsl:copy-of select="*[2]"/>' +
+    '     <m:msline length="{string-length(*[3])}"/>' +
+    '     <m:msrow>' +
+    '      <m:mrow><xsl:copy-of select="*[1]"/></m:mrow>' +
+    '      <m:mo>)</m:mo>' +
+    '      <xsl:copy-of select="*[3]"/>' +
+    '     </m:msrow>' +
+    '    </xsl:otherwise>' +
+    '   </xsl:choose>' +
+    '   <xsl:copy-of select="*[position()&gt;3]"/>' +
+    '  </m:mstack>' +
+    ' </xsl:variable>' +
+    ' <xsl:choose>' +
+    '  <xsl:when test="@longdivstyle=\'stackedrightright\'">' +
+    '   <m:menclose notation="right">' +
+    '    <xsl:apply-templates select="c:node-set($ms)"/>' +
+    '   </m:menclose>' +
+    '   <m:mtable align="top">' +
+    '    <m:mtr>' +
+    '     <m:menclose notation="bottom">' +
+    '      <xsl:copy-of select="*[1]"/>' +
+    '     </m:menclose>' +
+    '    </m:mtr>' +
+    '    <m:mtr>' +
+    '     <mtd><xsl:copy-of select="*[2]"/></mtd>' +
+    '    </m:mtr>' +
+    '   </m:mtable>' +
+    '  </xsl:when>' +
+    '    <xsl:when test="@longdivstyle=\'mediumstackedrightright\'">' +
+    '    <xsl:apply-templates select="c:node-set($ms)"/>' +
+    '   <m:menclose notation="left">' +
+    '   <m:mtable align="top">' +
+    '    <m:mtr>' +
+    '     <m:menclose notation="bottom">' +
+    '      <xsl:copy-of select="*[1]"/>' +
+    '     </m:menclose>' +
+    '    </m:mtr>' +
+    '    <m:mtr>' +
+    '     <mtd><xsl:copy-of select="*[2]"/></mtd>' +
+    '    </m:mtr>' +
+    '   </m:mtable>' +
+    '   </m:menclose>' +
+    '  </xsl:when>' +
+    '  <xsl:when test="@longdivstyle=\'shortstackedrightright\'">' +
+    '    <xsl:apply-templates select="c:node-set($ms)"/>' +
+    '   <m:mtable align="top">' +
+    '    <m:mtr>' +
+    '     <m:menclose notation="left bottom">' +
+    '      <xsl:copy-of select="*[1]"/>' +
+    '     </m:menclose>' +
+    '    </m:mtr>' +
+    '    <m:mtr>' +
+    '     <mtd><xsl:copy-of select="*[2]"/></mtd>' +
+    '    </m:mtr>' +
+    '   </m:mtable>' +
+    '  </xsl:when>' +
+    '  <xsl:when test="@longdivstyle=\'stackedleftleft\'">' +
+    '   <m:mtable align="top">' +
+    '    <m:mtr>' +
+    '     <m:menclose notation="bottom">' +
+    '      <xsl:copy-of select="*[1]"/>' +
+    '     </m:menclose>' +
+    '    </m:mtr>' +
+    '    <m:mtr>' +
+    '     <mtd><xsl:copy-of select="*[2]"/></mtd>' +
+    '    </m:mtr>' +
+    '   </m:mtable>' +
+    '   <m:menclose notation="left">' +
+    '    <xsl:apply-templates select="c:node-set($ms)"/>' +
+    '   </m:menclose>' +
+    '  </xsl:when>' +
+    '  <xsl:otherwise>' +
+    '   <xsl:apply-templates select="c:node-set($ms)"/>' +
+    '  </xsl:otherwise>' +
+    ' </xsl:choose>' +
+    '</xsl:template>' +
+    '<xsl:template match="m:menclose[@notation=\'madruwb\']" mode="rtl">' +
+    ' <m:menclose notation="bottom right">' +
+    '  <xsl:apply-templates mode="rtl"/>' +
+    ' </m:menclose>' +
+    '</xsl:template></xsl:stylesheet>';
+
+  /*
+   *  End of mml3mj.xsl material.
+   */
+
+  var mml3;
+  if (window.XSLTProcessor) {
+    // standard method: just use an XSLTProcessor and parse the stylesheet
+    if (!MATHML.ParseXML) {MATHML.ParseXML = MATHML.createParser()}
+    MATHML.mml3XSLT = new XSLTProcessor();
+    MATHML.mml3XSLT.importStylesheet(MATHML.ParseXML(mml3Stylesheet));
+  } else if (MathJax.Hub.Browser.isMSIE) {
+    // nonstandard methods for Internet Explorer
+    if (MathJax.Hub.Browser.versionAtLeast("9.0") || (document.documentMode||0) >= 9) {
+      // For Internet Explorer >= 9, use createProcessor
+      mml3 = new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
+      mml3.loadXML(mml3Stylesheet);
+      var xslt = new ActiveXObject("Msxml2.XSLTemplate");
+      xslt.stylesheet = mml3;
+      MATHML.mml3XSLT = {
+        mml3: xslt.createProcessor(),
+        transformToDocument: function(doc) {
+          this.mml3.input = doc;
+          this.mml3.transform();
+          return this.mml3.output;
+        }
+      }
+    } else {
+      // For Internet Explorer <= 8, use transformNode
+      mml3 = MATHML.createMSParser();
+      mml3.async = false;
+      mml3.loadXML(mml3Stylesheet);
+      MATHML.mml3XSLT = {
+        mml3: mml3,
+        transformToDocument: function(doc) {
+          return doc.documentElement.transformNode(this.mml3);
+        }
+      }
+    }
+  } else {
+    // No XSLT support. Do not change the <math> content.
+    MATHML.mml3XSLT = null;
+  }
+  
+  // Tweak CSS to avoid some browsers rearranging HTML output
+  MathJax.Ajax.Styles({
+    ".MathJax .mi, .MathJax .mo, .MathJax .mn, .MathJax .mtext": {
+      direction: "ltr",
+      display: "inline-block"
+    },
+    ".MathJax .ms, .MathJax .mspace, .MathJax .mglyph": {
+      direction: "ltr",
+      display: "inline-block"
+    }
+  });
+
+  MathJax.Hub.Startup.signal.Post("MathML mml3.js Ready");
 });
 
-MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/verb.js");
+MathJax.Ajax.loadComplete("[MathJax]/extensions/MathML/mml3.js");
 
 /* -*- Mode: Javascript; indent-tabs-mode:nil; js-indent-level: 2 -*- */
 /* vim: set ts=2 et sw=2 tw=80: */
