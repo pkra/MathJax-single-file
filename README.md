@@ -1,43 +1,45 @@
 # mathjax-single-file #
 
-An **experimental** MathJax build as a single file.
-
-This built offers two example configurations -- MMMLSVG, TeXSVG -- providing
-
-* MathML input or TeX input
-* Distributions / Configurations
-  * MMLSVG: mml3.js, webfonts matching, AssistiveMML + SVG output (including TeX "fonts")
-  * TeXSVG: almost all core TeX extensions + SVG output (including TeX "fonts")
-  * TeXHTML: almost all core TeX extension + CommonHTML output (excluding fonts)
-      * **Note.** webfonts URL defaults to cdnjs.com. This can be changed via `MathJax.OutputJax.CommonHTML.webfontDir` (as a regular MathJax configuration or in the relevant helper file string).
-  * All distributions include the necessary MathJax internals
-
-See the Gruntfile for more information.
-
-For more background, see [https://github.com/mathjax/MathJax/wiki/Single-file-built](https://github.com/mathjax/MathJax/wiki/Single-file-built)
+A tool to build MathJax bundles.
 
 ## Getting Started ##
 
-This project assumes you have NodeJS installed.
+This project assumes you have NodeJS 6+ installed.
 
 1. Install dependencies
 
 ```shell
-npm install grunt-cli -g
 npm install
 ```
 
-2. Build the MathJax configuration bundles
+2. Use
 
-```shell
-grunt
+This library exports a single method `build` which takes several options and returns a string (the JS string of the build); it can write that string to disk.
+
+```javascript
+const build = require('main.js').build;
+build(
+  fontname,                                // TeX, STIX-Web, Asana-Math, Neo-Euler, Gyre-Pagella, Gyre-Termes, cf. http://docs.mathjax.org/en/latest/font-support.html Latin-Modern
+    input,                                // MathML, TeX, AsciiMath
+    output,                               // SVG, CommonHTML, (TODO: HTML-CSS)
+    {                                     // options
+        toFile: true,                     // write to file
+        compress: true,                   // uglify output
+        customExtensions: [],             // array of extension filenames; if empty, default extensions of the input are used
+        folder: ''                        // folder name to write file output to; relative to `dist` defaults to `options.input+options.output+options.fontname`, e.g., `dist/MathMLSVGTeX`
+    });
 ```
 
-3. View test pages in your browser
+3. Build pre-configured bundles
+
+```shell
+npm run build
+```
+
+See `build.js` for details for those builds.
+
+4. View test pages in your browser
 
 ```shell
 npm start
 ```
-
-
-
