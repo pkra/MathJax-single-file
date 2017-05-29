@@ -175,6 +175,7 @@ const extensions = {
     ],
 
     // extensions for the MathML input
+    // NOTE upstream bug when using content-mathml and mml3 simultaneously https://github.com/mathjax/MathJax/issues/1755
     MathML: [
         '/extensions/mml2jax.js',
         '/extensions/MathML/content-mathml.js',
@@ -271,7 +272,8 @@ const fonts = {
             '/jax/output/CommonHTML/fonts/TeX/Caligraphic-Bold.js',
             '/jax/output/CommonHTML/fonts/TeX/Fraktur-Bold.js',
             '/jax/output/CommonHTML/fonts/TeX/Fraktur-Regular.js',
-            '/jax/output/CommonHTML/fonts/TeX/Main-Bold.js',
+            // NOTE included in fontdata.js https://github.com/pkra/MathJax-single-file/pull/19#issuecomment-304392838
+            // '/jax/output/CommonHTML/fonts/TeX/Main-Bold.js',
             '/jax/output/CommonHTML/fonts/TeX/Math-BoldItalic.js',
             '/jax/output/CommonHTML/fonts/TeX/SansSerif-Bold.js',
             '/jax/output/CommonHTML/fonts/TeX/SansSerif-Italic.js',

@@ -6,6 +6,9 @@
     "Peter Krautzberger <peter@krautzource.com> (http://krautzource.com/)",
     "Dominique Rochefort <> (https://github.com/drochgenius)"
   ],
+  "scripts": {
+    "build": "node build.js"
+  },
   "private": true,
   "devDependencies": {
     "browser-sync": "^2.18.11",
