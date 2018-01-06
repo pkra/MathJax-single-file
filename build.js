@@ -45,7 +45,8 @@ build(
         compress: true,
         customExtensions: [
         '/extensions/mml2jax.js',
-        '/extensions/MathML/mml3.js'
+        '/extensions/MathML/mml3.js',
+        '/extensions/AssistiveMML.js'
     ],
      folder: 'readium'
     });
