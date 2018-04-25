@@ -1060,6 +1060,10 @@ let defaultOptions = {
 };
 // the build process
 exports.build = function (font, inputJax, outputJax, options = defaultOptions) {
+
+    // ensure webfontURL is set
+    if (!options.webfontURL) options.webfontURL = defaultOptions.webfontURL;
+
     // check parameters
     const inputJaxs = ['TeX', 'MathML', 'AsciiMath'];
     const outputJaxs = ['CommonHTML', 'SVG', 'PreviewHTML', 'HTML-CSS'];
@@ -1128,15 +1132,14 @@ exports.build = function (font, inputJax, outputJax, options = defaultOptions) {
     // add main bulk of files
     for (let item of fileNames) concat.add(item, fs.readFileSync(unpackedPath + item));
 
-
-    // add top-level fontdata
-    concat.add('fontdata.js', fs.readFileSync(unpackedPath + fontdataName));
-    concat.add('fontdata-extra.js', fs.readFileSync(unpackedPath + fontdataExtraName));
-
     // if CommonHTML or HTML-CSS is used, update webfont location
     if (outputJax === "CommonHTML" || outputJax === "HTML-CSS") {
         concat.add(null, 'MathJax.OutputJax["' + outputJax + '"].webfontDir =  "' + options.webfontURL + '";\n ');
     }
+
+    // add top-level fontdata
+    concat.add('fontdata.js', fs.readFileSync(unpackedPath + fontdataName));
+    concat.add('fontdata-extra.js', fs.readFileSync(unpackedPath + fontdataExtraName));
 
     // Complication 3, part 1
     // remaining font-data needs wrapper to get signal from outputJax
