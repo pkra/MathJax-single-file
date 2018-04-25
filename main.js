@@ -1055,7 +1055,7 @@ let defaultOptions = {
     toFile: false,
     compress: false,
     customExtensions: [],
-    webfontURL: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/fonts/HTML-CSS',
+    webfontURL: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/fonts/HTML-CSS',
     folder: ''
 };
 // the build process
