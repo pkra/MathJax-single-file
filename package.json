@@ -1,6 +1,6 @@
 {
   "name": "mathjax-single-file",
-  "version": "11.0.0",
+  "version": "12.0.0",
   "author": "MathJax Consortium",
   "contributors": [
     "Peter Krautzberger <peter@krautzource.com> (http://krautzource.com/)",
@@ -11,10 +11,10 @@
   },
   "private": true,
   "devDependencies": {
-    "browser-sync": "^2.18.11",
-    "concat-with-sourcemaps": "^1.0.4",
-    "mathjax": "2.7.4",
-    "uglify-js": "^3.0.8",
-    "write": "^0.3.3"
+    "browser-sync": "^2.24.6",
+    "concat-with-sourcemaps": "^1.1.0",
+    "mathjax": "2.7.5",
+    "uglify-js": "^3.0.0",
+    "write": "^1.0.0"
   }
 }
